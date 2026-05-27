@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand: #7a2e47;
+  --brand-deep: #5c2230;
+  --crm-purple: #5c2fc0;
+  --crm-purple-deep: #4a2599;
+  --violet: #5c2fc0;
+  --bg: #f5f4f8;
+  --card: #ffffff;
+  --border: #e8e4ec;
+}
+
+body {
+  @apply bg-[var(--bg)] text-gray-900 antialiased;
+}
+
+@layer components {
+  .crm-card {
+    @apply rounded-xl border border-[var(--border)] bg-white p-6 shadow-card;
+  }
+  .crm-label {
+    @apply mb-1.5 block text-sm font-semibold text-gray-700;
+  }
+  .crm-input {
+    @apply w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-violet-accent focus:ring-2 focus:ring-violet-accent/20;
+  }
+  .crm-select {
+    @apply crm-input appearance-none bg-[length:16px] bg-[right_12px_center] bg-no-repeat pr-10;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-violet-accent px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-violet-deep disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50;
+  }
+  .btn-brand {
+    @apply inline-flex items-center justify-center rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600;
+  }
+  .btn-outline-purple {
+    @apply inline-flex items-center justify-center rounded-lg border-2 border-violet-accent bg-white px-4 py-2 text-sm font-semibold text-violet-accent transition hover:bg-violet-soft;
+  }
+  .section-block {
+    @apply mb-10 rounded-xl border border-gray-100 bg-white/80 p-5 shadow-sm;
+  }
+  .section-heading {
+    @apply mb-1 flex items-center gap-2 text-base font-bold text-gray-900;
+  }
+  .section-title {
+    @apply mb-4 border-b border-gray-100 pb-2 text-sm font-bold uppercase tracking-wide text-gray-800;
+  }
+  .section-sub {
+    @apply mb-4 text-sm text-gray-500;
+  }
+  .chip {
+    @apply inline-flex cursor-pointer items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm transition hover:border-violet-accent/40;
+  }
+  .chip-selected {
+    @apply border-violet-accent bg-violet-soft text-violet-deep ring-1 ring-violet-accent/30;
+  }
+  .badge-required {
+    @apply rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-800;
+  }
+  .badge-verified {
+    @apply rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700;
+  }
+  .sidebar-step-active {
+    @apply rounded-xl bg-gradient-to-br from-violet-accent to-violet-deep p-4 text-white shadow-lg;
+  }
+  .onboarding-panel {
+    @apply rounded-2xl border border-gray-100 bg-white p-6 shadow-sm lg:p-8;
+  }
+}

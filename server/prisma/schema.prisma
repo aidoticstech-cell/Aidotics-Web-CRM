@@ -1,0 +1,497 @@
+// Aidotics Bureau CRM — Prisma schema (PostgreSQL schema: crm)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["crm"]
+}
+
+enum VerificationType {
+  PAN
+  GST
+  AADHAAR
+  BUSINESS_CERTIFICATE
+  OTHER
+
+  @@schema("crm")
+}
+
+enum VerificationStatus {
+  PENDING
+  SUBMITTED
+  APPROVED
+  REJECTED
+
+  @@schema("crm")
+}
+
+enum WorkforceLinkStatus {
+  PENDING
+  ACTIVE
+  REJECTED
+  SUSPENDED
+
+  @@schema("crm")
+}
+
+enum ImportJobStatus {
+  VALIDATING
+  VALIDATED
+  PROCESSING
+  COMPLETED
+  FAILED
+
+  @@schema("crm")
+}
+
+enum PaymentMethodType {
+  BANK
+  UPI
+  QR
+
+  @@schema("crm")
+}
+
+enum OtpPurpose {
+  REGISTER
+  LOGIN
+  VERIFY_EMAIL
+  FORGOT_PASSWORD
+
+  @@schema("crm")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  bureauId     String
+  roleId       String
+  email        String    @unique
+  passwordHash String
+  fullName     String
+  mobile       String?
+  isActive     Boolean   @default(true)
+  emailVerifiedAt DateTime?
+  lastLoginAt  DateTime?
+  createdBy    String?
+  updatedBy    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+
+  bureau   Bureau   @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+  role     Role     @relation(fields: [roleId], references: [id])
+  sessions Session[]
+  branches UserBranch[]
+
+  @@index([bureauId])
+  @@schema("crm")
+}
+
+model Session {
+  id               String   @id @default(uuid())
+  userId           String
+  refreshTokenHash String
+  userAgent        String?
+  ipAddress        String?
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@schema("crm")
+}
+
+model OtpLog {
+  id        String     @id @default(uuid())
+  email     String
+  purpose   OtpPurpose
+  otpHash   String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime   @default(now())
+
+  @@index([email, purpose])
+  @@schema("crm")
+}
+
+model Bureau {
+  id              String    @id @default(uuid())
+  partnerBureauId String    @unique
+  code            String    @unique
+  name            String
+  logoKey         String?
+  phone           String?
+  email           String?
+  address         String?
+  city            String?
+  state           String?
+  isActive        Boolean   @default(true)
+  createdBy       String?
+  updatedBy       String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  users            User[]
+  services         BureauService[]
+  locations        BureauLocation[]
+  branches         Branch[]
+  billingConfig    BillingConfig?
+  bankAccounts     BankAccount[]
+  paymentMethods   PaymentMethod[]
+  workflowPref     WorkflowPreference?
+  workforceLinks   WorkforceLink[]
+  verificationReqs VerificationRequest[]
+  importJobs       ImportJob[]
+  setupProgress    SetupProgress?
+  auditLogs        AuditLog[]
+
+  @@schema("crm")
+}
+
+model BureauService {
+  id        String    @id @default(uuid())
+  bureauId  String
+  name      String
+  sortOrder Int       @default(0)
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  bureau Bureau @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+
+  @@index([bureauId])
+  @@schema("crm")
+}
+
+model BureauLocation {
+  id        String    @id @default(uuid())
+  bureauId  String
+  city      String
+  state     String?
+  pincode   String?
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  bureau Bureau @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+
+  @@index([bureauId])
+  @@schema("crm")
+}
+
+model Branch {
+  id        String    @id @default(uuid())
+  bureauId  String
+  name      String
+  code      String
+  city      String?
+  state     String?
+  address   String?
+  gstNumber String?
+  phone     String?
+  isActive  Boolean   @default(true)
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  bureau         Bureau          @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+  userBranches   UserBranch[]
+  workforceLinks WorkforceLink[]
+
+  @@unique([bureauId, code])
+  @@index([bureauId])
+  @@schema("crm")
+}
+
+model BillingConfig {
+  id            String    @id @default(uuid())
+  bureauId      String    @unique
+  invoicePrefix String    @default("INV")
+  gstNumber     String?
+  gstEnabled    Boolean   @default(false)
+  financialYear String?
+  createdBy     String?
+  updatedBy     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  bureau Bureau @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+
+  @@schema("crm")
+}
+
+model BankAccount {
+  id            String    @id @default(uuid())
+  bureauId      String
+  branchId      String?
+  accountName   String
+  accountNumber String
+  ifsc          String
+  bankName      String?
+  isPrimary     Boolean   @default(false)
+  createdBy     String?
+  updatedBy     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  bureau Bureau @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+
+  @@index([bureauId])
+  @@schema("crm")
+}
+
+model PaymentMethod {
+  id        String            @id @default(uuid())
+  bureauId  String
+  branchId  String?
+  type      PaymentMethodType
+  label     String?
+  upiId     String?
+  qrFileKey String?
+  isPrimary Boolean           @default(false)
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  deletedAt DateTime?
+
+  bureau Bureau @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+
+  @@index([bureauId])
+  @@schema("crm")
+}
+
+model WorkflowPreference {
+  id                   String    @id @default(uuid())
+  bureauId             String    @unique
+  businessModel        String?
+  leadAssignment       String?
+  dutyAssignment       String?
+  approvalRules        Json?
+  paymentHandlingStyle String?
+  createdBy            String?
+  updatedBy            String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  deletedAt            DateTime?
+
+  bureau Bureau @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+
+  @@schema("crm")
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  bureauId    String?
+  name        String
+  slug        String
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users           User[]
+  rolePermissions RolePermission[]
+
+  @@unique([slug, bureauId])
+  @@schema("crm")
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+
+  rolePermissions RolePermission[]
+
+  @@schema("crm")
+}
+
+model RolePermission {
+  id           String @id @default(uuid())
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@schema("crm")
+}
+
+model UserBranch {
+  id       String @id @default(uuid())
+  userId   String
+  branchId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  branch Branch @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, branchId])
+  @@schema("crm")
+}
+
+model VerificationRequest {
+  id        String             @id @default(uuid())
+  bureauId  String
+  branchId  String?
+  type      VerificationType
+  status    VerificationStatus @default(PENDING)
+  payload   Json?
+  createdBy String?
+  updatedBy String?
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+  deletedAt DateTime?
+
+  bureau    Bureau                 @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+  documents VerificationDocument[]
+
+  @@index([bureauId, type])
+  @@schema("crm")
+}
+
+model VerificationDocument {
+  id        String    @id @default(uuid())
+  requestId String
+  fileKey   String
+  fileName  String?
+  mimeType  String?
+  createdBy String?
+  createdAt DateTime  @default(now())
+
+  request VerificationRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
+  @@schema("crm")
+}
+
+model WorkforceLink {
+  id         String              @id @default(uuid())
+  bureauId   String
+  branchId   String?
+  workerId   String
+  status     WorkforceLinkStatus @default(PENDING)
+  mobile     String?
+  fullName   String?
+  notes      String?
+  createdBy  String?
+  updatedBy  String?
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+  deletedAt  DateTime?
+
+  bureau Bureau  @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+  branch Branch? @relation(fields: [branchId], references: [id], onDelete: SetNull)
+
+  @@unique([bureauId, workerId])
+  @@index([bureauId, status])
+  @@schema("crm")
+}
+
+model ImportJob {
+  id          String          @id @default(uuid())
+  bureauId    String
+  branchId    String?
+  fileName    String
+  status      ImportJobStatus @default(VALIDATING)
+  totalRows   Int             @default(0)
+  validRows   Int             @default(0)
+  errorRows   Int             @default(0)
+  createdBy   String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  bureau Bureau      @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+  logs   ImportLog[]
+
+  @@index([bureauId])
+  @@schema("crm")
+}
+
+model ImportLog {
+  id          String   @id @default(uuid())
+  importJobId String
+  rowNumber   Int
+  level       String   @default("info")
+  message     String
+  payload     Json?
+  createdAt   DateTime @default(now())
+
+  importJob ImportJob @relation(fields: [importJobId], references: [id], onDelete: Cascade)
+
+  @@index([importJobId])
+  @@schema("crm")
+}
+
+model SetupProgress {
+  id          String    @id @default(uuid())
+  bureauId    String    @unique
+  /** Active wizard step (1–17). */
+  currentStep Int       @default(1)
+  /** Per-step status: pending | draft | completed */
+  stepsStatus Json      @default("{}")
+  /** Per-step form payloads from onboarding UI. */
+  stepDrafts  Json      @default("{}")
+  /** Legacy mirror of stepsStatus for older clients. */
+  steps       Json      @default("{}")
+  isComplete  Boolean   @default(false)
+  completedAt DateTime?
+  updatedBy   String?
+  updatedAt   DateTime  @updatedAt
+
+  bureau Bureau @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+
+  @@schema("crm")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  bureauId   String
+  branchId   String?
+  actorId    String?
+  entityType String
+  entityId   String
+  action     String
+  before     Json?
+  after      Json?
+  createdAt  DateTime @default(now())
+
+  bureau Bureau @relation(fields: [bureauId], references: [id], onDelete: Cascade)
+
+  @@index([bureauId, createdAt])
+  @@schema("crm")
+}
+
+model StoredFile {
+  id        String    @id @default(uuid())
+  bureauId  String
+  branchId  String?
+  purpose   String
+  fileKey   String
+  fileName  String?
+  mimeType  String?
+  sizeBytes Int?
+  createdBy String?
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  @@index([bureauId, purpose])
+  @@schema("crm")
+}

@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "crm"."SetupProgress" ADD COLUMN IF NOT EXISTS "currentStep" INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE "crm"."SetupProgress" ADD COLUMN IF NOT EXISTS "stepsStatus" JSONB NOT NULL DEFAULT '{}';
+ALTER TABLE "crm"."SetupProgress" ADD COLUMN IF NOT EXISTS "stepDrafts" JSONB NOT NULL DEFAULT '{}';
+ALTER TABLE "crm"."SetupProgress" ADD COLUMN IF NOT EXISTS "updatedBy" TEXT;
