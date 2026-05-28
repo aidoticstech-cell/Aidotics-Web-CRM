@@ -2,8 +2,45 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  LayoutDashboard,
+  Users,
+  UserRound,
+  BriefcaseMedical,
+  ClipboardCheck,
+  IndianRupee,
+  Wallet,
+  Search,
+  Bell,
+  CircleUserRound,
+  Plus,
+  ArrowRight,
+  CircleDot,
+} from "lucide-react";
 import { getMe, logout, type AuthUser } from "@/lib/auth-api";
-import { ONBOARDING_STEPS } from "@/lib/onboarding-steps";
+
+const KPI_CARDS = [
+  { title: "Total Leads", value: "128", hint: "+18% vs yesterday", Icon: Users, tone: "bg-violet-100 text-violet-700" },
+  { title: "Active Duties", value: "156", hint: "+12% vs yesterday", Icon: BriefcaseMedical, tone: "bg-sky-100 text-sky-700" },
+  { title: "Active Workforce", value: "312", hint: "+8% vs yesterday", Icon: ClipboardCheck, tone: "bg-emerald-100 text-emerald-700" },
+  { title: "Revenue Today", value: "₹1,48,750", hint: "+22% vs yesterday", Icon: IndianRupee, tone: "bg-amber-100 text-amber-700" },
+  { title: "Revenue This Month", value: "₹24,68,450", hint: "+14% vs last month", Icon: Wallet, tone: "bg-cyan-100 text-cyan-700" },
+  { title: "Pending Payments", value: "₹6,72,300", hint: "24 invoices", Icon: Wallet, tone: "bg-rose-100 text-rose-700" },
+];
+
+const SIDEBAR_ITEMS = [
+  "Dashboard",
+  "Leads",
+  "Clients & Patients",
+  "Workforce",
+  "Duties",
+  "Attendance & Leave",
+  "Finance",
+  "Operations Center",
+  "Partner Network",
+  "Reports & Analytics",
+  "Administration",
+];
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -19,46 +56,55 @@ export default function DashboardPage() {
     return <div className="flex min-h-screen items-center justify-center text-gray-500">Loading…</div>;
   }
 
-  const nextItems = ["Add Your Team", "Import Data", "Start Managing Operations", "Track Performance"];
-  const quickLinks = ["Go to Dashboard", "Manage Team", "Add Lead", "View Reports", "Help Center", "Video Tutorials"];
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[280px_1fr]">
-        <aside className="border-r border-gray-200 bg-white">
-          <div className="border-b border-gray-100 px-5 py-5">
-            <p className="text-xl font-black text-brand-600">Aidotics</p>
-            <p className="text-xs font-semibold text-gray-500">BUREAU CRM</p>
+    <div className="min-h-screen bg-[#f5f6fb]">
+      <div className="grid min-h-screen grid-cols-1 xl:grid-cols-[250px_1fr_280px]">
+        <aside className="bg-[#0c1231] text-white">
+          <div className="border-b border-white/10 px-5 py-5">
+            <p className="text-3xl font-black leading-none text-white">Aidotics</p>
+            <p className="mt-1 text-[11px] font-semibold tracking-wide text-white/70">BUREAU WEB CRM</p>
           </div>
-          <div className="space-y-1 p-4">
-            {ONBOARDING_STEPS.map((step, idx) => (
-              <div key={step.slug} className={`rounded-xl border px-3 py-2 ${idx === ONBOARDING_STEPS.length - 1 ? "border-violet-accent bg-violet-soft/60" : "border-transparent bg-white"}`}>
-                <p className="text-xs font-semibold text-gray-800">
-                  {idx + 1}. {step.title}
-                </p>
-                <p className={`text-[11px] ${idx === ONBOARDING_STEPS.length - 1 ? "text-violet-accent" : "text-emerald-600"}`}>Completed</p>
-              </div>
+          <div className="space-y-1 p-3">
+            {SIDEBAR_ITEMS.map((item, idx) => (
+              <button
+                key={item}
+                type="button"
+                className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-xs font-medium ${
+                  idx === 0 ? "bg-violet-600 text-white" : "text-white/80 hover:bg-white/10"
+                }`}
+              >
+                <LayoutDashboard className="h-3.5 w-3.5" />
+                {item}
+              </button>
             ))}
           </div>
-          <div className="p-4">
-            <div className="rounded-xl border border-gray-200 bg-gray-50 p-3">
-              <p className="text-[11px] text-gray-500">Onboarding Progress</p>
-              <div className="mt-2 h-2 rounded-full bg-gray-200">
-                <div className="h-2 w-full rounded-full bg-violet-accent" />
-              </div>
-              <p className="mt-2 text-[11px] font-semibold text-gray-700">8 of 8 steps completed</p>
+          <div className="mt-8 p-3">
+            <div className="rounded-2xl bg-gradient-to-br from-violet-700 to-indigo-500 p-4">
+              <p className="text-xs font-semibold">Need Staff Urgently?</p>
+              <p className="mt-1 text-[11px] text-white/80">Broadcast your requirement to available staff quickly.</p>
+              <button type="button" className="btn-primary mt-4 !w-full !bg-white !py-2 !text-xs !text-violet-700">
+                + Create Duty
+              </button>
             </div>
           </div>
         </aside>
 
-        <main className="p-4 lg:p-6">
-          <header className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3">
+        <main className="p-4 lg:p-5">
+          <header className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3">
             <div>
-              <p className="text-lg font-bold text-gray-900">Bureau Onboarding</p>
-              <p className="text-sm font-semibold text-violet-accent">All Steps Completed</p>
+              <p className="text-xs font-semibold text-gray-500">Welcome back, {user.fullName.split(" ")[0]}</p>
+              <p className="text-3xl font-black text-gray-900">Owner Dashboard</p>
+              <p className="text-xs text-gray-500">Overview of your bureau operations and business performance</p>
             </div>
             <div className="flex items-center gap-2">
-              <button type="button" className="btn-outline-purple !py-2 text-xs">Need Help?</button>
+              <button type="button" className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs">May 12, 2025</button>
+              <button type="button" className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs">All Branches</button>
+              <button type="button" className="rounded-lg border border-gray-200 bg-white p-2 text-gray-500"><Search className="h-4 w-4" /></button>
+              <button type="button" className="rounded-lg border border-gray-200 bg-white p-2 text-gray-500"><Bell className="h-4 w-4" /></button>
+              <span className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs font-semibold text-gray-700">
+                <CircleUserRound className="h-4 w-4" />
+                {user.bureauName || user.email}
+              </span>
               <button
                 type="button"
                 className="btn-secondary !py-2 text-xs"
@@ -67,96 +113,192 @@ export default function DashboardPage() {
                   router.push("/login");
                 }}
               >
-                Exit Onboarding
+                Sign out
               </button>
             </div>
           </header>
 
-          <div className="grid gap-4 xl:grid-cols-[1fr_300px]">
-            <div className="space-y-4">
-              <section className="rounded-xl border border-gray-200 bg-gradient-to-r from-emerald-50/70 to-violet-soft/40 p-5">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500 text-3xl text-white">✓</div>
+          <section className="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+            {KPI_CARDS.map(({ title, value, hint, Icon, tone }) => (
+              <div key={title} className="rounded-xl border border-gray-200 bg-white p-3">
+                <div className="flex items-start justify-between gap-2">
                   <div>
-                    <h1 className="text-3xl font-black text-gray-900">Congratulations! 🎉</h1>
-                    <p className="mt-1 text-base font-semibold text-gray-800">Your bureau CRM is ready to launch.</p>
-                    <p className="mt-1 text-sm text-gray-500">You&apos;ve successfully completed all onboarding steps. Your account is active and all systems are configured.</p>
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500">{title}</p>
+                    <p className="mt-1 text-2xl font-black text-gray-900">{value}</p>
+                    <p className="text-[10px] text-gray-500">{hint}</p>
                   </div>
+                  <span className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${tone}`}>
+                    <Icon className="h-4 w-4" />
+                  </span>
                 </div>
-              </section>
+              </div>
+            ))}
+          </section>
 
-              <div className="grid gap-4 lg:grid-cols-2">
-                <section className="rounded-xl border border-gray-200 bg-white p-4">
-                  <h2 className="text-lg font-bold text-gray-900">Your Bureau is Ready</h2>
-                  <p className="text-xs text-gray-500">Everything is set up and ready for you to start managing your operations.</p>
+          <div className="mt-3 grid gap-3 xl:grid-cols-[1fr_260px]">
+            <div className="space-y-3">
+              <div className="grid gap-3 lg:grid-cols-3">
+                <section className="rounded-xl border border-gray-200 bg-white p-3 lg:col-span-1">
+                  <h3 className="text-sm font-bold text-gray-900">Lead Funnel</h3>
+                  <p className="text-[11px] text-gray-500">(This Month)</p>
                   <div className="mt-3 space-y-2">
-                    {ONBOARDING_STEPS.map((step) => (
-                      <div key={step.slug} className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50/60 px-3 py-2">
-                        <span className="text-sm font-medium text-gray-700">{step.title}</span>
-                        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">Completed</span>
+                    {[
+                      ["New Leads", "458"],
+                      ["Qualified", "262"],
+                      ["Requirement Discussion", "168"],
+                      ["Proposal / Quotation", "96"],
+                      ["Converted", "68"],
+                    ].map(([label, val]) => (
+                      <div key={label} className="flex items-center justify-between text-xs">
+                        <span className="text-gray-600">{label}</span>
+                        <span className="font-semibold text-gray-900">{val}</span>
                       </div>
                     ))}
                   </div>
                 </section>
 
-                <div className="space-y-4">
-                  <section className="rounded-xl border border-gray-200 bg-white p-4">
-                    <h2 className="text-lg font-bold text-gray-900">What&apos;s Next?</h2>
-                    <p className="text-xs text-gray-500">Start using your CRM and grow your bureau.</p>
-                    <ul className="mt-3 space-y-2">
-                      {nextItems.map((item) => (
-                        <li key={item} className="rounded-lg border border-gray-100 bg-gray-50/60 px-3 py-2 text-sm font-medium text-gray-700">{item}</li>
-                      ))}
-                    </ul>
-                  </section>
-
-                  <section className="rounded-xl border border-gray-200 bg-slate-50/70 p-4">
-                    <h2 className="text-base font-bold text-gray-900">Quick Links</h2>
-                    <div className="mt-2 grid grid-cols-2 gap-2">
-                      {quickLinks.map((link) => (
-                        <button key={link} type="button" className="rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-left text-xs font-semibold text-violet-accent">
-                          {link} →
-                        </button>
-                      ))}
+                <section className="rounded-xl border border-gray-200 bg-white p-3">
+                  <h3 className="text-sm font-bold text-gray-900">Duty Status (Live)</h3>
+                  <div className="mt-3 flex items-center justify-center">
+                    <div className="flex h-28 w-28 items-center justify-center rounded-full border-[12px] border-emerald-500 border-r-blue-500 border-b-amber-400 border-l-rose-400 text-4xl font-black text-gray-900">
+                      156
                     </div>
-                  </section>
-                </div>
+                  </div>
+                </section>
+
+                <section className="rounded-xl border border-gray-200 bg-white p-3">
+                  <h3 className="text-sm font-bold text-gray-900">Workforce Availability</h3>
+                  <div className="mt-3 flex items-center justify-center">
+                    <div className="flex h-28 w-28 items-center justify-center rounded-full border-[12px] border-blue-500 border-r-emerald-500 border-b-amber-400 border-l-rose-400 text-4xl font-black text-gray-900">
+                      312
+                    </div>
+                  </div>
+                </section>
               </div>
 
-              <section className="rounded-xl border border-gray-200 bg-white p-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-lg font-bold text-gray-900">You&apos;re all set to go live!</p>
-                  <button type="button" className="btn-primary" onClick={() => router.push("/dashboard")}>
-                    Launch My CRM
-                  </button>
-                </div>
-              </section>
+              <div className="grid gap-3 lg:grid-cols-2">
+                <section className="rounded-xl border border-gray-200 bg-white p-3">
+                  <h3 className="text-sm font-bold text-gray-900">Revenue Overview</h3>
+                  <div className="mt-3 h-36 rounded-lg bg-gradient-to-b from-violet-50 to-white p-2">
+                    <div className="h-full w-full rounded border border-dashed border-violet-200" />
+                  </div>
+                </section>
+                <section className="rounded-xl border border-gray-200 bg-white p-3">
+                  <h3 className="text-sm font-bold text-gray-900">Branch Performance</h3>
+                  <div className="mt-2 space-y-2">
+                    {[
+                      ["Noida (HQ)", "₹10,24,850", "94%"],
+                      ["Gurgaon", "₹6,45,300", "92%"],
+                      ["Delhi", "₹4,32,600", "90%"],
+                      ["Faridabad", "₹2,78,250", "88%"],
+                    ].map(([b, rev, rate]) => (
+                      <div key={b} className="flex items-center justify-between rounded-lg bg-gray-50 px-2 py-1.5 text-xs">
+                        <span className="font-semibold text-gray-700">{b}</span>
+                        <span>{rev}</span>
+                        <span className="font-semibold text-emerald-600">{rate}</span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </div>
+
+              <div className="grid gap-3 lg:grid-cols-3">
+                <section className="rounded-xl border border-gray-200 bg-white p-3">
+                  <h3 className="text-sm font-bold text-gray-900">Escalations & Alerts</h3>
+                  <ul className="mt-2 space-y-2 text-xs">
+                    {[
+                      "Replacement request for duty #DUT-2456",
+                      "Client approval pending for duty #DUT-2453",
+                      "Payment overdue for invoice #INV-1007",
+                      "Staff documents expiring in 7 days",
+                    ].map((a) => (
+                      <li key={a} className="rounded-lg bg-gray-50 px-2 py-1.5 text-gray-700">{a}</li>
+                    ))}
+                  </ul>
+                </section>
+                <section className="rounded-xl border border-gray-200 bg-white p-3">
+                  <h3 className="text-sm font-bold text-gray-900">Today&apos;s Snapshot</h3>
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    {[
+                      ["Leads Added", "28"],
+                      ["Duties Created", "24"],
+                      ["Staff Assigned", "33"],
+                      ["Duties Completed", "41"],
+                    ].map(([l, v]) => (
+                      <div key={l} className="rounded-lg bg-gray-50 p-2 text-center">
+                        <p className="text-lg font-black text-violet-accent">{v}</p>
+                        <p className="text-[11px] text-gray-600">{l}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+                <section className="rounded-xl border border-gray-200 bg-white p-3">
+                  <h3 className="text-sm font-bold text-gray-900">Top Services</h3>
+                  <div className="mt-2 space-y-2">
+                    {[
+                      ["Nursing (ICU / General)", 65],
+                      ["Attendant / Caregiver", 48],
+                      ["Baby Care / Mother Care", 16],
+                      ["Physiotherapist", 12],
+                    ].map(([s, p]) => (
+                      <div key={String(s)} className="text-xs">
+                        <div className="mb-1 flex items-center justify-between">
+                          <span className="text-gray-700">{s}</span>
+                          <span className="font-semibold text-gray-900">{p}%</span>
+                        </div>
+                        <div className="h-1.5 rounded-full bg-gray-200">
+                          <div className="h-1.5 rounded-full bg-blue-500" style={{ width: `${p}%` }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </div>
             </div>
 
-            <aside className="space-y-4">
-              <section className="rounded-xl border border-gray-200 bg-white p-4">
-                <h3 className="text-sm font-bold text-gray-900">Subscription Details</h3>
-                <ul className="mt-3 space-y-2 text-xs text-gray-700">
-                  <li className="flex justify-between"><span>Plan</span><span className="font-semibold">Professional</span></li>
-                  <li className="flex justify-between"><span>Billing</span><span className="font-semibold">Yearly</span></li>
-                  <li className="flex justify-between"><span>Staff Limit</span><span className="font-semibold">250 Staff</span></li>
-                  <li className="flex justify-between"><span>Branch Limit</span><span className="font-semibold">15 Branches</span></li>
-                  <li className="flex justify-between"><span>Next Billing Date</span><span className="font-semibold">15 May 2025</span></li>
-                </ul>
-                <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-1 text-center text-[11px] font-semibold text-emerald-700">
-                  You Saved ₹19,200 with yearly billing!
+            <aside className="space-y-3">
+              <section className="rounded-xl border border-gray-200 bg-white p-3">
+                <h3 className="text-sm font-bold text-gray-900">Quick Actions</h3>
+                <div className="mt-2 space-y-1">
+                  {[
+                    "Add New Lead",
+                    "Create Duty",
+                    "Add Workforce",
+                    "Generate Invoice",
+                    "Broadcast Duty",
+                    "View Live Duties",
+                    "Approve Staff",
+                    "Send Notification",
+                  ].map((action) => (
+                    <button key={action} type="button" className="flex w-full items-center justify-between rounded-lg border border-gray-200 px-2 py-1.5 text-xs text-gray-700 hover:bg-gray-50">
+                      <span className="inline-flex items-center gap-2"><Plus className="h-3.5 w-3.5 text-violet-accent" />{action}</span>
+                      <ArrowRight className="h-3.5 w-3.5 text-gray-400" />
+                    </button>
+                  ))}
                 </div>
-                <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">View Subscription</button>
               </section>
 
-              <section className="rounded-xl border border-gray-200 bg-white p-4">
-                <h3 className="text-lg font-bold text-violet-accent">Need Help?</h3>
-                <p className="mt-1 text-xs text-gray-500">Our onboarding team is here to help you at every step.</p>
-                <div className="mt-3 space-y-2">
-                  <button type="button" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-left text-xs font-semibold text-gray-700">Chat with us</button>
-                  <button type="button" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-left text-xs font-semibold text-gray-700">Schedule a Call</button>
-                  <button type="button" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-left text-xs font-semibold text-gray-700">Email Support</button>
+              <section className="rounded-xl border border-gray-200 bg-white p-3">
+                <h3 className="text-sm font-bold text-gray-900">Recent Activity</h3>
+                <div className="mt-2 space-y-2 text-xs">
+                  {[
+                    "Duty #DUT-2451 completed",
+                    "Payment received ₹2,500",
+                    "New lead added",
+                    "Staff accepted duty",
+                    "Invoice #INV-1090 generated",
+                  ].map((activity) => (
+                    <div key={activity} className="flex items-start gap-2 rounded-lg bg-gray-50 px-2 py-1.5">
+                      <CircleDot className="mt-0.5 h-3.5 w-3.5 text-emerald-500" />
+                      <span className="text-gray-700">{activity}</span>
+                    </div>
+                  ))}
                 </div>
+              </section>
+              <section className="rounded-xl border border-gray-200 bg-white p-3">
+                <h3 className="text-sm font-bold text-gray-900">Need Help?</h3>
+                <p className="mt-1 text-xs text-gray-600">Our onboarding team is here to help you at every step.</p>
+                <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
               </section>
             </aside>
           </div>
