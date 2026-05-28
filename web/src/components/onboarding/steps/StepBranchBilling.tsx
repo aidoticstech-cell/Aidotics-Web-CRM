@@ -1,7 +1,7 @@
 "use client";
 
-import { Landmark, Pencil, Trash2 } from "lucide-react";
-import { Field, Section, InfoBox } from "@/components/ui/FormBits";
+import { Landmark, Pencil, Trash2, Check, CircleHelp } from "lucide-react";
+import { Field, InfoBox } from "@/components/ui/FormBits";
 import type { StepProps } from "./types";
 
 type Branch = { id: string; name: string; type: string; address: string; city: string; pincode: string; status: string };
@@ -21,7 +21,7 @@ function typeBadge(type: string) {
 
 export function StepBranchBilling({ data, onChange }: StepProps) {
   const branches = (data.branches as Branch[]) || DEFAULT_BRANCHES;
-  const prefix = (data.invoicePrefix as string) || "AID";
+  const prefix = (data.invoicePrefix as string) || "INV";
   const start = (data.invoiceStart as string) || "1001";
 
   return (
@@ -36,36 +36,25 @@ export function StepBranchBilling({ data, onChange }: StepProps) {
             <p className="mt-1 text-sm text-gray-500">Add branches/offices and configure billing, GST, and payment collection preferences.</p>
           </div>
         </div>
-        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
-          {["Branches / Offices", "Billing & GST Setup", "Payment Collection Setup"].map((tab, idx) => (
-            <span
-              key={tab}
-              className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-semibold ${
-                idx === 0 ? "border-violet-accent bg-violet-soft text-violet-deep" : "border-gray-200 bg-white text-gray-500"
-              }`}
-            >
-              <span className="text-[10px]">{String.fromCharCode(65 + idx)}</span>
-              {tab}
-            </span>
-          ))}
-        </div>
 
         <div className="mt-8">
-          <Section letter="A" title="Branch Management" subtitle="Add all your operating branches. You can add more branches later from settings.">
+          <section className="mb-10">
+            <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">A.</span> Branches / Offices</h3>
+            <p className="mt-1 text-xs text-gray-500">Add all your operational locations.</p>
             <div className="mb-4 flex justify-end">
-              <button type="button" className="btn-outline-purple !gap-2 text-sm">
+              <button type="button" className="btn-outline-purple !gap-2 text-xs">
                 + Add Branch
               </button>
             </div>
             <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
-              <table className="w-full min-w-[720px] text-left text-sm">
+              <table className="w-full min-w-[700px] text-left text-sm">
                 <thead className="border-b border-gray-100 bg-gray-50/90 text-[11px] font-bold uppercase tracking-wide text-gray-500">
                   <tr>
                     <th className="px-4 py-3">Branch Name</th>
                     <th className="px-4 py-3">Branch Type</th>
-                    <th className="px-4 py-3">Address</th>
-                    <th className="px-4 py-3">City</th>
-                    <th className="px-4 py-3">Pincode</th>
+                    <th className="px-4 py-3">City / State</th>
+                    <th className="px-4 py-3">Branch Manager</th>
+                    <th className="px-4 py-3">Contact</th>
                     <th className="px-4 py-3">Status</th>
                     <th className="px-4 py-3 text-right">Actions</th>
                   </tr>
@@ -77,11 +66,9 @@ export function StepBranchBilling({ data, onChange }: StepProps) {
                       <td className="px-4 py-3.5">
                         <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${typeBadge(b.type)}`}>{b.type}</span>
                       </td>
-                      <td className="max-w-[200px] px-4 py-3.5 text-gray-600">
-                        <span className="line-clamp-2">{b.address}</span>
-                      </td>
-                      <td className="px-4 py-3.5 text-gray-700">{b.city}</td>
-                      <td className="px-4 py-3.5 font-mono text-gray-700">{b.pincode}</td>
+                      <td className="px-4 py-3.5 text-gray-700">{b.city}, Haryana</td>
+                      <td className="px-4 py-3.5 text-gray-700">Rahul Sharma</td>
+                      <td className="px-4 py-3.5 text-gray-700">98765 43210</td>
                       <td className="px-4 py-3.5">
                         <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">{b.status}</span>
                       </td>
@@ -98,104 +85,149 @@ export function StepBranchBilling({ data, onChange }: StepProps) {
                 </tbody>
               </table>
             </div>
-            <p className="mt-3 text-center text-xs text-gray-500">
-              Showing 1 to {branches.length} of {branches.length} branches.
-            </p>
-          </Section>
+            <p className="mt-3 text-xs text-gray-500">You can add more branches later from settings.</p>
+          </section>
 
-          <Section letter="B" title="Billing Information" subtitle="Configure your billing and invoicing preferences.">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <Field label="GST Number" required>
-                <div className="relative">
-                  <input className="crm-input pr-24" value={(data.gstNumber as string) || ""} onChange={(e) => onChange({ gstNumber: e.target.value })} placeholder="07AAACC1234C1Z5" />
-                  <span className="absolute right-3 top-2.5 text-xs font-semibold text-emerald-600">Verified</span>
+          <div className="grid gap-6 lg:grid-cols-2">
+            <section>
+              <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">B.</span> Billing & GST Setup</h3>
+              <p className="mt-1 text-xs text-gray-500">Configure GST and invoicing preferences.</p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <Field label="GST Number" required>
+                  <input className="crm-input" value={(data.gstNumber as string) || ""} onChange={(e) => onChange({ gstNumber: e.target.value })} placeholder="27ABCDE1234F1Z5" />
+                </Field>
+                <Field label="GST Type" required>
+                  <select className="crm-select" value={(data.gstType as string) || "REGULAR"} onChange={(e) => onChange({ gstType: e.target.value })}>
+                    <option value="REGULAR">Regular</option>
+                    <option value="COMPOSITION">Composition</option>
+                  </select>
+                </Field>
+                <Field label="Financial Year" required>
+                  <input className="crm-input" value={(data.financialYear as string) || "1 Apr 2025 - 31 Mar 2026"} onChange={(e) => onChange({ financialYear: e.target.value })} />
+                </Field>
+                <Field label="Invoice Start Number" required hint={`Next invoice: ${prefix}${start}`}>
+                  <input className="crm-input" value={start} onChange={(e) => onChange({ invoiceStart: e.target.value })} />
+                </Field>
+                <Field label="Invoice Prefix" required>
+                  <input className="crm-input" value={prefix} onChange={(e) => onChange({ invoicePrefix: e.target.value })} />
+                </Field>
+                <Field label="Place of Supply" required>
+                  <select className="crm-select" value={(data.placeOfSupply as string) || "06"} onChange={(e) => onChange({ placeOfSupply: e.target.value })}>
+                    <option value="06">Haryana (06)</option>
+                    <option value="07">Delhi (07)</option>
+                    <option value="09">Uttar Pradesh (09)</option>
+                  </select>
+                </Field>
+              </div>
+              <p className="mt-3 text-[11px] text-gray-500">These settings will be used while generating invoices.</p>
+            </section>
+
+            <section>
+              <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">C.</span> Payment Collection Setup</h3>
+              <p className="mt-1 text-xs text-gray-500">Add payment methods to collect payments from clients.</p>
+              <div className="mt-4 space-y-3">
+                <div className="rounded-xl border border-gray-200 p-3">
+                  <p className="text-xs font-semibold text-violet-accent">Bank Account</p>
+                  <div className="mt-2 grid gap-3 sm:grid-cols-2">
+                    <Field label="Account Holder Name" required>
+                      <input className="crm-input" value={(data.accountHolder as string) || "Healing Hands Healthcare Services Pvt. Ltd."} onChange={(e) => onChange({ accountHolder: e.target.value })} />
+                    </Field>
+                    <Field label="Bank Name" required>
+                      <input className="crm-input" value={(data.bankName as string) || "HDFC Bank"} onChange={(e) => onChange({ bankName: e.target.value })} />
+                    </Field>
+                    <Field label="Account Number" required>
+                      <input className="crm-input" value={(data.accountNumber as string) || ""} onChange={(e) => onChange({ accountNumber: e.target.value })} />
+                    </Field>
+                    <Field label="IFSC Code" required>
+                      <input className="crm-input" value={(data.ifsc as string) || ""} onChange={(e) => onChange({ ifsc: e.target.value })} />
+                    </Field>
+                  </div>
                 </div>
-              </Field>
-              <Field label="Billing Currency" required>
-                <select className="crm-select" value={(data.currency as string) || "INR"} onChange={(e) => onChange({ currency: e.target.value })}>
-                  <option value="INR">INR - Indian Rupee (₹)</option>
-                  <option value="USD">USD - US Dollar</option>
-                </select>
-              </Field>
-              <Field label="GST Type" required>
-                <select className="crm-select" value={(data.gstType as string) || "REGULAR"} onChange={(e) => onChange({ gstType: e.target.value })}>
-                  <option value="REGULAR">Regular</option>
-                  <option value="COMPOSITION">Composition</option>
-                </select>
-              </Field>
-              <Field label="Business PAN" required>
-                <div className="relative">
-                  <input className="crm-input pr-24" value={(data.panNumber as string) || ""} onChange={(e) => onChange({ panNumber: e.target.value })} placeholder="AAACC1234C" />
-                  <span className="absolute right-3 top-2.5 text-xs font-semibold text-emerald-600">Verified</span>
+                <div className="rounded-xl border border-dashed border-gray-200 p-3 text-center">
+                  <p className="text-xs text-gray-500">Upload Cheque / Passbook</p>
+                  <button type="button" className="mt-2 text-xs font-semibold text-violet-accent">Upload File</button>
                 </div>
-              </Field>
-              <Field label="Invoice Start Number" required hint={`Next invoice will be: ${prefix}-${start}`}>
-                <input className="crm-input" value={start} onChange={(e) => onChange({ invoiceStart: e.target.value })} />
-              </Field>
-              <Field label="Tax Calculation">
-                <select className="crm-select" value={(data.taxCalculation as string) || "EXCLUSIVE"} onChange={(e) => onChange({ taxCalculation: e.target.value })}>
-                  <option value="EXCLUSIVE">Exclusive of Tax</option>
-                  <option value="INCLUSIVE">Inclusive of Tax</option>
-                </select>
-              </Field>
-              <Field label="Invoice Prefix" required hint="This prefix will be used in all your invoices. Example: AID-0001">
-                <input className="crm-input" value={prefix} onChange={(e) => onChange({ invoicePrefix: e.target.value })} />
-              </Field>
-              <Field label="Payment Terms" required>
-                <select className="crm-select" value={(data.paymentTerms as string) || "7"} onChange={(e) => onChange({ paymentTerms: e.target.value })}>
-                  <option value="7">7 Days</option>
-                  <option value="15">15 Days</option>
-                  <option value="30">30 Days</option>
-                </select>
-              </Field>
-              <Field label="Place of Supply" required>
-                <select className="crm-select" value={(data.placeOfSupply as string) || "07"} onChange={(e) => onChange({ placeOfSupply: e.target.value })}>
-                  <option value="07">Delhi (07)</option>
-                  <option value="06">Haryana (06)</option>
-                  <option value="09">Uttar Pradesh (09)</option>
-                </select>
-              </Field>
+              </div>
+              <p className="mt-3 text-[11px] text-gray-500">At least one active payment method is required.</p>
+            </section>
+          </div>
+
+          <section className="mt-8">
+            <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">D.</span> Branch Access & User Assignment</h3>
+            <p className="mt-1 text-xs text-gray-500">Assign branch-level access to key users.</p>
+            <div className="mt-4 overflow-x-auto rounded-xl border border-gray-200">
+              <table className="w-full min-w-[780px] text-left text-sm">
+                <thead className="border-b border-gray-100 bg-gray-50/90 text-[11px] font-bold uppercase tracking-wide text-gray-500">
+                  <tr>
+                    <th className="px-4 py-3">Branch</th>
+                    <th className="px-4 py-3">Branch Manager</th>
+                    <th className="px-4 py-3">Operations Head</th>
+                    <th className="px-4 py-3">Finance Controller</th>
+                    <th className="px-4 py-3">Coordinators</th>
+                    <th className="px-4 py-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {["Head Office", "Noida Branch", "Faridabad Branch"].map((row) => (
+                    <tr key={row} className="border-t border-gray-100 bg-white">
+                      <td className="px-4 py-3.5 font-semibold text-gray-900">{row}</td>
+                      <td className="px-4 py-3.5 text-gray-700">Rahul Sharma</td>
+                      <td className="px-4 py-3.5 text-gray-700">Neha Patel</td>
+                      <td className="px-4 py-3.5 text-gray-700">Anmol Jain</td>
+                      <td className="px-4 py-3.5 text-gray-700">+3</td>
+                      <td className="px-4 py-3.5">
+                        <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">Active</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </Section>
+            <p className="mt-3 text-[11px] text-gray-500">Users must have branch access in CRM. You can add users from Team Administration.</p>
+          </section>
         </div>
       </div>
 
       <aside className="space-y-4">
-        <InfoBox variant="green" title="Why Billing Setup is Important?">
-          <ul className="space-y-2 text-xs">
-            {["Generate professional invoices with correct GST", "Ensure tax compliance across branches", "Faster reconciliation with clients", "Clear audit trail for accounts"].map((t) => (
-              <li key={t} className="flex gap-2 text-gray-700">
-                <span className="text-emerald-600">✓</span>
+        <div className="rounded-xl border border-gray-200 bg-white p-4">
+          <h3 className="text-sm font-bold text-gray-900">Billing Summary</h3>
+          <dl className="mt-3 space-y-2 text-xs">
+            <div className="flex justify-between"><dt className="text-gray-500">GST Type</dt><dd>Regular</dd></div>
+            <div className="flex justify-between"><dt className="text-gray-500">Place of Supply</dt><dd>Haryana (06)</dd></div>
+            <div className="flex justify-between"><dt className="text-gray-500">Invoice Prefix</dt><dd>{prefix}</dd></div>
+            <div className="flex justify-between"><dt className="text-gray-500">Financial Year</dt><dd>1 Apr 2025 - 31 Mar 2026</dd></div>
+            <div className="flex justify-between"><dt className="text-gray-500">Next Invoice Number</dt><dd>{prefix}{start}</dd></div>
+            <div className="flex justify-between"><dt className="text-gray-500">Primary Bank</dt><dd>HDFC Bank</dd></div>
+          </dl>
+        </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white p-4">
+          <h3 className="text-sm font-bold text-gray-900">Why is this important?</h3>
+          <ul className="mt-3 space-y-2 text-xs text-gray-600">
+            {[
+              "Branches help you manage operations across locations.",
+              "Billing settings ensure accurate invoicing and GST compliance.",
+              "Payment methods allow smooth collection of payments.",
+              "User assignment gives the right people access to the right branch.",
+            ].map((t) => (
+              <li key={t} className="flex gap-2">
+                <CircleHelp className="mt-0.5 h-3.5 w-3.5 text-gray-400" />
                 {t}
               </li>
             ))}
           </ul>
-        </InfoBox>
-
-        <div className="crm-card overflow-hidden">
-          <p className="text-xs font-bold uppercase tracking-wide text-gray-500">Billing Preview</p>
-          <div className="mt-4 rounded-lg border border-gray-100 bg-gradient-to-b from-white to-gray-50/80 p-4 text-xs shadow-inner">
-            <div className="flex justify-between border-b border-gray-100 pb-2">
-              <span className="font-bold text-violet-accent">aidotics</span>
-              <span className="text-gray-400">INV</span>
-            </div>
-            <p className="mt-2 font-bold text-gray-900">CarePlus Healthcare Services Pvt. Ltd.</p>
-            <p className="text-gray-500">Bill To: XYZ Hospitals</p>
-            <p className="mt-2 text-gray-400">27 May 2026</p>
-            <table className="mt-3 w-full text-left">
-              <tbody>
-                <tr className="border-t border-gray-100">
-                  <td className="py-1.5 text-gray-600">Nursing Care Service</td>
-                  <td className="py-1.5 text-right font-semibold text-gray-900">11,800.00</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
 
-        <div className="rounded-xl border border-violet-100 bg-violet-soft/50 p-4 text-xs leading-relaxed text-gray-600">
-          <span className="font-semibold text-violet-deep">Note: </span>
-          You can add or update branches and billing information anytime from Settings.
+        <InfoBox variant="blue" title="Need help setting this up?">
+          <p className="text-xs text-gray-700">Our onboarding expert can guide you to complete this step quickly.</p>
+          <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
+        </InfoBox>
+
+        <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3 text-xs text-emerald-800">
+          <div className="flex items-start gap-2">
+            <Check className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>Use branch-level access in CRM. You can update branch managers and controllers later.</span>
+          </div>
         </div>
       </aside>
     </div>
