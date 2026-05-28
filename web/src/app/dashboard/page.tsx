@@ -160,7 +160,7 @@ export default function DashboardPage() {
               </section>
             </aside>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );

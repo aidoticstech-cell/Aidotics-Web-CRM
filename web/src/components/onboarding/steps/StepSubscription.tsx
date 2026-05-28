@@ -162,15 +162,6 @@ export function StepSubscription({ data, onChange, footer }: StepProps) {
         </SectionBlock>
       </div>
 
-      <div className="hidden">
-        {/* Keep persisted shape for backward compatibility with existing payloads */}
-        <input value={(data.billingCycle as string) || "yearly"} readOnly />
-        <input value={(data.currency as string) || "INR"} readOnly />
-        <input value={(data.estimatedTotal as string) || "₹95,988 / year"} readOnly />
-        <div>
-          {onChange && null}
-        </div>
-      </div>
     </StepLayout>
   );
 }

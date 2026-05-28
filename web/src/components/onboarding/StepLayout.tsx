@@ -92,15 +92,17 @@ export function SectionBlock({
   subtitle,
   children,
   action,
+  className = "",
 }: {
   letter?: string;
   title: string;
   subtitle?: string;
   children: ReactNode;
   action?: ReactNode;
+  className?: string;
 }) {
   return (
-    <section className="mb-10 last:mb-0">
+    <section className={`mb-10 last:mb-0 ${className}`}>
       <div className="mb-4 flex flex-wrap items-start justify-between gap-2">
         <div>
           <h3 className="text-sm font-bold text-gray-900">
