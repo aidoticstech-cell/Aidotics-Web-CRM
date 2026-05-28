@@ -24,7 +24,7 @@ const DEFAULT_DUTY_SELECTION = [
   "Live-in / Long Term",
 ];
 
-export function StepDutyOps({ data, onChange }: StepProps) {
+export function StepDutyOps({ data, onChange, footer }: StepProps) {
   const dutyTypes = (data.dutyTypes as string[]) || DEFAULT_DUTY_SELECTION;
 
   return (
@@ -213,6 +213,7 @@ export function StepDutyOps({ data, onChange }: StepProps) {
             ))}
           </div>
         </div>
+        {footer && <div className="mt-8 border-t border-gray-100 pt-6">{footer}</div>}
       </div>
 
       <aside className="space-y-4">

@@ -19,7 +19,7 @@ const STRUCTURES = [
   { v: "ROLE", title: "Role-based", desc: "Operations structured based on roles and responsibilities.", emoji: "🎯", ring: "from-emerald-400 to-teal-600" },
 ];
 
-export function StepOperatingStyle({ data, onChange }: StepProps) {
+export function StepOperatingStyle({ data, onChange, footer }: StepProps) {
   const workingDays = (data.workingDays as string[]) || [...DAYS];
   const model = (data.operatingModel as string) || "OWNER";
   const structure = (data.structure as string) || "CENTRALIZED";
@@ -203,6 +203,7 @@ export function StepOperatingStyle({ data, onChange }: StepProps) {
             <p className="mt-3 text-[11px] text-gray-500">These settings can be updated anytime from settings.</p>
           </section>
         </div>
+        {footer && <div className="mt-8 border-t border-gray-100 pt-6">{footer}</div>}
       </div>
 
       <aside className="space-y-4">

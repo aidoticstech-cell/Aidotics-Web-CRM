@@ -19,7 +19,7 @@ function typeBadge(type: string) {
   return "bg-sky-100 text-sky-800";
 }
 
-export function StepBranchBilling({ data, onChange }: StepProps) {
+export function StepBranchBilling({ data, onChange, footer }: StepProps) {
   const branches = (data.branches as Branch[]) || DEFAULT_BRANCHES;
   const prefix = (data.invoicePrefix as string) || "INV";
   const start = (data.invoiceStart as string) || "1001";
@@ -186,6 +186,7 @@ export function StepBranchBilling({ data, onChange }: StepProps) {
             <p className="mt-3 text-[11px] text-gray-500">Users must have branch access in CRM. You can add users from Team Administration.</p>
           </section>
         </div>
+        {footer && <div className="mt-8 border-t border-gray-100 pt-6">{footer}</div>}
       </div>
 
       <aside className="space-y-4">
