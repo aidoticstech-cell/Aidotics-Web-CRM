@@ -71,6 +71,12 @@ Register does **not** call the partner API unless you set **`PARTNER_SYNC_ON_REG
 
 Link from your marketing site: `{CRM_WEB_URL}` → e.g. `http://localhost:3000` or production CRM domain.
 
+### Vercel (frontend only)
+
+**Important:** set the project **Root Directory** to **`web`**. Deploying the repo root causes **404: NOT_FOUND** on `*.vercel.app`. See [docs/VERCEL.md](docs/VERCEL.md).
+
+Set **`API_URL`** in Vercel to your hosted CRM API (`server/`), not `localhost`.
+
 Routes:
 - `/register` — create bureau account
 - `/login` — sign in

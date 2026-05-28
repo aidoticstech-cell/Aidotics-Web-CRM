@@ -30,17 +30,14 @@ export function OnboardingWizard({ stepSlug }: { stepSlug: string }) {
   const stepDef = getStepBySlug(stepSlug);
 
   const INTERNAL_LAYOUT = new Set([
-    "bureau_profile",
-    "crm_ready",
-    "staff_skill_matrix",
-    "workforce_setup",
-    "digital_identity",
-    "team_roles",
-    "permission_matrix",
-    "partner_network",
-    "workflow_builder",
-    "public_profile",
-    "subscription",
+    "profile_verification",
+    "branches_billing",
+    "operations_setup",
+    "workforce_roles",
+    "duty_engine",
+    "workflow_automation",
+    "public_brand_profile",
+    "subscription_go_live",
   ]);
   const usesInternalLayout = INTERNAL_LAYOUT.has(stepSlug);
 
@@ -107,13 +104,10 @@ export function OnboardingWizard({ stepSlug }: { stepSlug: string }) {
   }, []);
 
   const handleContinue = useCallback(async () => {
-    if (!isDemo && stepSlug === "crm_ready" && !data.acknowledged) {
-      throw new Error("Please confirm that all information is accurate before going live.");
-    }
     if (isDemo) {
       const step = getStepBySlug(stepSlug);
       const next = step ? ONBOARDING_STEPS.find((s) => s.order === step.order + 1) : null;
-      router.push(next ? `/onboarding/${next.slug}?demo=1` : "/onboarding/bureau_profile?demo=1");
+      router.push(next ? `/onboarding/${next.slug}?demo=1` : "/onboarding/profile_verification?demo=1");
       return;
     }
     const nextState = await saveAndCompleteStep(stepSlug, data);

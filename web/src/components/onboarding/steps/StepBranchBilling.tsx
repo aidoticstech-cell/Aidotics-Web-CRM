@@ -32,9 +32,22 @@ export function StepBranchBilling({ data, onChange }: StepProps) {
             <Landmark className="h-6 w-6 text-violet-accent" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Branch & Billing Setup</h1>
-            <p className="mt-1 text-sm text-gray-500">Add your branches and configure billing details for invoicing and tax compliance.</p>
+            <h1 className="text-2xl font-bold text-gray-900">Branches & Billing</h1>
+            <p className="mt-1 text-sm text-gray-500">Add branches/offices and configure billing, GST, and payment collection preferences.</p>
           </div>
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
+          {["Branches / Offices", "Billing & GST Setup", "Payment Collection Setup"].map((tab, idx) => (
+            <span
+              key={tab}
+              className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-semibold ${
+                idx === 0 ? "border-violet-accent bg-violet-soft text-violet-deep" : "border-gray-200 bg-white text-gray-500"
+              }`}
+            >
+              <span className="text-[10px]">{String.fromCharCode(65 + idx)}</span>
+              {tab}
+            </span>
+          ))}
         </div>
 
         <div className="mt-8">

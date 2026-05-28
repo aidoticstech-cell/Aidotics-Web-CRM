@@ -130,9 +130,24 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
               <Building2 className="h-5 w-5 text-violet-accent" />
             </span>
             <div>
-              <h1 className="text-xl font-bold text-gray-900 lg:text-2xl">Let&apos;s set up your Bureau Profile</h1>
-              <p className="mt-1 text-sm text-gray-500">Provide basic information about your bureau and the services you offer.</p>
+              <h1 className="text-xl font-bold text-gray-900 lg:text-2xl">Bureau Profile & Verification</h1>
+              <p className="mt-1 text-sm text-gray-500">Provide basic bureau identity, services, coverage and verification-ready contact details.</p>
             </div>
+          </div>
+        </div>
+        <div className="border-b border-gray-100 px-6 py-3 lg:px-8">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            {["Basic Bureau Identity", "Services Offered", "Operational Snapshot", "Verification Documents", "Contact Details"].map((tab, idx) => (
+              <span
+                key={tab}
+                className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-semibold ${
+                  idx === 0 ? "border-violet-accent bg-violet-soft text-violet-deep" : "border-gray-200 bg-white text-gray-500"
+                }`}
+              >
+                <span className="text-[10px]">{String.fromCharCode(65 + idx)}</span>
+                {tab}
+              </span>
+            ))}
           </div>
         </div>
 

@@ -9,8 +9,10 @@ export function StepPublicProfile({ data, onChange, footer }: StepProps) {
   return (
     <StepLayout
       icon={Globe}
-      title="Public Bureau Profile"
-      subtitle="Configure how your bureau appears to clients on public listings."
+      title="Public Brand Profile"
+      subtitle="Build your public presence and showcase your services to clients."
+      tabs={["Branding", "Services Showcase", "Trust & Reviews", "SEO & Discoverability", "Sharing & QR"]}
+      activeTab={0}
       footer={footer}
       aside={
         <>

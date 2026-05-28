@@ -22,8 +22,10 @@ export function StepWorkflowBuilder({ data, onChange, footer }: StepProps) {
   return (
     <StepLayout
       icon={GitBranch}
-      title="Workflow Builder"
-      subtitle="Create and automate business processes with visual workflows."
+      title="Workflow & Automation"
+      subtitle="Configure your business workflow, approvals, partner network, notifications, and SLA rules."
+      tabs={["Workflow Builder", "Approvals & Rules", "Partner Network", "Notifications", "SLA & Escalation"]}
+      activeTab={0}
       footer={footer}
       aside={
         <>

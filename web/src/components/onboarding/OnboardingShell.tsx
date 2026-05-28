@@ -7,21 +7,13 @@ import {
   Check,
   Headphones,
   X,
-  Building2,
   Shield,
   Landmark,
-  CreditCard,
   SlidersHorizontal,
   CalendarClock,
-  Bot,
   Users,
-  Fingerprint,
-  UserCog,
-  Lock,
-  Share2,
   GitBranch,
   Globe,
-  Wallet,
   PartyPopper,
 } from "lucide-react";
 import type { OnboardingState, StepView } from "@/lib/onboarding-api";
@@ -29,23 +21,14 @@ import { TOTAL_STEPS } from "@/lib/onboarding-steps";
 import { AidoticsLogo } from "@/components/brand/AidoticsLogo";
 
 const STEP_ICONS: Record<string, ComponentType<{ className?: string }>> = {
-  bureau_profile: Building2,
-  kyc_verification: Shield,
-  branch_billing: Landmark,
-  payment_collection: CreditCard,
-  operating_style: SlidersHorizontal,
-  duty_operations: CalendarClock,
-  responsibility_automation: Bot,
-  staff_skill_matrix: Users,
-  workforce_setup: Users,
-  digital_identity: Fingerprint,
-  team_roles: UserCog,
-  permission_matrix: Lock,
-  partner_network: Share2,
-  workflow_builder: GitBranch,
-  public_profile: Globe,
-  subscription: Wallet,
-  crm_ready: PartyPopper,
+  profile_verification: Shield,
+  branches_billing: Landmark,
+  operations_setup: SlidersHorizontal,
+  workforce_roles: Users,
+  duty_engine: CalendarClock,
+  workflow_automation: GitBranch,
+  public_brand_profile: Globe,
+  subscription_go_live: PartyPopper,
 };
 
 export function OnboardingShell({
@@ -61,7 +44,7 @@ export function OnboardingShell({
 }) {
   const router = useRouter();
   const current = state.steps.find((s) => s.isCurrent) || state.steps[0];
-  const CurrentIcon = STEP_ICONS[current?.slug || ""] || Building2;
+  const CurrentIcon = STEP_ICONS[current?.slug || ""] || Shield;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -72,11 +55,11 @@ export function OnboardingShell({
             <div className="flex shrink-0 items-center gap-2">
               <button type="button" className="btn-secondary !gap-1.5 !px-3 !py-2 text-xs sm:!px-4">
                 <Headphones className="h-4 w-4 text-gray-500" />
-                <span className="hidden sm:inline">Need Help?</span>
+                <span>Need Help?</span>
               </button>
               <button type="button" onClick={() => router.push("/login")} className="btn-secondary !gap-1.5 !px-3 !py-2 text-xs sm:!px-4">
                 <X className="h-4 w-4 text-gray-500" />
-                <span className="hidden sm:inline">Save & Exit</span>
+                <span className="hidden sm:inline">Exit Onboarding</span>
               </button>
             </div>
           </div>
@@ -85,13 +68,13 @@ export function OnboardingShell({
               Bureau Onboarding
             </p>
             <p className="text-xs text-gray-500">Step {current?.order} of {TOTAL_STEPS}</p>
-            <div className="mx-auto mt-3 flex max-w-3xl items-center justify-center gap-0.5 overflow-x-auto pb-1 sm:gap-1">
+            <div className="mx-auto mt-3 flex max-w-5xl items-center justify-center gap-1 overflow-x-auto pb-1">
               {state.steps.map((s, i) => (
                 <div key={s.slug} className="flex items-center">
-                  <StepDot step={s} />
+                  <StepDot step={s} showLabel />
                   {i < state.steps.length - 1 && (
                     <div
-                      className={`mx-0.5 h-0.5 w-2 shrink-0 rounded sm:w-3 ${s.status === "completed" ? "bg-emerald-400" : "bg-gray-200"}`}
+                      className={`mx-0.5 h-0.5 w-2 shrink-0 rounded sm:w-4 ${s.status === "completed" ? "bg-emerald-400" : "bg-gray-200"}`}
                     />
                   )}
                 </div>
@@ -142,21 +125,31 @@ export function OnboardingShell({
   );
 }
 
-function StepDot({ step }: { step: StepView }) {
+function StepDot({ step, showLabel = false }: { step: StepView; showLabel?: boolean }) {
   const done = step.status === "completed";
   const current = step.isCurrent;
   return (
-    <div
-      title={step.title}
-      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold transition sm:h-8 sm:w-8 sm:text-xs ${
-        done
-          ? "bg-emerald-500 text-white shadow-sm"
-          : current
-            ? "bg-violet-accent text-white shadow-md ring-4 ring-violet-accent/25"
-            : "border border-gray-200 bg-white text-gray-400"
-      }`}
-    >
-      {done ? <Check className="h-4 w-4" strokeWidth={3} /> : step.order}
+    <div className="flex flex-col items-center gap-1" title={step.title}>
+      <div
+        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold transition sm:h-8 sm:w-8 sm:text-xs ${
+          done
+            ? "bg-emerald-500 text-white shadow-sm"
+            : current
+              ? "bg-violet-accent text-white shadow-md ring-4 ring-violet-accent/25"
+              : "border border-gray-200 bg-white text-gray-400"
+        }`}
+      >
+        {done ? <Check className="h-4 w-4" strokeWidth={3} /> : step.order}
+      </div>
+      {showLabel && (
+        <span
+          className={`max-w-[84px] text-center text-[10px] font-semibold leading-tight ${
+            current ? "text-violet-deep" : done ? "text-emerald-700" : "text-gray-400"
+          }`}
+        >
+          {step.title}
+        </span>
+      )}
     </div>
   );
 }
@@ -194,7 +187,10 @@ function SidebarItem({ step }: { step: StepView }) {
       </span>
       <span className="flex min-w-0 flex-1 items-start gap-2">
         {Icon && !locked && <Icon className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" />}
-        <span className="leading-snug">{step.title}</span>
+        <span className="min-w-0">
+          <span className="line-clamp-1 leading-snug">{step.title}</span>
+          <span className="mt-0.5 block line-clamp-2 text-[11px] font-normal text-gray-400">{step.description}</span>
+        </span>
       </span>
     </div>
   );

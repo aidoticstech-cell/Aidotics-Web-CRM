@@ -92,7 +92,7 @@ async function registerBureauAndAdmin({ bureauCode, bureauName, email, password,
       setupProgress: {
         create: {
           currentStep: 1,
-          stepsStatus: { bureau_profile: { status: "pending" } },
+          stepsStatus: { profile_verification: { status: "pending" } },
           stepDrafts: {},
           steps: {},
         },

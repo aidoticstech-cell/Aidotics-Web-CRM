@@ -34,11 +34,43 @@ const BUREAU_PROFILE_EMPTY: Record<string, unknown> = {
 
 export function getStepDefaults(slug: string, opts?: { demo?: boolean }): Record<string, unknown> {
   const demo = !!opts?.demo;
-  if (slug === "bureau_profile") {
+  if (slug === "profile_verification") {
     return demo ? { ...BUREAU_PROFILE_DEFAULTS } : { ...BUREAU_PROFILE_EMPTY };
   }
-  if (slug === "crm_ready") {
-    return { acknowledged: false };
+  if (slug === "branches_billing") {
+    return {
+      gstNumber: demo ? "27ABCDE1234F1Z5" : "",
+      invoicePrefix: demo ? "INV" : "",
+    };
+  }
+  if (slug === "operations_setup") {
+    return {
+      operatingModel: demo ? "owner_driven" : "owner_driven",
+      orgStructure: demo ? "centralized" : "centralized",
+    };
+  }
+  if (slug === "workforce_roles") {
+    return {
+      teamCount: demo ? 32 : 0,
+    };
+  }
+  if (slug === "duty_engine") {
+    return {
+      dutyTypes: demo ? ["8hr", "12hr", "24hr"] : [],
+    };
+  }
+  if (slug === "workflow_automation") {
+    return {
+      workflowStages: demo ? 7 : 0,
+    };
+  }
+  if (slug === "public_brand_profile") {
+    return {
+      tagline: demo ? "Compassionate Care. Trusted Support." : "",
+    };
+  }
+  if (slug === "subscription_go_live") {
+    return { plan: demo ? "professional" : "professional" };
   }
   return {};
 }

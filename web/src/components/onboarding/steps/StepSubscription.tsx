@@ -18,8 +18,10 @@ export function StepSubscription({ data, onChange, footer }: StepProps) {
   return (
     <StepLayout
       icon={Wallet}
-      title="Subscription Setup"
-      subtitle="Choose the plan that best fits your bureau's needs and configure billing."
+      title="Subscription & Go Live"
+      subtitle="Choose your plan, review final checklist, and launch your CRM."
+      tabs={["Choose Plan", "Final Checklist", "Go Live"]}
+      activeTab={0}
       footer={footer}
       aside={
         <>

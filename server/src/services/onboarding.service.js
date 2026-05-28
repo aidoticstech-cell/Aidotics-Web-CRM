@@ -26,6 +26,11 @@ function mergeStepsStatus(existing) {
   return base;
 }
 
+function normalizeStepOrder(order) {
+  const n = Number(order) || 1;
+  return Math.min(Math.max(1, n), TOTAL_STEPS);
+}
+
 async function getOrCreateProgress(bureauId) {
   let progress = await prisma.setupProgress.findUnique({ where: { bureauId } });
   if (!progress) {
@@ -60,17 +65,19 @@ function buildStepView(progress, step) {
 
 async function getOnboardingState(bureauId) {
   const progress = await getOrCreateProgress(bureauId);
+  const currentStep = normalizeStepOrder(progress.currentStep);
+  const progressView = { ...progress, currentStep };
   const stepsStatus = mergeStepsStatus(progress.stepsStatus);
-  const steps = ONBOARDING_STEPS.map((step) => buildStepView(progress, step));
+  const steps = ONBOARDING_STEPS.map((step) => buildStepView(progressView, step));
 
   const completedCount = steps.filter((s) => s.status === "completed").length;
   const current = getStepBySlug(
-    ONBOARDING_STEPS.find((s) => s.order === progress.currentStep)?.slug
+    ONBOARDING_STEPS.find((s) => s.order === currentStep)?.slug
   ) || ONBOARDING_STEPS[0];
 
   return {
     totalSteps: TOTAL_STEPS,
-    currentStep: progress.currentStep,
+    currentStep,
     currentStepSlug: current.slug,
     isComplete: progress.isComplete,
     completedAt: progress.completedAt,
@@ -117,10 +124,10 @@ async function getStepDraft(bureauId, slug) {
   return { step: buildStepView(progress, step), draft };
 }
 
-/** Push bureau_profile draft into core Bureau + services + locations when step completes. */
+/** Push profile_verification draft into core Bureau + services + locations when step completes. */
 async function syncBureauProfileDraftToCore(bureauId, actorId) {
   const progress = await prisma.setupProgress.findUnique({ where: { bureauId } });
-  const draft = progress?.stepDrafts?.bureau_profile;
+  const draft = progress?.stepDrafts?.profile_verification;
   if (!draft || typeof draft !== "object") return;
 
   const name =
@@ -175,9 +182,10 @@ async function completeStep(bureauId, slug, actorId) {
   if (!isValidSlug(slug)) throw new AppError("Invalid onboarding step", 400);
 
   const progress = await getOrCreateProgress(bureauId);
+  const currentStep = normalizeStepOrder(progress.currentStep);
   const step = getStepBySlug(slug);
 
-  if (step.order > progress.currentStep) {
+  if (step.order > currentStep) {
     throw new AppError("Complete earlier steps first", 400);
   }
 
@@ -189,12 +197,12 @@ async function completeStep(bureauId, slug, actorId) {
     savedAt: stepsStatus[slug].savedAt || new Date().toISOString(),
   };
 
-  let nextStep = progress.currentStep;
-  if (step.order === progress.currentStep && progress.currentStep < TOTAL_STEPS) {
-    nextStep = progress.currentStep + 1;
+  let nextStep = currentStep;
+  if (step.order === currentStep && currentStep < TOTAL_STEPS) {
+    nextStep = currentStep + 1;
   }
 
-  const isComplete = slug === "crm_ready" || nextStep > TOTAL_STEPS;
+  const isComplete = slug === "subscription_go_live" || nextStep > TOTAL_STEPS;
 
   await prisma.setupProgress.update({
     where: { bureauId },
@@ -208,7 +216,7 @@ async function completeStep(bureauId, slug, actorId) {
     },
   });
 
-  if (slug === "bureau_profile") {
+  if (slug === "profile_verification") {
     await syncBureauProfileDraftToCore(bureauId, actorId);
   }
 
@@ -220,7 +228,8 @@ async function goToStep(bureauId, order, actorId) {
   if (!step) throw new AppError("Invalid step number", 400);
 
   const progress = await getOrCreateProgress(bureauId);
-  if (step.order > progress.currentStep + 1) {
+  const currentStep = normalizeStepOrder(progress.currentStep);
+  if (step.order > currentStep + 1) {
     throw new AppError("Cannot skip ahead of onboarding progress", 400);
   }
 

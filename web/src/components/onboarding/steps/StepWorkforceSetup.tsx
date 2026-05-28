@@ -18,8 +18,10 @@ export function StepWorkforceSetup({ data, onChange, footer }: StepProps) {
   return (
     <StepLayout
       icon={Users}
-      title="Workforce Setup"
-      subtitle="Define your team structure, roles, locations and territories."
+      title="Workforce & Roles"
+      subtitle="Build your internal team structure, define roles, permissions, and categories."
+      tabs={["Workforce", "Role Templates", "Permissions Matrix", "Digital Identity", "Responsibility Mapping"]}
+      activeTab={0}
       footer={footer}
       aside={
         <>

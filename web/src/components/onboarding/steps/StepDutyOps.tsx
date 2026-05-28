@@ -37,9 +37,22 @@ export function StepDutyOps({ data, onChange }: StepProps) {
             <CalendarClock className="h-6 w-6 text-violet-accent" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Duty Operations Preferences</h1>
-            <p className="mt-1 text-sm text-gray-500">Set your duty types, approval rules, broadcast settings and restrictions.</p>
+            <h1 className="text-2xl font-bold text-gray-900">Duty Operations Engine</h1>
+            <p className="mt-1 text-sm text-gray-500">Configure duty creation, broadcast, approval flow, and escalation preferences.</p>
           </div>
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
+          {["Duty & Role Preferences", "Broadcast Engine", "Client Approval Flow", "Escalation Rules", "Communication Settings"].map((tab, idx) => (
+            <span
+              key={tab}
+              className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-semibold ${
+                idx === 0 ? "border-violet-accent bg-violet-soft text-violet-deep" : "border-gray-200 bg-white text-gray-500"
+              }`}
+            >
+              <span className="text-[10px]">{idx + 1}</span>
+              {tab}
+            </span>
+          ))}
         </div>
 
         <div className="mt-8">

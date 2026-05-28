@@ -25,8 +25,7 @@ export function OnboardingFooter({
   const step = getStepBySlug(slug);
   const prev = step ? ONBOARDING_STEPS.find((s) => s.order === step.order - 1) : null;
 
-  const canGoLive =
-    demoMode || slug !== "crm_ready" || !!(getData() as { acknowledged?: boolean }).acknowledged;
+  const canGoLive = true;
 
   async function handleDraft() {
     if (demoMode) return;
@@ -83,7 +82,7 @@ export function OnboardingFooter({
             disabled={!!loading || !canGoLive}
             onClick={handleContinue}
           >
-            {loading === "next" ? "Saving…" : slug === "crm_ready" ? "Go Live" : "Continue to Next Step"}
+            {loading === "next" ? "Saving…" : slug === "subscription_go_live" ? "Launch My CRM" : "Continue to Next Step"}
             <ChevronRight className="h-4 w-4" />
           </button>
         </div>

@@ -57,7 +57,7 @@ export default function RegisterPage() {
         router.replace("/dashboard");
         return;
       }
-      const slug = onboarding.currentStepSlug || "bureau_profile";
+      const slug = onboarding.currentStepSlug || "profile_verification";
       router.replace(`/onboarding/${slug}`);
     } catch (err) {
       if (err instanceof ApiError && err.status === 401) {
@@ -81,7 +81,7 @@ export default function RegisterPage() {
       <div className="crm-card w-full max-w-lg">
         <p className="text-xl font-bold text-brand-600">aidotics Bureau CRM</p>
         <h2 className="mt-4 text-2xl font-bold">Create your bureau account</h2>
-        <p className="text-sm text-gray-500">You&apos;ll complete a 17-step setup wizard next</p>
+        <p className="text-sm text-gray-500">You&apos;ll complete an 8-step setup wizard next</p>
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
