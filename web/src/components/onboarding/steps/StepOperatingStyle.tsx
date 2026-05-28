@@ -2,6 +2,7 @@
 
 import { Check, SlidersHorizontal, CircleHelp } from "lucide-react";
 import { Field } from "@/components/ui/FormBits";
+import { AsideCard, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -25,19 +26,44 @@ export function StepOperatingStyle({ data, onChange, footer }: StepProps) {
   const structure = (data.structure as string) || "CENTRALIZED";
 
   return (
-    <div>
-      <div className="grid gap-8 xl:grid-cols-[1fr_320px]">
-        <div>
-          <div className="flex items-start gap-3">
-          <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-soft sm:flex">
-            <SlidersHorizontal className="h-6 w-6 text-violet-accent" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Operations Setup</h1>
-            <p className="mt-1 text-sm text-gray-500">Configure how your bureau operates. These preferences will drive daily processes in the CRM.</p>
-          </div>
-        </div>
-        <div className="mt-8">
+    <StepLayout
+      icon={SlidersHorizontal}
+      title="Operations Setup"
+      subtitle="Configure how your bureau operates. These preferences will drive daily processes in the CRM."
+      tabs={["Operating Model", "Organization Structure", "Lead Allocation", "Approvals", "Payment Handling"]}
+      activeTab={0}
+      footer={footer}
+      aside={
+        <>
+          <AsideCard title="Operating Model Preview">
+            <ul className="space-y-2 text-xs text-gray-700">
+              <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-emerald-600" /> Model: Owner Driven</li>
+              <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-emerald-600" /> Structure: Centralized</li>
+              <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-emerald-600" /> Lead Allocation: Auto Assignment</li>
+              <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-emerald-600" /> Client Approval: Mandatory</li>
+              <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-emerald-600" /> Payment Handling: Bureau Collects</li>
+            </ul>
+            <button type="button" className="btn-outline-purple mt-4 w-full !py-2 text-xs">Preview Dashboard</button>
+          </AsideCard>
+          <AsideCard title="Why is this important?">
+            <ul className="space-y-2 text-xs text-gray-600">
+              {[
+                "Streamlines daily operations",
+                "Better control & visibility",
+                "Improved client experience",
+                "Scalable and flexible",
+              ].map((t) => (
+                <li key={t} className="flex gap-2">
+                  <CircleHelp className="mt-0.5 h-3.5 w-3.5 text-gray-400" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </AsideCard>
+        </>
+      }
+    >
+      <div className="mt-2">
           <div className="grid gap-6 lg:grid-cols-2">
           <section className="rounded-xl border border-gray-100 p-4">
             <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">A.</span> Bureau Operating Model</h3>
@@ -204,40 +230,6 @@ export function StepOperatingStyle({ data, onChange, footer }: StepProps) {
             <p className="mt-3 text-[11px] text-gray-500">These settings can be updated anytime from settings.</p>
           </section>
         </div>
-        </div>
-
-        <aside className="space-y-4">
-          <div className="rounded-xl border border-gray-200 bg-white p-4">
-          <h3 className="text-sm font-bold text-gray-900">Operating Model Preview</h3>
-          <ul className="mt-3 space-y-2 text-xs text-gray-700">
-            <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-emerald-600" /> Model: Owner Driven</li>
-            <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-emerald-600" /> Structure: Centralized</li>
-            <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-emerald-600" /> Lead Allocation: Auto Assignment</li>
-            <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-emerald-600" /> Client Approval: Mandatory</li>
-            <li className="flex items-center gap-2"><Check className="h-3.5 w-3.5 text-emerald-600" /> Payment Handling: Bureau Collects</li>
-          </ul>
-          <button type="button" className="btn-outline-purple mt-4 w-full !py-2 text-xs">Preview Dashboard</button>
-          </div>
-
-          <div className="rounded-xl border border-gray-200 bg-white p-4">
-          <h3 className="text-sm font-bold text-gray-900">Why is this important?</h3>
-          <ul className="mt-3 space-y-2 text-xs text-gray-600">
-            {[
-              "Streamlines daily operations",
-              "Better control & visibility",
-              "Improved client experience",
-              "Scalable and flexible",
-            ].map((t) => (
-              <li key={t} className="flex gap-2">
-                <CircleHelp className="mt-0.5 h-3.5 w-3.5 text-gray-400" />
-                {t}
-              </li>
-            ))}
-          </ul>
-          </div>
-        </aside>
-      </div>
-      {footer && <div className="mt-8 border-t border-gray-100 pt-6">{footer}</div>}
-    </div>
+    </StepLayout>
   );
 }

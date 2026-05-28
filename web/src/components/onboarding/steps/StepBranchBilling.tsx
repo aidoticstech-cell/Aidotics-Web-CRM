@@ -2,6 +2,7 @@
 
 import { Landmark, Pencil, Trash2, Check, CircleHelp } from "lucide-react";
 import { Field, InfoBox } from "@/components/ui/FormBits";
+import { AsideCard, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 type Branch = { id: string; name: string; type: string; address: string; city: string; pincode: string; status: string };
@@ -25,20 +26,54 @@ export function StepBranchBilling({ data, onChange, footer }: StepProps) {
   const start = (data.invoiceStart as string) || "1001";
 
   return (
-    <div>
-      <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
-        <div>
-          <div className="flex items-start gap-3">
-          <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-soft sm:flex">
-            <Landmark className="h-6 w-6 text-violet-accent" />
+    <StepLayout
+      icon={Landmark}
+      title="Branches & Billing"
+      subtitle="Add branches/offices and configure billing, GST, and payment collection preferences."
+      tabs={["Branches / Offices", "Billing & GST", "Payment Collection", "Branch Access"]}
+      activeTab={0}
+      footer={footer}
+      aside={
+        <>
+          <AsideCard title="Billing Summary">
+            <dl className="space-y-2 text-xs">
+              <div className="flex justify-between"><dt className="text-gray-500">GST Type</dt><dd>Regular</dd></div>
+              <div className="flex justify-between"><dt className="text-gray-500">Place of Supply</dt><dd>Haryana (06)</dd></div>
+              <div className="flex justify-between"><dt className="text-gray-500">Invoice Prefix</dt><dd>{prefix}</dd></div>
+              <div className="flex justify-between"><dt className="text-gray-500">Financial Year</dt><dd>1 Apr 2025 - 31 Mar 2026</dd></div>
+              <div className="flex justify-between"><dt className="text-gray-500">Next Invoice Number</dt><dd>{prefix}{start}</dd></div>
+              <div className="flex justify-between"><dt className="text-gray-500">Primary Bank</dt><dd>HDFC Bank</dd></div>
+            </dl>
+          </AsideCard>
+          <AsideCard title="Why is this important?">
+            <ul className="space-y-2 text-xs text-gray-600">
+              {[
+                "Branches help you manage operations across locations.",
+                "Billing settings ensure accurate invoicing and GST compliance.",
+                "Payment methods allow smooth collection of payments.",
+                "User assignment gives the right people access to the right branch.",
+              ].map((t) => (
+                <li key={t} className="flex gap-2">
+                  <CircleHelp className="mt-0.5 h-3.5 w-3.5 text-gray-400" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </AsideCard>
+          <InfoBox variant="blue" title="Need help setting this up?">
+            <p className="text-xs text-gray-700">Our onboarding expert can guide you to complete this step quickly.</p>
+            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
+          </InfoBox>
+          <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3 text-xs text-emerald-800">
+            <div className="flex items-start gap-2">
+              <Check className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>Use branch-level access in CRM. You can update branch managers and controllers later.</span>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Branches & Billing</h1>
-            <p className="mt-1 text-sm text-gray-500">Add branches/offices and configure billing, GST, and payment collection preferences.</p>
-          </div>
-        </div>
-
-        <div className="mt-8">
+        </>
+      }
+    >
+      <div className="mt-2">
           <section className="mb-10 rounded-xl border border-gray-100 p-4">
             <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">A.</span> Branches / Offices</h3>
             <p className="mt-1 text-xs text-gray-500">Add all your operational locations.</p>
@@ -186,53 +221,7 @@ export function StepBranchBilling({ data, onChange, footer }: StepProps) {
             </div>
             <p className="mt-3 text-[11px] text-gray-500">Users must have branch access in CRM. You can add users from Team Administration.</p>
           </section>
-          </div>
-        </div>
-
-        <aside className="space-y-4">
-          <div className="rounded-xl border border-gray-200 bg-white p-4">
-          <h3 className="text-sm font-bold text-gray-900">Billing Summary</h3>
-          <dl className="mt-3 space-y-2 text-xs">
-            <div className="flex justify-between"><dt className="text-gray-500">GST Type</dt><dd>Regular</dd></div>
-            <div className="flex justify-between"><dt className="text-gray-500">Place of Supply</dt><dd>Haryana (06)</dd></div>
-            <div className="flex justify-between"><dt className="text-gray-500">Invoice Prefix</dt><dd>{prefix}</dd></div>
-            <div className="flex justify-between"><dt className="text-gray-500">Financial Year</dt><dd>1 Apr 2025 - 31 Mar 2026</dd></div>
-            <div className="flex justify-between"><dt className="text-gray-500">Next Invoice Number</dt><dd>{prefix}{start}</dd></div>
-            <div className="flex justify-between"><dt className="text-gray-500">Primary Bank</dt><dd>HDFC Bank</dd></div>
-          </dl>
-          </div>
-
-          <div className="rounded-xl border border-gray-200 bg-white p-4">
-          <h3 className="text-sm font-bold text-gray-900">Why is this important?</h3>
-          <ul className="mt-3 space-y-2 text-xs text-gray-600">
-            {[
-              "Branches help you manage operations across locations.",
-              "Billing settings ensure accurate invoicing and GST compliance.",
-              "Payment methods allow smooth collection of payments.",
-              "User assignment gives the right people access to the right branch.",
-            ].map((t) => (
-              <li key={t} className="flex gap-2">
-                <CircleHelp className="mt-0.5 h-3.5 w-3.5 text-gray-400" />
-                {t}
-              </li>
-            ))}
-          </ul>
-          </div>
-
-          <InfoBox variant="blue" title="Need help setting this up?">
-            <p className="text-xs text-gray-700">Our onboarding expert can guide you to complete this step quickly.</p>
-            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
-          </InfoBox>
-
-          <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3 text-xs text-emerald-800">
-            <div className="flex items-start gap-2">
-              <Check className="mt-0.5 h-4 w-4 shrink-0" />
-              <span>Use branch-level access in CRM. You can update branch managers and controllers later.</span>
-            </div>
-          </div>
-        </aside>
       </div>
-      {footer && <div className="mt-8 border-t border-gray-100 pt-6">{footer}</div>}
-    </div>
+    </StepLayout>
   );
 }
