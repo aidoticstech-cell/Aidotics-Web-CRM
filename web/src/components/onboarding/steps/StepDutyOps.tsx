@@ -1,33 +1,31 @@
 "use client";
 
-import { CalendarClock, Check, Lightbulb, Plus } from "lucide-react";
-import { Field, Section, RadioCard, Toggle } from "@/components/ui/FormBits";
+import { CalendarClock, CircleHelp } from "lucide-react";
+import { Field } from "@/components/ui/FormBits";
 import type { StepProps } from "./types";
 
 const DUTY_TYPES = [
-  "8 Hours (Shift Duty)",
-  "12 Hours (Long Shift)",
-  "24 Hours (Full Day)",
-  "Visit Based (Per Visit)",
-  "Night Duty (8 PM - 8 AM)",
-  "Live-in Duty (Residential)",
-  "Emergency On-Call (On demand)",
+  "8 Hours Duty",
+  "12 Hours Duty",
+  "24 Hours Duty",
+  "Night Shift",
+  "Day Shift",
+  "Live-in / Long Term",
+  "One Time Visit",
+  "Others",
 ];
 
-const WORKFLOW = ["Duty Created", "Broadcast to Staff", "Staff Accepts", "Client Approval", "Duty Confirmed", "Live Duty Monitoring", "Completion & Feedback"];
-
 const DEFAULT_DUTY_SELECTION = [
-  "8 Hours (Shift Duty)",
-  "12 Hours (Long Shift)",
-  "24 Hours (Full Day)",
-  "Visit Based (Per Visit)",
-  "Night Duty (8 PM - 8 AM)",
-  "Live-in Duty (Residential)",
+  "8 Hours Duty",
+  "12 Hours Duty",
+  "24 Hours Duty",
+  "Night Shift",
+  "Day Shift",
+  "Live-in / Long Term",
 ];
 
 export function StepDutyOps({ data, onChange }: StepProps) {
   const dutyTypes = (data.dutyTypes as string[]) || DEFAULT_DUTY_SELECTION;
-  const selectedCount = dutyTypes.length;
 
   return (
     <div className="grid gap-8 xl:grid-cols-[1fr_300px]">
@@ -38,7 +36,7 @@ export function StepDutyOps({ data, onChange }: StepProps) {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Duty Operations Engine</h1>
-            <p className="mt-1 text-sm text-gray-500">Configure duty creation, broadcast, approval flow, and escalation preferences.</p>
+            <p className="mt-1 text-sm text-gray-500">Configure how duties are created, assigned, broadcasted and executed in your bureau.</p>
           </div>
         </div>
         <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
@@ -56,198 +54,199 @@ export function StepDutyOps({ data, onChange }: StepProps) {
         </div>
 
         <div className="mt-8">
-          <Section letter="A" title="Duty Types" subtitle="Select the duty formats your bureau runs. Add custom types from settings later.">
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {DUTY_TYPES.map((t) => {
-                const on = dutyTypes.includes(t);
-                return (
-                  <button
-                    key={t}
-                    type="button"
-                    onClick={() => {
-                      const next = on ? dutyTypes.filter((x) => x !== t) : [...dutyTypes, t];
-                      onChange({ dutyTypes: next });
-                    }}
-                    className={`flex min-h-[72px] items-center justify-between gap-2 rounded-xl border-2 px-4 py-3 text-left text-sm font-semibold transition ${
-                      on ? "border-violet-accent bg-violet-soft/70 shadow-sm" : "border-gray-200 bg-white hover:border-gray-300"
-                    }`}
-                  >
-                    <span className="leading-snug text-gray-800">{t}</span>
-                    <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2 ${on ? "border-violet-accent bg-violet-accent text-white" : "border-gray-300"}`}>
-                      {on && <Check className="h-3.5 w-3.5" strokeWidth={3} />}
+          <div className="grid gap-6 lg:grid-cols-3">
+            <section className="rounded-xl border border-gray-100 p-4 lg:col-span-2">
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">A.</span> Workforce Roles for Duty</h3>
+                  <p className="mt-1 text-xs text-gray-500">Select the roles that can be assigned for duties and set basic preferences.</p>
+                </div>
+                <button type="button" className="btn-outline-purple !py-1.5 text-xs">+ Add Custom Role</button>
+              </div>
+              <div className="overflow-x-auto rounded-xl border border-gray-200">
+                <table className="w-full min-w-[760px] text-left text-sm">
+                  <thead className="border-b border-gray-100 bg-gray-50/90 text-[11px] font-bold uppercase tracking-wide text-gray-500">
+                    <tr>
+                      <th className="px-3 py-2.5">Role / Category</th>
+                      <th className="px-3 py-2.5">Can be Assigned</th>
+                      <th className="px-3 py-2.5">Default Shift Options</th>
+                      <th className="px-3 py-2.5">Min Experience</th>
+                      <th className="px-3 py-2.5">Min Rating</th>
+                      <th className="px-3 py-2.5 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      "Nurse (RN)",
+                      "ICU Nurse",
+                      "General Duty Assistant (GDA)",
+                      "Caregiver / Attendant",
+                      "Baby Care / Nanny",
+                      "Physiotherapist",
+                      "Elder Care",
+                    ].map((role, idx) => (
+                      <tr key={role} className="border-t border-gray-100 bg-white">
+                        <td className="px-3 py-2.5 text-xs font-semibold text-gray-800">{role}</td>
+                        <td className="px-3 py-2.5"><input type="checkbox" className="accent-violet-accent" defaultChecked={idx !== 5} /></td>
+                        <td className="px-3 py-2.5 text-xs text-gray-600">8 Hours, 12 Hours, 24 Hours</td>
+                        <td className="px-3 py-2.5 text-xs text-gray-600">{idx % 2 === 0 ? "1 Year" : "6 Months"}</td>
+                        <td className="px-3 py-2.5 text-xs text-gray-600">{idx % 2 === 0 ? "3.5" : "3.0"} ★</td>
+                        <td className="px-3 py-2.5 text-right">
+                          <button type="button" className="inline-flex rounded p-1 text-violet-accent hover:bg-violet-soft">+</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-3 text-[11px] text-gray-500">Roles marked as “Can Be Assigned” will be available while creating duties and broadcast.</p>
+            </section>
+
+            <section className="rounded-xl border border-gray-100 p-4">
+              <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">C.</span> Duty Types</h3>
+              <p className="mt-1 text-xs text-gray-500">Enable duty types you offer.</p>
+              <div className="mt-3 space-y-2">
+                {DUTY_TYPES.map((t) => {
+                  const on = dutyTypes.includes(t);
+                  return (
+                    <label key={t} className="flex items-center gap-2 text-xs">
+                      <input
+                        type="checkbox"
+                        checked={on}
+                        onChange={() => {
+                          const next = on ? dutyTypes.filter((x) => x !== t) : [...dutyTypes, t];
+                          onChange({ dutyTypes: next });
+                        }}
+                        className="accent-violet-accent"
+                      />
+                      <span className="text-gray-700">{t}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </section>
+          </div>
+
+          <div className="mt-6 grid gap-6 lg:grid-cols-3">
+            <section className="rounded-xl border border-gray-100 p-4 lg:col-span-2">
+              <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">B.</span> Duty Information Visibility</h3>
+              <p className="mt-1 text-xs text-gray-500">Choose what information will be visible to assigned staff during broadcast.</p>
+              <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                {["Duty Amount", "Client Name", "Patient Condition", "Location / Address", "Shift & Duration", "Special Instructions", "Contact Number", "Advance Payment"].map((item) => (
+                  <label key={item} className="flex items-center justify-between gap-2 rounded-lg border border-gray-200 bg-gray-50/70 px-3 py-2 text-xs">
+                    <span className="text-gray-700">{item}</span>
+                    <input type="checkbox" className="accent-violet-accent" defaultChecked />
+                  </label>
+                ))}
+              </div>
+              <p className="mt-3 text-[11px] text-gray-500">Masked contact number will show only last 4 digits to staff before acceptance.</p>
+            </section>
+
+            <section className="rounded-xl border border-gray-100 p-4">
+              <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">D.</span> Duty Price & Margin Settings</h3>
+              <p className="mt-1 text-xs text-gray-500">Set default pricing preference.</p>
+              <div className="mt-3 space-y-2 text-xs">
+                {[
+                  { v: "fixed", t: "Bureau Fixed Price", d: "Set standard price and staff will see the same." },
+                  { v: "range", t: "Price Range", d: "Show min - max range to staff." },
+                  { v: "hidden", t: "Hide Price", d: "Hide price from staff before approval." },
+                ].map((item) => (
+                  <label key={item.v} className="flex cursor-pointer items-start gap-2 rounded-lg border border-gray-100 bg-gray-50/70 px-3 py-2">
+                    <input
+                      type="radio"
+                      name="priceModel"
+                      className="mt-0.5 accent-violet-accent"
+                      checked={((data.priceModel as string) || "fixed") === item.v}
+                      onChange={() => onChange({ priceModel: item.v })}
+                    />
+                    <span>
+                      <span className="block font-semibold text-gray-800">{item.t}</span>
+                      <span className="mt-0.5 block text-[11px] text-gray-500">{item.d}</span>
                     </span>
-                  </button>
-                );
-              })}
-              <button type="button" className="flex min-h-[72px] flex-col items-center justify-center rounded-xl border-2 border-dashed border-violet-200 bg-violet-soft/30 text-sm font-semibold text-violet-accent transition hover:bg-violet-soft">
-                <Plus className="mb-1 h-5 w-5" />
-                Custom Duty Type
-              </button>
-            </div>
-          </Section>
-
-          <Section letter="B" title="Duty Approval Rules">
-            <div className="grid gap-3">
-              {[
-                { v: "CLIENT", t: "Mandatory Client Approval", d: "Client must approve staff before duty confirmation." },
-                { v: "AUTO", t: "Auto Confirmation After Acceptance", d: "Duty confirms automatically when a staff member accepts." },
-                { v: "COORDINATOR", t: "Coordinator Approval Required", d: "Coordinator must approve before notifying the client." },
-                { v: "HYBRID", t: "Hybrid (Client + Coordinator Approval)", d: "Both coordinator and client sign-off required." },
-              ].map((o) => (
-                <RadioCard key={o.v} name="approval" value={o.v} title={o.t} description={o.d} selected={(data.approvalRule as string || "CLIENT") === o.v} onChange={(v) => onChange({ approvalRule: v })} />
-              ))}
-            </div>
-          </Section>
-
-          <Section letter="C" title="Broadcast Preferences" subtitle="Control how duties are broadcast to your workforce.">
-            <div className="grid gap-4 sm:grid-cols-3">
-              <Field label="Acceptance Timer">
-                <div className="relative">
-                  <input className="crm-input pr-16" value={(data.acceptanceTimer as string) || "30"} onChange={(e) => onChange({ acceptanceTimer: e.target.value })} />
-                  <span className="pointer-events-none absolute right-3 top-2.5 text-xs text-gray-400">Minutes</span>
-                </div>
-              </Field>
-              <Field label="Search Radius">
-                <div className="relative">
-                  <input className="crm-input pr-10" value={(data.searchRadius as string) || "15"} onChange={(e) => onChange({ searchRadius: e.target.value })} />
-                  <span className="pointer-events-none absolute right-3 top-2.5 text-xs text-gray-400">KM</span>
-                </div>
-              </Field>
-              <Field label="Max Staff to Notify">
-                <div className="relative">
-                  <input className="crm-input pr-14" value={(data.maxStaffNotify as string) || "50"} onChange={(e) => onChange({ maxStaffNotify: e.target.value })} />
-                  <span className="pointer-events-none absolute right-3 top-2.5 text-xs text-gray-400">Staff</span>
-                </div>
-              </Field>
-            </div>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <Toggle label="Smart Matching" description="Match staff by skills, distance, and availability." checked={data.smartMatching !== false} onChange={(v) => onChange({ smartMatching: v })} />
-              <Toggle label="Availability Filter" description="Only notify staff who are marked available." checked={data.availabilityFilter !== false} onChange={(v) => onChange({ availabilityFilter: v })} />
-              <Toggle label="Priority Staff First" description="Offer duty to preferred / rated staff first." checked={data.priorityStaff !== false} onChange={(v) => onChange({ priorityStaff: v })} />
-              <Toggle label="Limit Acceptances per Staff" description="Prevent overbooking of the same caregiver." checked={data.limitAcceptances !== false} onChange={(v) => onChange({ limitAcceptances: v })} />
-            </div>
-          </Section>
-
-          <Section letter="D" title="Cancellation & Expiry">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Auto Expiry if not accepted in">
-                <select className="crm-select" value={(data.autoExpiry as string) || "30"} onChange={(e) => onChange({ autoExpiry: e.target.value })}>
-                  <option value="15">15 Minutes</option>
-                  <option value="30">30 Minutes</option>
-                  <option value="45">45 Minutes</option>
-                  <option value="60">60 Minutes</option>
-                </select>
-              </Field>
-              <Field label="Auto Cancel if client doesn't respond in">
-                <select className="crm-select" value={(data.autoCancel as string) || "60"} onChange={(e) => onChange({ autoCancel: e.target.value })}>
-                  <option value="30">30 Minutes</option>
-                  <option value="60">60 Minutes</option>
-                  <option value="120">120 Minutes</option>
-                </select>
-              </Field>
-            </div>
-          </Section>
-
-          <Section letter="E" title="Duty Timing Rules">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <Field label="Default Start Time">
-                <input type="time" className="crm-input" value={(data.defaultStart as string) || "08:00"} onChange={(e) => onChange({ defaultStart: e.target.value })} />
-              </Field>
-              <Field label="Default End Time">
-                <input type="time" className="crm-input" value={(data.defaultEnd as string) || "20:00"} onChange={(e) => onChange({ defaultEnd: e.target.value })} />
-              </Field>
-              <div className="flex items-end pb-1">
-                <Toggle label="Allow Night Duty" description="Allow duties between 8 PM – 8 AM." checked={data.allowNightDuty !== false} onChange={(v) => onChange({ allowNightDuty: v })} />
+                  </label>
+                ))}
               </div>
-            </div>
-          </Section>
+              <Field label="Default Bureau Margin (%)">
+                <input className="crm-input" value={(data.defaultMargin as string) || "15"} onChange={(e) => onChange({ defaultMargin: e.target.value })} />
+              </Field>
+            </section>
+          </div>
 
-          <Section letter="F" title="Special Preferences">
-            <div className="space-y-3">
-              <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-gray-100 bg-gray-50/50 px-4 py-3">
-                <input type="checkbox" className="mt-1 accent-violet-accent" defaultChecked />
-                <span className="text-sm text-gray-800">Allow Replacement Before Start Time</span>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Field label="Acceptance Timer">
+              <input className="crm-input" value={(data.acceptanceTimer as string) || "30"} onChange={(e) => onChange({ acceptanceTimer: e.target.value })} />
+            </Field>
+            <Field label="Search Radius (KM)">
+              <input className="crm-input" value={(data.searchRadius as string) || "15"} onChange={(e) => onChange({ searchRadius: e.target.value })} />
+            </Field>
+            <Field label="Client Approval">
+              <select className="crm-select" value={(data.clientApproval as string) || "mandatory"} onChange={(e) => onChange({ clientApproval: e.target.value })}>
+                <option value="mandatory">Mandatory</option>
+                <option value="optional">Optional</option>
+                <option value="none">Not Required</option>
+              </select>
+            </Field>
+            <Field label="Escalation">
+              <select className="crm-select" value={(data.escalation as string) || "enabled"} onChange={(e) => onChange({ escalation: e.target.value })}>
+                <option value="enabled">Enabled</option>
+                <option value="disabled">Disabled</option>
+              </select>
+            </Field>
+          </div>
+
+          <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { k: "smartMatching", l: "Smart Matching" },
+              { k: "availabilityFilter", l: "Availability Filter" },
+              { k: "priorityStaff", l: "Priority Staff First" },
+              { k: "limitAcceptances", l: "Limit Acceptances" },
+            ].map((item) => (
+              <label key={item.k} className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50/70 px-3 py-2 text-xs">
+                <span>{item.l}</span>
+                <input
+                  type="checkbox"
+                  className="accent-violet-accent"
+                  checked={(data[item.k as keyof typeof data] as boolean | undefined) !== false}
+                  onChange={(e) => onChange({ [item.k]: e.target.checked })}
+                />
               </label>
-              <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-gray-100 bg-gray-50/50 px-4 py-3">
-                <input type="checkbox" className="mt-1 accent-violet-accent" defaultChecked />
-                <span className="text-sm text-gray-800">Allow Replacement During Duty (Emergency)</span>
-              </label>
-              <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-gray-100 bg-gray-50/50 px-4 py-3">
-                <input type="checkbox" className="mt-1 accent-violet-accent" />
-                <span className="text-sm text-gray-800">Require Check-in for every Shift Duty</span>
-              </label>
-              <div className="flex flex-wrap items-center gap-3 rounded-lg border border-gray-100 bg-gray-50/50 px-4 py-3">
-                <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-800">
-                  <input type="checkbox" className="accent-violet-accent" />
-                  Set Buffer Time Between Duties
-                </label>
-                <select className="crm-select !mb-0 max-w-[140px] py-2 text-xs">
-                  <option>30 Minutes</option>
-                  <option>60 Minutes</option>
-                </select>
-              </div>
-            </div>
-          </Section>
+            ))}
+          </div>
         </div>
       </div>
 
       <aside className="space-y-4">
-        <div className="crm-card text-center">
-          <p className="text-xs font-bold uppercase tracking-wide text-gray-500">Duty Types Summary</p>
-          <div className="relative mx-auto mt-4 h-36 w-36">
-            <svg viewBox="0 0 36 36" className="h-full w-full -rotate-90">
-              <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#ede9fe" strokeWidth="3" />
-              <circle
-                cx="18"
-                cy="18"
-                r="15.9155"
-                fill="none"
-                stroke="#5c2fc0"
-                strokeWidth="3"
-                strokeDasharray={`${Math.min(selectedCount * 14, 100)} 100`}
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-2xl font-black text-violet-accent">{selectedCount}</span>
-              <span className="text-[10px] font-semibold uppercase text-gray-500">Selected</span>
-            </div>
-          </div>
-          <ul className="mt-4 space-y-1.5 text-left text-xs text-gray-600">
-            {dutyTypes.slice(0, 8).map((t) => (
-              <li key={t} className="flex gap-2">
-                <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-500" strokeWidth={3} />
-                <span className="line-clamp-1">{t}</span>
-              </li>
-            ))}
+        <div className="rounded-xl border border-gray-100 bg-white p-4">
+          <h3 className="text-sm font-bold text-gray-900">Duty Engine Summary</h3>
+          <ul className="mt-3 space-y-2 text-xs text-gray-600">
+            <li className="flex items-center justify-between"><span>Total Active Roles</span><span className="font-semibold text-gray-900">7</span></li>
+            <li className="flex items-center justify-between"><span>Duty Types Enabled</span><span className="font-semibold text-gray-900">{dutyTypes.length}/8</span></li>
+            <li className="flex items-center justify-between"><span>Default Margin</span><span className="font-semibold text-gray-900">{(data.defaultMargin as string) || "15"}%</span></li>
+            <li className="flex items-center justify-between"><span>Broadcast Mode</span><span className="font-semibold text-gray-900">Auto + Manual</span></li>
+            <li className="flex items-center justify-between"><span>Client Approval</span><span className="font-semibold text-gray-900">{((data.clientApproval as string) || "mandatory").replace(/^./, (s) => s.toUpperCase())}</span></li>
+            <li className="flex items-center justify-between"><span>Escalation</span><span className="font-semibold text-gray-900">{((data.escalation as string) || "enabled").replace(/^./, (s) => s.toUpperCase())}</span></li>
           </ul>
         </div>
 
-        <div className="crm-card">
-          <p className="text-xs font-bold uppercase tracking-wide text-gray-500">Your Workflow Snapshot</p>
-          <div className="mt-4 space-y-0">
-            {WORKFLOW.map((step, i) => (
-              <div key={step} className="flex gap-2">
-                <div className="flex flex-col items-center">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-soft text-[10px] font-bold text-violet-accent">{i + 1}</span>
-                  {i < WORKFLOW.length - 1 && <span className="my-0.5 w-px flex-1 min-h-[12px] bg-violet-200" />}
-                </div>
-                <p className="pb-3 text-sm font-medium leading-tight text-gray-800">{step}</p>
-              </div>
-            ))}
+        <div className="rounded-xl border border-violet-100 bg-violet-soft/40 p-4">
+          <div className="flex items-start gap-2">
+            <CircleHelp className="mt-0.5 h-4 w-4 shrink-0 text-violet-accent" />
+            <div>
+              <h3 className="text-sm font-bold text-violet-deep">Why is this important?</h3>
+              <ul className="mt-2 space-y-1.5 text-xs text-violet-deep/90">
+                <li>Accurate role mapping ensures the right staff is matched.</li>
+                <li>Clear information helps staff make informed decisions quickly.</li>
+                <li>Better operations speed up assignment and reduce rejections.</li>
+                <li>Happy clients come from right details and right staff.</li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div className="rounded-xl border border-sky-100 bg-sky-50/80 p-4">
-          <div className="flex gap-2">
-            <Lightbulb className="h-5 w-5 shrink-0 text-sky-600" />
-            <div>
-              <p className="text-sm font-bold text-sky-900">Tips</p>
-              <p className="mt-1 text-xs leading-relaxed text-sky-900/80">
-                Tighter acceptance timers speed up placements but may reduce fill rates in low-density areas.
-              </p>
-            </div>
-          </div>
+          <h3 className="text-sm font-bold text-sky-900">Need help setting this up?</h3>
+          <p className="mt-1 text-xs leading-relaxed text-sky-900/80">Our operations expert can guide your duty settings for best results.</p>
+          <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
         </div>
       </aside>
     </div>

@@ -1,20 +1,28 @@
 "use client";
 
-import { Building2, Globe, GitBranch, Users, MapPin, Lightbulb } from "lucide-react";
-import { Toggle } from "@/components/ui/FormBits";
-import { AsideCard, SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
+import { Users, Pencil, Trash2, Plus } from "lucide-react";
+import { AsideCard, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
-const STRUCTURES = [
-  { v: "CENTRAL", title: "Centralized Team", desc: "All teams report to head office", Icon: Building2 },
-  { v: "BRANCH", title: "Branch-based Team", desc: "Teams organized by branches", Icon: GitBranch },
-  { v: "REGION", title: "Regional Team", desc: "Teams organized by regions", Icon: Globe },
-  { v: "CUSTOM", title: "Custom Structure", desc: "Create a custom team structure", Icon: Users },
+const TEAM_ROWS = [
+  { name: "Rahul Sharma", role: "Operations Manager", dept: "Operations", manager: "Owner", email: "rahul.sharma@hh.in", phone: "98765 43210" },
+  { name: "Neha Patel", role: "Coordinator", dept: "Operations", manager: "Rahul Sharma", email: "neha.patel@hh.in", phone: "98765 43211" },
+  { name: "Amit Verma", role: "HR Executive", dept: "HR", manager: "Owner", email: "amit.verma@hh.in", phone: "98765 43212" },
+  { name: "Pooja Singh", role: "Accountant", dept: "Finance", manager: "Owner", email: "pooja.singh@hh.in", phone: "98765 43213" },
+  { name: "Vikram Yadav", role: "Telecaller", dept: "Sales", manager: "Neha Patel", email: "vikram.yadav@hh.in", phone: "98765 43214" },
+];
+
+const CATEGORIES = [
+  { label: "Registered Nurse (RN)", staff: "128" },
+  { label: "ICU Nurse", staff: "64" },
+  { label: "General Duty Assistant (GDA)", staff: "210" },
+  { label: "Caregiver / Attendant", staff: "185" },
+  { label: "Baby Care / Nanny", staff: "72" },
+  { label: "Physiotherapist", staff: "36" },
+  { label: "Elder Care", staff: "54" },
 ];
 
 export function StepWorkforceSetup({ data, onChange, footer }: StepProps) {
-  const structure = (data.teamStructure as string) || "CENTRAL";
-
   return (
     <StepLayout
       icon={Users}
@@ -26,114 +34,153 @@ export function StepWorkforceSetup({ data, onChange, footer }: StepProps) {
       aside={
         <>
           <AsideCard title="Team Structure Preview">
-            <ul className="space-y-2 text-xs">
-              <li className="font-bold text-violet-accent">Head Office</li>
-              {["Operations (6 Staff)", "Sales (7 Staff)", "Accounts (4 Staff)", "Support (3 Staff)", "Field Staff (8 Staff)"].map((d) => (
-                <li key={d} className="ml-3 border-l-2 border-violet-100 pl-2 text-gray-700">{d}</li>
+            <ul className="space-y-2 text-xs text-gray-700">
+              {[
+                "Organized Team Structure",
+                "Role Based Access",
+                "Digital Identity",
+                "Clear Responsibilities",
+              ].map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="mt-0.5 text-violet-accent">◎</span>
+                  {item}
+                </li>
               ))}
             </ul>
           </AsideCard>
-          <AsideCard title="Workforce Health">
-            <div className="flex items-center gap-4">
-              <div className="relative h-16 w-16">
-                <svg viewBox="0 0 36 36" className="h-full w-full -rotate-90">
-                  <circle cx="18" cy="18" r="15" fill="none" stroke="#ede9fe" strokeWidth="3" />
-                  <circle cx="18" cy="18" r="15" fill="none" stroke="#10b981" strokeWidth="3" strokeDasharray="92 100" />
-                </svg>
-                <span className="absolute inset-0 flex items-center justify-center text-xs font-black text-emerald-600">92%</span>
-              </div>
-              <div className="text-xs text-gray-600">
-                <p className="font-bold text-emerald-700">Healthy</p>
-                <p>28/30 Active Staff</p>
-              </div>
-            </div>
+          <AsideCard title="Quick Tips">
+            <ul className="space-y-2 text-xs text-gray-700">
+              {[
+                "Add internal team members who will use CRM",
+                "Create custom roles if defaults don’t fit",
+                "Use permissions matrix to control module access",
+                "You can update and invite more users later",
+              ].map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="mt-0.5 text-emerald-600">✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </AsideCard>
-          <div className="rounded-xl border border-violet-100 bg-violet-soft/50 p-3 text-[11px] text-gray-600">
-            Modify anytime from <strong>Settings → Workforce Management</strong>.
-          </div>
+          <AsideCard title="Need help setting this up?">
+            <p className="text-xs text-gray-600">Our onboarding expert can help you configure this step quickly.</p>
+            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
+          </AsideCard>
         </>
       }
     >
-      <SectionBlock letter="A" title="Team Structure">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {STRUCTURES.map(({ v, title, desc, Icon }) => (
-            <button
-              key={v}
-              type="button"
-              onClick={() => onChange({ teamStructure: v })}
-              className={`rounded-xl border-2 p-4 text-left transition ${structure === v ? "border-violet-accent bg-violet-soft/50" : "border-gray-200 hover:border-gray-300"}`}
-            >
-              <Icon className={`mb-2 h-6 w-6 ${structure === v ? "text-violet-accent" : "text-gray-400"}`} />
-              <p className="text-sm font-bold">{title}</p>
-              <p className="mt-1 text-xs text-gray-500">{desc}</p>
-            </button>
-          ))}
-        </div>
-        <div className="mt-4">
-          <Toggle label="Enable Multi-Level Hierarchy" description="Allow departments, branches and sub-teams." checked={data.multiLevel !== false} onChange={(v) => onChange({ multiLevel: v })} />
-        </div>
-      </SectionBlock>
-
-      <SectionBlock letter="B" title="Role Management">
-        <div className="grid gap-3 sm:grid-cols-3">
-          {[
-            { n: "12", l: "Active Roles", a: "Manage Roles →" },
-            { n: "96", l: "Total Permissions", a: "Manage Permissions →" },
-            { n: "28", l: "Staff Members", a: "Manage Staff →" },
-          ].map((c) => (
-            <div key={c.l} className="rounded-xl border border-gray-100 bg-gray-50/80 p-4">
-              <p className="text-2xl font-black text-violet-accent">{c.n}</p>
-              <p className="text-sm font-semibold text-gray-800">{c.l}</p>
-              <button type="button" className="mt-2 text-xs font-semibold text-violet-accent">{c.a}</button>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50/80 px-4 py-3 text-xs text-emerald-800">
-          Roles and permissions can be fine-tuned in the next step — <strong>Permission Matrix</strong>.
-        </div>
-      </SectionBlock>
-
-      <SectionBlock letter="C" title="Territories & Locations">
-        <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
+      <section className="rounded-xl border border-gray-100 p-4">
+        <div className="mb-4 flex items-center justify-between gap-2">
           <div>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {["3 Regions", "8 Branches", "24 Service Areas"].map((t, i) => (
-                <div key={t} className="rounded-xl border border-gray-100 p-3 text-center">
-                  <p className="text-lg font-black text-gray-900">{t.split(" ")[0]}</p>
-                  <p className="text-xs text-gray-500">{t.split(" ").slice(1).join(" ")}</p>
-                  <button type="button" className="mt-1 text-[10px] font-semibold text-violet-accent">Manage →</button>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4">
-              <Toggle label="Enable Location-based Assignment" checked={data.locationAssign !== false} onChange={(v) => onChange({ locationAssign: v })} />
-            </div>
+            <h3 className="text-sm font-bold text-gray-900">Internal Team & Workforce</h3>
+            <p className="mt-1 text-xs text-gray-500">Add your internal team members and operational staff.</p>
           </div>
-          <div className="relative h-40 overflow-hidden rounded-xl border border-gray-200 bg-gradient-to-br from-sky-50 to-emerald-50">
-            <MapPin className="absolute left-1/4 top-1/3 h-5 w-5 text-violet-accent" />
-            <MapPin className="absolute right-1/3 top-1/2 h-5 w-5 text-violet-accent" />
-            <div className="absolute left-1/3 top-1/4 h-16 w-16 rounded-full border-2 border-violet-300/40 bg-violet-200/20" />
-            <div className="absolute right-1/4 bottom-1/4 h-20 w-20 rounded-full border-2 border-violet-300/40 bg-violet-200/20" />
-          </div>
+          <button type="button" className="btn-outline-purple !py-1.5 text-xs">+ Add Team Member</button>
         </div>
-      </SectionBlock>
+        <div className="overflow-x-auto rounded-xl border border-gray-200">
+          <table className="w-full min-w-[850px] text-left text-sm">
+            <thead className="border-b border-gray-100 bg-gray-50/90 text-[11px] font-bold uppercase tracking-wide text-gray-500">
+              <tr>
+                <th className="px-4 py-3">Name</th>
+                <th className="px-4 py-3">Role / Position</th>
+                <th className="px-4 py-3">Department</th>
+                <th className="px-4 py-3">Reporting Manager</th>
+                <th className="px-4 py-3">Email / Phone</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {TEAM_ROWS.map((row) => (
+                <tr key={row.email} className="border-t border-gray-100 bg-white">
+                  <td className="px-4 py-3.5">
+                    <p className="font-semibold text-gray-900">{row.name}</p>
+                    <p className="text-[11px] text-gray-500">ID: EMP{row.phone.slice(-4)}</p>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <span className="rounded bg-violet-soft px-2 py-0.5 text-[11px] font-semibold text-violet-deep">{row.role}</span>
+                  </td>
+                  <td className="px-4 py-3.5 text-gray-700">{row.dept}</td>
+                  <td className="px-4 py-3.5">
+                    <span className="rounded bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">{row.manager}</span>
+                  </td>
+                  <td className="px-4 py-3.5 text-gray-700">
+                    <p className="text-xs">{row.email}</p>
+                    <p className="text-xs">{row.phone}</p>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">Active</span>
+                  </td>
+                  <td className="px-4 py-3.5 text-right">
+                    <button type="button" className="mr-1 inline-flex rounded-lg p-2 text-violet-accent hover:bg-violet-soft" aria-label="Edit">
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                    <button type="button" className="inline-flex rounded-lg p-2 text-violet-accent hover:bg-violet-soft" aria-label="Delete">
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-3 text-xs text-gray-500">Showing 1 to 5 of 12 team members</p>
+      </section>
 
-      <SectionBlock letter="D" title="Working Locations">
-        <div className="grid gap-4 lg:grid-cols-[1fr_240px]">
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {["Office", "Field", "Hybrid", "Remote"].map((loc, i) => (
-              <label key={loc} className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-gray-200 p-3 has-[:checked]:border-violet-accent has-[:checked]:bg-violet-soft/40">
-                <input type="checkbox" defaultChecked={i < 3} className="accent-violet-accent" />
-                <span className="text-xs font-semibold">{loc}</span>
-              </label>
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <section className="rounded-xl border border-gray-100 p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-bold text-gray-900">Workforce Categories</h3>
+              <p className="mt-1 text-xs text-gray-500">Define the types of field workforce you manage.</p>
+            </div>
+            <button type="button" className="btn-outline-purple !py-1.5 text-xs"><Plus className="mr-1 h-3 w-3" />Add Category</button>
+          </div>
+          <div className="space-y-2">
+            {CATEGORIES.map((c) => (
+              <div key={c.label} className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50/70 px-3 py-2 text-sm">
+                <span className="font-medium text-gray-800">{c.label}</span>
+                <div className="flex items-center gap-2">
+                  <span className="rounded bg-violet-soft px-2 py-0.5 text-[11px] font-semibold text-violet-deep">{c.staff} Staff</span>
+                  <span className="rounded bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">Active</span>
+                </div>
+              </div>
             ))}
           </div>
-          <div className="flex gap-2 rounded-xl border border-sky-100 bg-sky-50/80 p-3">
-            <Lightbulb className="h-5 w-5 shrink-0 text-sky-600" />
-            <p className="text-xs text-sky-900">Staff assigned by availability, skills and location.</p>
+          <button type="button" className="mt-3 text-xs font-semibold text-violet-accent">Manage All Categories →</button>
+        </section>
+
+        <section className="rounded-xl border border-gray-100 p-4">
+          <h3 className="text-sm font-bold text-gray-900">Team Summary</h3>
+          <p className="mt-1 text-xs text-gray-500">Overview of your internal team.</p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {[
+              { n: "32", l: "Total Team Members" },
+              { n: "7", l: "Departments" },
+              { n: "5", l: "Reporting Levels" },
+            ].map((item) => (
+              <div key={item.l} className="rounded-xl border border-gray-100 bg-gray-50/70 p-3 text-center">
+                <p className="text-lg font-black text-violet-accent">{item.n}</p>
+                <p className="text-[11px] text-gray-500">{item.l}</p>
+              </div>
+            ))}
           </div>
-        </div>
-      </SectionBlock>
+          <div className="mt-4 rounded-xl border border-gray-100 bg-white p-3">
+            <p className="text-xs font-semibold text-gray-700">Team Distribution by Department</p>
+            <div className="mt-3 flex items-center gap-4">
+              <div className="h-24 w-24 rounded-full border-[10px] border-violet-500 border-r-sky-400 border-b-amber-400 border-l-emerald-400" />
+              <ul className="space-y-1 text-xs text-gray-600">
+                <li>Operations: 14 (43%)</li>
+                <li>HR: 6 (19%)</li>
+                <li>Finance: 4 (12%)</li>
+                <li>Sales: 6 (19%)</li>
+                <li>Others: 2 (7%)</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
     </StepLayout>
   );
 }

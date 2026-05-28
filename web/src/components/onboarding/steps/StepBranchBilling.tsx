@@ -38,7 +38,7 @@ export function StepBranchBilling({ data, onChange }: StepProps) {
         </div>
 
         <div className="mt-8">
-          <section className="mb-10">
+          <section className="mb-10 rounded-xl border border-gray-100 p-4">
             <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">A.</span> Branches / Offices</h3>
             <p className="mt-1 text-xs text-gray-500">Add all your operational locations.</p>
             <div className="mb-4 flex justify-end">
@@ -89,7 +89,7 @@ export function StepBranchBilling({ data, onChange }: StepProps) {
           </section>
 
           <div className="grid gap-6 lg:grid-cols-2">
-            <section>
+            <section className="rounded-xl border border-gray-100 p-4">
               <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">B.</span> Billing & GST Setup</h3>
               <p className="mt-1 text-xs text-gray-500">Configure GST and invoicing preferences.</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -122,7 +122,7 @@ export function StepBranchBilling({ data, onChange }: StepProps) {
               <p className="mt-3 text-[11px] text-gray-500">These settings will be used while generating invoices.</p>
             </section>
 
-            <section>
+            <section className="rounded-xl border border-gray-100 p-4">
               <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">C.</span> Payment Collection Setup</h3>
               <p className="mt-1 text-xs text-gray-500">Add payment methods to collect payments from clients.</p>
               <div className="mt-4 space-y-3">
@@ -152,7 +152,7 @@ export function StepBranchBilling({ data, onChange }: StepProps) {
             </section>
           </div>
 
-          <section className="mt-8">
+          <section className="mt-8 rounded-xl border border-gray-100 p-4">
             <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">D.</span> Branch Access & User Assignment</h3>
             <p className="mt-1 text-xs text-gray-500">Assign branch-level access to key users.</p>
             <div className="mt-4 overflow-x-auto rounded-xl border border-gray-200">

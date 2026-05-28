@@ -91,7 +91,8 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
         </div>
 
         <div className="space-y-8 p-6 lg:p-8">
-          <section>
+          <div className="grid gap-6 lg:grid-cols-2">
+          <section className="rounded-xl border border-gray-100 p-4">
             <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">A.</span> Basic Bureau Identity</h3>
             <div className="mt-4 grid gap-4 lg:grid-cols-2">
               <Field label="Bureau Legal Name" required>
@@ -124,7 +125,7 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
             </div>
           </section>
 
-          <section>
+          <section className="rounded-xl border border-gray-100 p-4">
             <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">B.</span> Services Offered</h3>
             <p className="mt-1 text-xs text-gray-500">Select all services your bureau provides</p>
             <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
@@ -153,8 +154,9 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
               })}
             </div>
           </section>
+          </div>
 
-          <section>
+          <section className="rounded-xl border border-gray-100 p-4">
             <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">C.</span> Operational Snapshot</h3>
             <div className="mt-4 grid gap-4 lg:grid-cols-3">
               <div className="lg:col-span-2">
@@ -210,7 +212,7 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
           </section>
 
           <div className="grid gap-6 lg:grid-cols-2">
-            <section>
+            <section className="rounded-xl border border-gray-100 p-4">
               <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">D.</span> Verification Documents <span className="ml-1 rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700">Required</span></h3>
               <p className="mt-1 text-xs text-gray-500">Upload clear, valid documents for verification.</p>
               <div className="mt-4 grid grid-cols-2 gap-3">
@@ -230,7 +232,7 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
               <p className="mt-3 text-[11px] text-gray-500">Your documents are secure and encrypted. They will only be used for verification purposes.</p>
             </section>
 
-            <section>
+            <section className="rounded-xl border border-gray-100 p-4">
               <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">E.</span> Contact Details</h3>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <Field label="Owner / Contact Person Name" required>

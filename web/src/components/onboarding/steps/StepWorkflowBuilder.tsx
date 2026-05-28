@@ -1,24 +1,21 @@
 "use client";
 
-import { GitBranch, Plus, UserPlus, CreditCard, FileCheck, AlertTriangle, MessageSquare } from "lucide-react";
-import { Field, Toggle } from "@/components/ui/FormBits";
+import { GitBranch } from "lucide-react";
+import { Field } from "@/components/ui/FormBits";
 import { AsideCard, SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
-const TEMPLATES = [
-  { id: "onboard", label: "Client Onboarding", Icon: UserPlus },
-  { id: "payment", label: "Payment Collection", Icon: CreditCard },
-  { id: "docs", label: "Document Verification", Icon: FileCheck },
-  { id: "compliance", label: "Compliance Checks", Icon: AlertTriangle },
-  { id: "case", label: "Case Management", Icon: MessageSquare },
-  { id: "custom", label: "Create Custom", Icon: Plus },
+const WORKFLOW_STAGES = [
+  { title: "Lead", caption: "New lead captured" },
+  { title: "Discussion", caption: "Discuss and qualify lead" },
+  { title: "Assignment", caption: "Assign staff for duty" },
+  { title: "Duty Execution", caption: "Duty is in progress" },
+  { title: "Invoice", caption: "Generate and send invoice" },
+  { title: "Payment", caption: "Payment received" },
+  { title: "Closure", caption: "Duty closed and feedback" },
 ];
 
-const STEPS = ["Start — New Client Registration", "Collect Information", "Verify Documents", "Approval", "Complete — Notify & create profile"];
-
 export function StepWorkflowBuilder({ data, onChange, footer }: StepProps) {
-  const template = (data.template as string) || "onboard";
-
   return (
     <StepLayout
       icon={GitBranch}
@@ -29,89 +26,214 @@ export function StepWorkflowBuilder({ data, onChange, footer }: StepProps) {
       footer={footer}
       aside={
         <>
-          <AsideCard title="Workflow Overview">
-            <div className="mx-auto h-24 w-24 rounded-full border-[8px] border-emerald-400 border-r-sky-400 border-b-amber-400 border-l-gray-300" />
-            <p className="mt-2 text-center text-sm font-bold">12 Total Workflows</p>
-            <ul className="mt-3 space-y-1 text-xs">
-              <li className="flex justify-between"><span className="text-emerald-600">Active</span><span>6</span></li>
-              <li className="flex justify-between"><span className="text-sky-600">Draft</span><span>3</span></li>
+          <AsideCard title="Workflow Summary">
+            <ul className="space-y-2 text-xs text-gray-700">
+              <li className="flex items-center justify-between"><span>Total Stages</span><span className="font-semibold text-gray-900">7</span></li>
+              <li className="flex items-center justify-between"><span>Approval Rules</span><span className="font-semibold text-gray-900">5</span></li>
+              <li className="flex items-center justify-between"><span>Partner Network</span><span className="font-semibold text-gray-900">Enabled</span></li>
+              <li className="flex items-center justify-between"><span>Notification Channels</span><span className="font-semibold text-gray-900">4</span></li>
+              <li className="flex items-center justify-between"><span>SLA Configured</span><span className="font-semibold text-gray-900">Yes</span></li>
+              <li className="flex items-center justify-between"><span>Escalation Level</span><span className="font-semibold text-gray-900">3</span></li>
             </ul>
           </AsideCard>
-          <AsideCard title="Active Workflows">
-            <ul className="space-y-2 text-xs">
-              {["Client Onboarding", "Payment Collection", "Document Verification"].map((w) => (
-                <li key={w} className="flex justify-between"><span>{w}</span><span className="font-semibold text-emerald-600">Active</span></li>
+
+          <AsideCard title="Why is this important?" className="border-violet-100 bg-violet-soft/40">
+            <ul className="space-y-2 text-xs text-violet-deep/90">
+              {[
+                "Structured workflow brings consistency in daily operations.",
+                "Automated approvals speed up decisions and reduce delays.",
+                "Timely notifications keep everyone informed at the right time.",
+                "SLA and escalation ensure no lead or duty is left unattended.",
+              ].map((w) => (
+                <li key={w}>• {w}</li>
               ))}
             </ul>
           </AsideCard>
-          <AsideCard title="Benefits" className="border-emerald-100 bg-emerald-50/50">
-            <ul className="space-y-1 text-xs text-emerald-900">
-              {["Increased operational efficiency", "Reduced manual errors", "Better compliance tracking"].map((t) => (
-                <li key={t}>✓ {t}</li>
-              ))}
-            </ul>
+
+          <AsideCard title="Need help setting this up?" className="border-sky-100 bg-sky-50/80">
+            <p className="text-xs text-sky-900/80">Our automation expert can help you configure the best workflow.</p>
+            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
           </AsideCard>
         </>
       }
     >
-      <SectionBlock letter="A" title="Workflow Templates" subtitle="Choose from pre-built templates or create custom workflows.">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {TEMPLATES.map(({ id, label, Icon }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => onChange({ template: id })}
-              className={`flex items-center gap-3 rounded-xl border-2 p-4 text-left ${template === id ? "border-violet-accent bg-violet-soft/40" : "border-gray-200"}`}
-            >
-              <Icon className={`h-6 w-6 ${template === id ? "text-violet-accent" : "text-gray-400"}`} />
-              <span className="text-sm font-bold">{label}</span>
-            </button>
-          ))}
-        </div>
-      </SectionBlock>
-
-      <SectionBlock letter="B" title="Workflow Designer" subtitle="Configure steps and actions for your selected workflow." action={<button type="button" className="btn-outline-purple !py-1.5 text-xs"><Plus className="mr-1 inline h-3 w-3" />Add Step</button>}>
-        <div className="grid gap-4 lg:grid-cols-2">
-          <ol className="space-y-2">
-            {STEPS.map((s, i) => (
-              <li key={s} className="flex gap-3 rounded-lg border border-gray-100 bg-gray-50/60 px-3 py-2.5 text-sm">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-accent text-xs font-bold text-white">{i + 1}</span>
-                {s}
-              </li>
-            ))}
-          </ol>
-          <div className="min-h-[220px] rounded-xl border border-dashed border-gray-200 bg-[linear-gradient(rgba(0,0,0,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,.03)_1px,transparent_1px)] bg-[size:16px_16px] p-4">
-            <div className="flex flex-col items-center gap-2 text-xs">
-              {["Start", "Collect Info", "Verify", "Approval?", "Complete"].map((n, i) => (
-                <div key={n} className="flex flex-col items-center">
-                  <span className="rounded-lg border border-violet-200 bg-white px-3 py-1.5 font-semibold shadow-sm">{n}</span>
-                  {i < 4 && <span className="text-gray-300">↓</span>}
+      <SectionBlock
+        letter="A"
+        title="Workflow Builder"
+        subtitle="Define the stages your leads and duties will go through."
+        action={<button type="button" className="btn-outline-purple !py-1.5 text-xs">Edit Workflow</button>}
+      >
+        <div className="overflow-x-auto pb-1">
+          <div className="flex min-w-[860px] items-center gap-2">
+            {WORKFLOW_STAGES.map((stage, idx) => (
+              <div key={stage.title} className="flex items-center gap-2">
+                <div className="min-h-[72px] min-w-[112px] rounded-lg border border-gray-200 bg-gray-50 px-2 py-2">
+                  <p className="text-[11px] font-bold text-gray-800">{idx + 1}. {stage.title}</p>
+                  <p className="mt-1 text-[10px] leading-snug text-gray-500">{stage.caption}</p>
                 </div>
-              ))}
-            </div>
+                {idx < WORKFLOW_STAGES.length - 1 && <span className="text-gray-400">→</span>}
+              </div>
+            ))}
           </div>
+        </div>
+        <div className="mt-3">
+          <button type="button" className="btn-outline-purple !py-1.5 text-xs">+ Add Custom Stage</button>
         </div>
       </SectionBlock>
 
-      <SectionBlock letter="C" title="Workflow Settings">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Field label="Workflow Name">
-            <input className="crm-input" value={(data.workflowName as string) || "Client Onboarding"} onChange={(e) => onChange({ workflowName: e.target.value })} />
-          </Field>
-          <div className="flex items-end pb-1">
-            <Toggle label="Status: Active" checked={data.workflowActive !== false} onChange={(v) => onChange({ workflowActive: v })} />
+      <div className="grid gap-6 lg:grid-cols-3">
+        <SectionBlock
+          letter="B"
+          title="Approvals & Rules"
+          subtitle="Configure approval requirements for key actions."
+          className="lg:col-span-2"
+          action={<button type="button" className="btn-outline-purple !py-1.5 text-xs">+ Add Rule</button>}
+        >
+          <div className="overflow-x-auto rounded-xl border border-gray-200">
+            <table className="w-full min-w-[760px] text-left text-sm">
+              <thead className="border-b border-gray-100 bg-gray-50/90 text-[11px] font-bold uppercase tracking-wide text-gray-500">
+                <tr>
+                  <th className="px-3 py-2.5">Action / Request</th>
+                  <th className="px-3 py-2.5">Approval Required</th>
+                  <th className="px-3 py-2.5">Who Can Approve</th>
+                  <th className="px-3 py-2.5">Auto Approve After</th>
+                  <th className="px-3 py-2.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { action: "Staff Replacement", who: "Operations Manager", after: "2 Hours" },
+                  { action: "Refund Request", who: "Finance Head", after: "24 Hours" },
+                  { action: "Staff Leave", who: "Branch Manager", after: "4 Hours" },
+                  { action: "Discount / Concession", who: "Owner / Admin", after: "2 Hours" },
+                  { action: "Payment Write-off", who: "Owner / Admin", after: "No Auto" },
+                ].map((row) => (
+                  <tr key={row.action} className="border-t border-gray-100 bg-white">
+                    <td className="px-3 py-2.5 text-xs font-semibold text-gray-800">{row.action}</td>
+                    <td className="px-3 py-2.5"><input type="checkbox" className="accent-violet-accent" defaultChecked /></td>
+                    <td className="px-3 py-2.5 text-xs text-gray-600">{row.who}</td>
+                    <td className="px-3 py-2.5 text-xs text-gray-600">{row.after}</td>
+                    <td className="px-3 py-2.5 text-right text-xs text-violet-accent">✎</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <Field label="Execution Mode">
-            <select className="crm-select" defaultValue="auto"><option>Automatic</option><option>Manual</option></select>
-          </Field>
-          <Field label="Error Handling">
-            <select className="crm-select" defaultValue="notify"><option value="notify">Notify Admin</option><option value="retry">Retry</option></select>
-          </Field>
-          <Field label="Run Schedule">
-            <select className="crm-select" defaultValue="realtime"><option value="realtime">Real-time</option><option value="daily">Daily</option></select>
-          </Field>
-        </div>
-      </SectionBlock>
+          <p className="mt-2 text-[11px] text-gray-500">You can add role-based approvals for key requirements.</p>
+        </SectionBlock>
+
+        <SectionBlock letter="C" title="Partner Network" subtitle="Manage partner bureaus and workforce sharing.">
+          <div className="space-y-2 text-xs">
+            {[
+              "Enable Partner Network",
+              "Share Workforce",
+              "Request Workforce",
+              "Revenue Sharing",
+            ].map((item) => (
+              <label key={item} className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50/70 px-3 py-2">
+                <span className="text-gray-700">{item}</span>
+                <input
+                  type="checkbox"
+                  className="accent-violet-accent"
+                  checked={(data[item.replace(/\s+/g, "").toLowerCase() as keyof typeof data] as boolean | undefined) !== false}
+                  onChange={(e) => onChange({ [item.replace(/\s+/g, "").toLowerCase()]: e.target.checked })}
+                />
+              </label>
+            ))}
+            <button type="button" className="btn-outline-purple mt-2 w-full !py-2 text-xs">Manage Partner Bureaus</button>
+          </div>
+        </SectionBlock>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <SectionBlock
+          letter="D"
+          title="Notifications"
+          subtitle="Choose events and channels for alerts."
+          action={<button type="button" className="btn-outline-purple !py-1.5 text-xs">Manage Templates</button>}
+        >
+          <div className="overflow-x-auto rounded-xl border border-gray-200">
+            <table className="w-full min-w-[620px] text-left text-xs">
+              <thead className="border-b border-gray-100 bg-gray-50/90 font-bold uppercase tracking-wide text-gray-500">
+                <tr>
+                  <th className="px-3 py-2">Event</th>
+                  <th className="px-3 py-2">WhatsApp</th>
+                  <th className="px-3 py-2">SMS</th>
+                  <th className="px-3 py-2">In-App</th>
+                  <th className="px-3 py-2">Email</th>
+                  <th className="px-3 py-2">Recipients</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { e: "New Lead Received", r: "Coordinator, Telecaller" },
+                  { e: "Staff Assigned", r: "Staff, Coordinator" },
+                  { e: "Duty Started", r: "Client, Staff, Coordinator" },
+                  { e: "Client Approval Pending", r: "Client, Coordinator" },
+                  { e: "Payment Received", r: "Finance, Owner" },
+                ].map((row, idx) => (
+                  <tr key={row.e} className="border-t border-gray-100 bg-white">
+                    <td className="px-3 py-2 font-medium text-gray-800">{row.e}</td>
+                    <td className="px-3 py-2"><input type="checkbox" className="accent-violet-accent" defaultChecked /></td>
+                    <td className="px-3 py-2"><input type="checkbox" className="accent-violet-accent" defaultChecked={idx !== 0} /></td>
+                    <td className="px-3 py-2"><input type="checkbox" className="accent-violet-accent" defaultChecked /></td>
+                    <td className="px-3 py-2"><input type="checkbox" className="accent-violet-accent" defaultChecked={idx % 2 === 0} /></td>
+                    <td className="px-3 py-2 text-gray-600">{row.r}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-2 text-[11px] text-gray-500">You can customize notification templates from settings anytime.</p>
+        </SectionBlock>
+
+        <SectionBlock letter="E" title="SLA & Escalation" subtitle="Set time limits and escalation rules for faster action.">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Field label="Lead Response Time (SLA)">
+              <select className="crm-select" value={(data.leadSla as string) || "15m"} onChange={(e) => onChange({ leadSla: e.target.value })}>
+                <option value="15m">15 Minutes</option>
+                <option value="30m">30 Minutes</option>
+                <option value="1h">1 Hour</option>
+              </select>
+            </Field>
+            <Field label="Staff Assignment Time (SLA)">
+              <select className="crm-select" value={(data.assignmentSla as string) || "30m"} onChange={(e) => onChange({ assignmentSla: e.target.value })}>
+                <option value="30m">30 Minutes</option>
+                <option value="1h">1 Hour</option>
+                <option value="2h">2 Hours</option>
+              </select>
+            </Field>
+            <Field label="Client Approval Time (SLA)">
+              <select className="crm-select" value={(data.clientSla as string) || "2h"} onChange={(e) => onChange({ clientSla: e.target.value })}>
+                <option value="1h">1 Hour</option>
+                <option value="2h">2 Hours</option>
+                <option value="4h">4 Hours</option>
+              </select>
+            </Field>
+            <Field label="Escalate If No Response">
+              <select className="crm-select" value={(data.escalateIf as string) || "yes"} onChange={(e) => onChange({ escalateIf: e.target.value })}>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </select>
+            </Field>
+            <Field label="Escalate To">
+              <select className="crm-select" value={(data.escalateTo as string) || "ops_manager"} onChange={(e) => onChange({ escalateTo: e.target.value })}>
+                <option value="ops_manager">Operations Manager</option>
+                <option value="branch_manager">Branch Manager</option>
+                <option value="owner_admin">Owner / Admin</option>
+              </select>
+            </Field>
+            <Field label="Max Escalation Level">
+              <select className="crm-select" value={(data.maxEscalation as string) || "3"} onChange={(e) => onChange({ maxEscalation: e.target.value })}>
+                <option value="1">1 Level</option>
+                <option value="2">2 Levels</option>
+                <option value="3">3 Levels</option>
+              </select>
+            </Field>
+          </div>
+          <p className="mt-2 text-[11px] text-gray-500">Escalation list applies when no feedback, no response, or SLA breach.</p>
+        </SectionBlock>
+      </div>
     </StepLayout>
   );
 }
