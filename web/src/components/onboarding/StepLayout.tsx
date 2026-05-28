@@ -44,35 +44,41 @@ export function StepLayout({
   activeTab?: number;
 }) {
   return (
-    <div className={`grid gap-6 ${aside ? "xl:grid-cols-[1fr_300px]" : ""}`}>
-      <div className="onboarding-panel !overflow-hidden !p-0">
-        <StepHero icon={icon} title={title} subtitle={subtitle} />
-        {tabs && tabs.length > 0 && (
-          <div className="border-b border-gray-100 px-6 py-3 lg:px-8">
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              {tabs.map((tab, idx) => {
-                const selected = idx === activeTab;
-                return (
-                  <span
-                    key={tab}
-                    className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-semibold ${
-                      selected
-                        ? "border-violet-accent bg-violet-soft text-violet-deep"
-                        : "border-gray-200 bg-white text-gray-500"
-                    }`}
-                  >
-                    <span className="text-[10px]">{idx + 1}</span>
-                    {tab}
-                  </span>
-                );
-              })}
+    <div>
+      <div className={`grid gap-6 ${aside ? "xl:grid-cols-[1fr_300px]" : ""}`}>
+        <div className="onboarding-panel !overflow-hidden !p-0">
+          <StepHero icon={icon} title={title} subtitle={subtitle} />
+          {tabs && tabs.length > 0 && (
+            <div className="border-b border-gray-100 px-6 py-3 lg:px-8">
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                {tabs.map((tab, idx) => {
+                  const selected = idx === activeTab;
+                  return (
+                    <span
+                      key={tab}
+                      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 font-semibold ${
+                        selected
+                          ? "border-violet-accent bg-violet-soft text-violet-deep"
+                          : "border-gray-200 bg-white text-gray-500"
+                      }`}
+                    >
+                      <span className="text-[10px]">{idx + 1}</span>
+                      {tab}
+                    </span>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        )}
-        <div className="p-6 lg:p-8">{children}</div>
-        {footer && <div className="border-t border-gray-100 px-6 pb-6 pt-2 lg:px-8">{footer}</div>}
+          )}
+          <div className="p-6 lg:p-8">{children}</div>
+        </div>
+        {aside && <aside className="space-y-4">{aside}</aside>}
       </div>
-      {aside && <aside className="space-y-4">{aside}</aside>}
+      {footer && (
+        <div className="mt-6 border-t border-gray-100 pt-2">
+          <div className="px-1">{footer}</div>
+        </div>
+      )}
     </div>
   );
 }

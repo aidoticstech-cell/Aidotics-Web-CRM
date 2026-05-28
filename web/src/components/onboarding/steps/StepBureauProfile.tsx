@@ -78,9 +78,10 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_300px]">
-      <div className="onboarding-panel !overflow-hidden !p-0">
-        <div className="flex items-start gap-3 border-b border-gray-100 px-6 py-5 lg:px-8">
+    <div>
+      <div className="grid gap-6 xl:grid-cols-[1fr_300px]">
+        <div className="onboarding-panel !overflow-hidden !p-0">
+          <div className="flex items-start gap-3 border-b border-gray-100 px-6 py-5 lg:px-8">
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-soft">
             <Building2 className="h-5 w-5 text-violet-accent" />
           </span>
@@ -255,29 +256,33 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
               </div>
             </section>
           </div>
+          </div>
         </div>
 
-        {footer && <div className="border-t border-gray-100 px-6 pb-6 pt-2 lg:px-8">{footer}</div>}
-      </div>
-
-      <aside className="space-y-4">
-        <div className="rounded-xl border border-gray-200 bg-white p-4">
+        <aside className="space-y-4">
+          <div className="rounded-xl border border-gray-200 bg-white p-4">
           <h3 className="text-sm font-bold text-gray-900">Why is this important?</h3>
           <ul className="mt-3 space-y-3 text-xs text-gray-600">
             <li className="flex gap-2"><ShieldCheck className="mt-0.5 h-4 w-4 text-gray-400" /> Helps us verify your bureau and staff.</li>
             <li className="flex gap-2"><CircleHelp className="mt-0.5 h-4 w-4 text-gray-400" /> Personalizes your CRM per your setup preferences.</li>
             <li className="flex gap-2"><ShieldCheck className="mt-0.5 h-4 w-4 text-gray-400" /> Required for billing and compliance.</li>
           </ul>
-        </div>
+          </div>
 
-        <InfoBox variant="green" title="Tips for you">
-          <ul className="space-y-2 text-xs">
-            <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 text-emerald-600" /> Please enter correct GST & PAN details.</li>
-            <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 text-emerald-600" /> Upload clear documents for quick verification.</li>
-            <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 text-emerald-600" /> You can update these details anytime from settings.</li>
-          </ul>
-        </InfoBox>
-      </aside>
+          <InfoBox variant="green" title="Tips for you">
+            <ul className="space-y-2 text-xs">
+              <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 text-emerald-600" /> Please enter correct GST & PAN details.</li>
+              <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 text-emerald-600" /> Upload clear documents for quick verification.</li>
+              <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 text-emerald-600" /> You can update these details anytime from settings.</li>
+            </ul>
+          </InfoBox>
+        </aside>
+      </div>
+      {footer && (
+        <div className="mt-6 border-t border-gray-100 pt-2">
+          <div className="px-1">{footer}</div>
+        </div>
+      )}
     </div>
   );
 }
