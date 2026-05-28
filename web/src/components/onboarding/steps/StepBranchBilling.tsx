@@ -25,9 +25,10 @@ export function StepBranchBilling({ data, onChange, footer }: StepProps) {
   const start = (data.invoiceStart as string) || "1001";
 
   return (
-    <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
-      <div>
-        <div className="flex items-start gap-3">
+    <div>
+      <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
+        <div>
+          <div className="flex items-start gap-3">
           <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-soft sm:flex">
             <Landmark className="h-6 w-6 text-violet-accent" />
           </div>
@@ -185,12 +186,11 @@ export function StepBranchBilling({ data, onChange, footer }: StepProps) {
             </div>
             <p className="mt-3 text-[11px] text-gray-500">Users must have branch access in CRM. You can add users from Team Administration.</p>
           </section>
+          </div>
         </div>
-        {footer && <div className="mt-8 border-t border-gray-100 pt-6">{footer}</div>}
-      </div>
 
-      <aside className="space-y-4">
-        <div className="rounded-xl border border-gray-200 bg-white p-4">
+        <aside className="space-y-4">
+          <div className="rounded-xl border border-gray-200 bg-white p-4">
           <h3 className="text-sm font-bold text-gray-900">Billing Summary</h3>
           <dl className="mt-3 space-y-2 text-xs">
             <div className="flex justify-between"><dt className="text-gray-500">GST Type</dt><dd>Regular</dd></div>
@@ -200,9 +200,9 @@ export function StepBranchBilling({ data, onChange, footer }: StepProps) {
             <div className="flex justify-between"><dt className="text-gray-500">Next Invoice Number</dt><dd>{prefix}{start}</dd></div>
             <div className="flex justify-between"><dt className="text-gray-500">Primary Bank</dt><dd>HDFC Bank</dd></div>
           </dl>
-        </div>
+          </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-4">
+          <div className="rounded-xl border border-gray-200 bg-white p-4">
           <h3 className="text-sm font-bold text-gray-900">Why is this important?</h3>
           <ul className="mt-3 space-y-2 text-xs text-gray-600">
             {[
@@ -217,20 +217,22 @@ export function StepBranchBilling({ data, onChange, footer }: StepProps) {
               </li>
             ))}
           </ul>
-        </div>
-
-        <InfoBox variant="blue" title="Need help setting this up?">
-          <p className="text-xs text-gray-700">Our onboarding expert can guide you to complete this step quickly.</p>
-          <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
-        </InfoBox>
-
-        <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3 text-xs text-emerald-800">
-          <div className="flex items-start gap-2">
-            <Check className="mt-0.5 h-4 w-4 shrink-0" />
-            <span>Use branch-level access in CRM. You can update branch managers and controllers later.</span>
           </div>
-        </div>
-      </aside>
+
+          <InfoBox variant="blue" title="Need help setting this up?">
+            <p className="text-xs text-gray-700">Our onboarding expert can guide you to complete this step quickly.</p>
+            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
+          </InfoBox>
+
+          <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3 text-xs text-emerald-800">
+            <div className="flex items-start gap-2">
+              <Check className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>Use branch-level access in CRM. You can update branch managers and controllers later.</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+      {footer && <div className="mt-8 border-t border-gray-100 pt-6">{footer}</div>}
     </div>
   );
 }

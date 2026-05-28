@@ -28,9 +28,10 @@ export function StepDutyOps({ data, onChange, footer }: StepProps) {
   const dutyTypes = (data.dutyTypes as string[]) || DEFAULT_DUTY_SELECTION;
 
   return (
-    <div className="grid gap-8 xl:grid-cols-[1fr_300px]">
-      <div>
-        <div className="flex items-start gap-3">
+    <div>
+      <div className="grid gap-8 xl:grid-cols-[1fr_300px]">
+        <div>
+          <div className="flex items-start gap-3">
           <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-soft sm:flex">
             <CalendarClock className="h-6 w-6 text-violet-accent" />
           </div>
@@ -213,11 +214,10 @@ export function StepDutyOps({ data, onChange, footer }: StepProps) {
             ))}
           </div>
         </div>
-        {footer && <div className="mt-8 border-t border-gray-100 pt-6">{footer}</div>}
-      </div>
+        </div>
 
-      <aside className="space-y-4">
-        <div className="rounded-xl border border-gray-100 bg-white p-4">
+        <aside className="space-y-4">
+          <div className="rounded-xl border border-gray-100 bg-white p-4">
           <h3 className="text-sm font-bold text-gray-900">Duty Engine Summary</h3>
           <ul className="mt-3 space-y-2 text-xs text-gray-600">
             <li className="flex items-center justify-between"><span>Total Active Roles</span><span className="font-semibold text-gray-900">7</span></li>
@@ -227,29 +227,31 @@ export function StepDutyOps({ data, onChange, footer }: StepProps) {
             <li className="flex items-center justify-between"><span>Client Approval</span><span className="font-semibold text-gray-900">{((data.clientApproval as string) || "mandatory").replace(/^./, (s) => s.toUpperCase())}</span></li>
             <li className="flex items-center justify-between"><span>Escalation</span><span className="font-semibold text-gray-900">{((data.escalation as string) || "enabled").replace(/^./, (s) => s.toUpperCase())}</span></li>
           </ul>
-        </div>
+          </div>
 
-        <div className="rounded-xl border border-violet-100 bg-violet-soft/40 p-4">
-          <div className="flex items-start gap-2">
-            <CircleHelp className="mt-0.5 h-4 w-4 shrink-0 text-violet-accent" />
-            <div>
-              <h3 className="text-sm font-bold text-violet-deep">Why is this important?</h3>
-              <ul className="mt-2 space-y-1.5 text-xs text-violet-deep/90">
-                <li>Accurate role mapping ensures the right staff is matched.</li>
-                <li>Clear information helps staff make informed decisions quickly.</li>
-                <li>Better operations speed up assignment and reduce rejections.</li>
-                <li>Happy clients come from right details and right staff.</li>
-              </ul>
+          <div className="rounded-xl border border-violet-100 bg-violet-soft/40 p-4">
+            <div className="flex items-start gap-2">
+              <CircleHelp className="mt-0.5 h-4 w-4 shrink-0 text-violet-accent" />
+              <div>
+                <h3 className="text-sm font-bold text-violet-deep">Why is this important?</h3>
+                <ul className="mt-2 space-y-1.5 text-xs text-violet-deep/90">
+                  <li>Accurate role mapping ensures the right staff is matched.</li>
+                  <li>Clear information helps staff make informed decisions quickly.</li>
+                  <li>Better operations speed up assignment and reduce rejections.</li>
+                  <li>Happy clients come from right details and right staff.</li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="rounded-xl border border-sky-100 bg-sky-50/80 p-4">
-          <h3 className="text-sm font-bold text-sky-900">Need help setting this up?</h3>
-          <p className="mt-1 text-xs leading-relaxed text-sky-900/80">Our operations expert can guide your duty settings for best results.</p>
-          <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
-        </div>
-      </aside>
+          <div className="rounded-xl border border-sky-100 bg-sky-50/80 p-4">
+            <h3 className="text-sm font-bold text-sky-900">Need help setting this up?</h3>
+            <p className="mt-1 text-xs leading-relaxed text-sky-900/80">Our operations expert can guide your duty settings for best results.</p>
+            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
+          </div>
+        </aside>
+      </div>
+      {footer && <div className="mt-8 border-t border-gray-100 pt-6">{footer}</div>}
     </div>
   );
 }
