@@ -28,7 +28,18 @@ export function CrmShell({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [leadsOpen, setLeadsOpen] = useState(pathname.startsWith("/dashboard/leads"));
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => ({
+    Leads: pathname.startsWith("/dashboard/leads"),
+    "Clients & Patients": pathname.startsWith("/dashboard/clients"),
+  }));
+
+  function isGroupOpen(label: string) {
+    return openGroups[label] ?? false;
+  }
+
+  function toggleGroup(label: string) {
+    setOpenGroups((prev) => ({ ...prev, [label]: !prev[label] }));
+  }
   const displayName = user.fullName?.split(" ")[0] || "Admin";
   const roleLabel = user.role === "owner" ? "Super Admin" : user.role || "Admin";
 
@@ -54,7 +65,7 @@ export function CrmShell({
                   <div key={item.label}>
                     <button
                       type="button"
-                      onClick={() => setLeadsOpen((o) => !o)}
+                      onClick={() => toggleGroup(item.label)}
                       className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-[13px] font-medium transition ${
                         groupActive ? "bg-white/10 text-white" : "text-white/75 hover:bg-white/10"
                       }`}
@@ -63,9 +74,9 @@ export function CrmShell({
                         <Icon className="h-4 w-4" />
                         {item.label}
                       </span>
-                      {leadsOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+                      {isGroupOpen(item.label) ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                     </button>
-                    {leadsOpen && (
+                    {isGroupOpen(item.label) && (
                       <div className="ml-3 mt-0.5 space-y-0.5 border-l border-white/10 pl-2">
                         {item.children.map((child) => {
                           const active = isActive(child.href);

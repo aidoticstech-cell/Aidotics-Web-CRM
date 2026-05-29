@@ -36,7 +36,14 @@ export const CRM_NAV: CrmNavItem[] = [
       { label: "Lead Analytics", href: "/dashboard/leads/analytics", Icon: LineChart },
     ],
   },
-  { label: "Clients & Patients", Icon: UserRound },
+  {
+    label: "Clients & Patients",
+    Icon: UserRound,
+    children: [
+      { label: "Client List", href: "/dashboard/clients", Icon: List },
+      { label: "Client Details", href: "/dashboard/clients/details?id=1", Icon: FileText },
+    ],
+  },
   { label: "Workforce", Icon: BriefcaseMedical },
   { label: "Duties", Icon: ClipboardList },
   { label: "Attendance & Leave", Icon: CalendarDays },
