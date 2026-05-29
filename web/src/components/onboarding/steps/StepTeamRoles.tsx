@@ -2,7 +2,7 @@
 
 import { UserCog, Plus, Pencil, Building2 } from "lucide-react";
 import { Field } from "@/components/ui/FormBits";
-import { AsideCard, SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
+import { SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 const ROLES = [
@@ -27,29 +27,6 @@ export function StepTeamRoles({ footer }: StepProps) {
       title="Team Structure & Roles"
       subtitle="Define organization hierarchy, roles and reporting lines."
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Organization Summary">
-            <dl className="grid grid-cols-2 gap-3 text-sm">
-              <div><dt className="text-gray-500">Departments</dt><dd className="text-xl font-black text-violet-accent">3</dd></div>
-              <div><dt className="text-gray-500">Branches</dt><dd className="text-xl font-black text-violet-accent">3</dd></div>
-              <div><dt className="text-gray-500">Active Roles</dt><dd className="text-xl font-black text-violet-accent">5</dd></div>
-              <div><dt className="text-gray-500">Staff</dt><dd className="text-xl font-black text-violet-accent">70</dd></div>
-            </dl>
-          </AsideCard>
-          <AsideCard title="Role Distribution">
-            <div className="mx-auto h-24 w-24 rounded-full border-[10px] border-violet-accent border-r-emerald-400 border-b-amber-400 border-l-sky-400" />
-            <p className="mt-2 text-center text-xs text-gray-500">70 staff across 5 roles</p>
-          </AsideCard>
-          <AsideCard title="Benefits" className="border-emerald-100 bg-emerald-50/50">
-            <ul className="space-y-1 text-xs text-emerald-900">
-              {["Clear reporting hierarchy", "Streamlined approvals", "Better accountability"].map((t) => (
-                <li key={t}>✓ {t}</li>
-              ))}
-            </ul>
-          </AsideCard>
-        </>
-      }
     >
       <SectionBlock letter="A" title="Organization Hierarchy">
         <div className="rounded-xl border border-gray-100 bg-gray-50/60 p-6 text-center">

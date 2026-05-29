@@ -2,7 +2,7 @@
 
 import { Fingerprint, CreditCard, Car, FileText, Vote } from "lucide-react";
 import { Field, Toggle } from "@/components/ui/FormBits";
-import { AsideCard, SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
+import { SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 const METHODS = [
@@ -22,31 +22,6 @@ export function StepDigitalIdentity({ data, onChange, footer }: StepProps) {
       title="Digital Identity System"
       subtitle="Configure identity verification methods and security settings."
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Digital Identity Preview">
-            <p className="mb-2 text-xs font-semibold text-gray-500">Enabled Verification Methods</p>
-            <ul className="space-y-2 text-sm">
-              {METHODS.map((m) => (
-                <li key={m.id} className="flex items-center gap-2">
-                  <span className={`h-2 w-2 rounded-full ${enabled.includes(m.id) ? "bg-emerald-500" : "bg-gray-300"}`} />
-                  {m.label}
-                </li>
-              ))}
-            </ul>
-          </AsideCard>
-          <AsideCard title="Benefits" className="border-emerald-100 bg-emerald-50/50">
-            <ul className="space-y-2 text-xs text-emerald-900">
-              {["Secure identity verification", "Faster client onboarding", "Regulatory compliance", "Reduced fraud risk"].map((t) => (
-                <li key={t}>✓ {t}</li>
-              ))}
-            </ul>
-          </AsideCard>
-          <div className="rounded-xl border border-sky-100 bg-sky-50/80 p-3 text-[11px] text-sky-900">
-            Change later from <strong>Settings → Security & Identity</strong>.
-          </div>
-        </>
-      }
     >
       <SectionBlock letter="A" title="Identity Verification Methods" subtitle="Choose methods to enable for clients and staff.">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

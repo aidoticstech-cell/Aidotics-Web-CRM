@@ -2,7 +2,7 @@
 
 import { GraduationCap, Plus, Stethoscope } from "lucide-react";
 import { Field } from "@/components/ui/FormBits";
-import { AsideCard, SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
+import { SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 const SKILLS = [
@@ -31,22 +31,6 @@ export function StepStaffSkillMatrix({ data, onChange, footer }: StepProps) {
       title="Staff Skill Matrix"
       subtitle="Define skills, experience and certifications required for each role."
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Role Summary">
-            <dl className="space-y-2 text-sm">
-              <div className="flex justify-between"><dt className="text-gray-500">Role</dt><dd className="font-semibold">{role}</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Skills Selected</dt><dd className="font-semibold text-emerald-700">7 of 9</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Mandatory Skills</dt><dd className="font-semibold">5</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Certification</dt><dd className="font-semibold">{certRequired ? "Yes" : "No"}</dd></div>
-              <div className="flex justify-between border-t pt-2"><dt className="text-gray-500">Min. Experience</dt><dd className="font-semibold">1 – 3 Years</dd></div>
-            </dl>
-          </AsideCard>
-          <div className="rounded-xl border border-emerald-100 bg-emerald-50/80 p-4 text-xs text-emerald-800">
-            Manage role-specific skills in <strong>Work Settings → Skills & Competencies</strong>.
-          </div>
-        </>
-      }
     >
       <div className="mb-6 flex flex-wrap items-end gap-4">
         <div className="min-w-[200px] flex-1">

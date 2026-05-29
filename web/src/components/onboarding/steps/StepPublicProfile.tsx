@@ -2,7 +2,7 @@
 
 import { Globe } from "lucide-react";
 import { Field } from "@/components/ui/FormBits";
-import { AsideCard, SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
+import { SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 export function StepPublicProfile({ data, onChange, footer }: StepProps) {
@@ -14,37 +14,6 @@ export function StepPublicProfile({ data, onChange, footer }: StepProps) {
       tabs={["Branding", "Services Showcase", "Trust & Reviews", "SEO & Discoverability", "Sharing & QR"]}
       activeTab={0}
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Live Preview">
-            <p className="text-[11px] text-gray-500">This is how your public profile will appear.</p>
-            <div className="mt-2 overflow-hidden rounded-xl border border-gray-100 bg-white">
-              <div className="h-24 bg-[linear-gradient(120deg,#7dd3fc,#34d399)]" />
-              <div className="-mt-8 px-3 pb-3">
-                <div className="h-12 w-12 rounded-full border-2 border-white bg-violet-soft" />
-                <p className="mt-2 text-sm font-bold text-gray-900">{(data.publicName as string) || "Healing Hands Healthcare Services"}</p>
-                <p className="text-xs text-gray-500">{(data.tagline as string) || "Compassionate Care. Trusted Support."}</p>
-                <p className="mt-2 text-[11px] text-gray-600">4.8 | 24/7 Support</p>
-              </div>
-            </div>
-            <button type="button" className="btn-primary mt-3 w-full !py-2 text-xs">
-              View Full Public Profile
-            </button>
-          </AsideCard>
-
-          <AsideCard title="Why is this important?" className="border-violet-100 bg-violet-soft/40">
-            <ul className="space-y-2 text-xs text-violet-deep/90">
-              {[
-                "Stronger visibility - A complete profile builds trust and attracts more clients.",
-                "Better credibility - Showcase services, reviews and experience.",
-                "More leads - Increase inquiries and conversions through your profile.",
-              ].map((t) => (
-                <li key={t}>• {t}</li>
-              ))}
-            </ul>
-          </AsideCard>
-        </>
-      }
     >
       <div className="grid gap-6 lg:grid-cols-3">
         <SectionBlock letter="A" title="Branding Information" subtitle="This information will be visible on your public profile." className="lg:col-span-2">

@@ -70,7 +70,7 @@ export function StepResponsibility({ data, onChange }: StepProps) {
   }
 
   return (
-    <div className="grid gap-8 xl:grid-cols-[1fr_300px]">
+    <div>
       <div>
         <div className="flex items-start gap-3">
           <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-soft sm:flex">
@@ -136,7 +136,7 @@ export function StepResponsibility({ data, onChange }: StepProps) {
             </div>
           </Section>
 
-          <div className="grid gap-8 xl:grid-cols-[1fr_260px]">
+          <div className="grid gap-8 lg:grid-cols-2">
             <div>
               <Section letter="B" title="Automation Rules" subtitle="Turn on automations that match how tightly you want the CRM to supervise work.">
                 <div className="space-y-3">
@@ -210,26 +210,6 @@ export function StepResponsibility({ data, onChange }: StepProps) {
           </Section>
         </div>
       </div>
-
-      <aside>
-        <div className="crm-card sticky top-6 border-emerald-100 bg-gradient-to-b from-emerald-50/90 to-white">
-          <h3 className="font-bold text-emerald-900">Benefits of Automation</h3>
-          <ul className="mt-4 space-y-2.5 text-sm text-emerald-900/85">
-            {[
-              "Fewer dropped duties and missed follow-ups",
-              "Clear ownership at every stage of the lifecycle",
-              "Faster escalations when SLAs are at risk",
-              "Less manual coordination for your core team",
-              "Better visibility for owners and managers",
-            ].map((t) => (
-              <li key={t} className="flex gap-2">
-                <span className="text-emerald-600">✓</span>
-                {t}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </aside>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Wallet } from "lucide-react";
-import { AsideCard, SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
+import { SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 const PLANS = [
@@ -51,40 +51,6 @@ export function StepSubscription({ data, onChange, footer }: StepProps) {
       tabs={["Choose Plan", "Final Checklist", "Go Live"]}
       activeTab={0}
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Subscription Summary">
-            <ul className="space-y-2 text-xs text-gray-700">
-              <li className="flex items-center justify-between"><span>Plan</span><span className="font-semibold text-gray-900">Professional (Yearly)</span></li>
-              <li className="flex items-center justify-between"><span>Staff Limit</span><span className="font-semibold text-gray-900">Up to 250 Staff</span></li>
-              <li className="flex items-center justify-between"><span>Branch Limit</span><span className="font-semibold text-gray-900">Up to 15 Branches</span></li>
-              <li className="flex items-center justify-between"><span>Next Billing Date</span><span className="font-semibold text-gray-900">15 May 2025</span></li>
-              <li className="flex items-center justify-between border-t pt-2"><span>Amount</span><span className="text-base font-black text-violet-accent">₹95,988 / year</span></li>
-            </ul>
-            <div className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-1 text-center text-[11px] font-semibold text-emerald-700">
-              You Save ₹19,200 with yearly billing!
-            </div>
-          </AsideCard>
-
-          <AsideCard title="What's Next?">
-            <ul className="space-y-2 text-xs text-gray-700">
-              {[
-                "Account Activation - Your account will be active immediately after launch.",
-                "Team Onboarding - Invite your team members and set their access.",
-                "Import Data - Import your existing leads, clients and staff data.",
-                "Start Operations - Begin managing leads, duties and staff seamlessly.",
-              ].map((t) => (
-                <li key={t}>• {t}</li>
-              ))}
-            </ul>
-          </AsideCard>
-
-          <AsideCard title="Need Help?" className="border-sky-100 bg-sky-50/80">
-            <p className="text-xs text-sky-900/80">Our onboarding team is here to help you go live smoothly.</p>
-            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
-          </AsideCard>
-        </>
-      }
     >
       <SectionBlock letter="A" title="Choose Your Plan" subtitle="Select the plan that fits your bureau's needs. You can upgrade or downgrade anytime.">
         <div className="mb-3 flex justify-end">

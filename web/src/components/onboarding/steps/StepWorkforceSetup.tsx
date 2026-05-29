@@ -1,7 +1,7 @@
 "use client";
 
 import { Users, Pencil, Trash2, Plus } from "lucide-react";
-import { AsideCard, StepLayout } from "@/components/onboarding/StepLayout";
+import { StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 const TEAM_ROWS = [
@@ -31,44 +31,6 @@ export function StepWorkforceSetup({ data, onChange, footer }: StepProps) {
       tabs={["Workforce", "Role Templates", "Permissions Matrix", "Digital Identity", "Responsibility Mapping"]}
       activeTab={0}
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Team Structure Preview">
-            <ul className="space-y-2 text-xs text-gray-700">
-              {[
-                "Organized Team Structure",
-                "Role Based Access",
-                "Digital Identity",
-                "Clear Responsibilities",
-              ].map((item) => (
-                <li key={item} className="flex gap-2">
-                  <span className="mt-0.5 text-violet-accent">◎</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </AsideCard>
-          <AsideCard title="Quick Tips">
-            <ul className="space-y-2 text-xs text-gray-700">
-              {[
-                "Add internal team members who will use CRM",
-                "Create custom roles if defaults don’t fit",
-                "Use permissions matrix to control module access",
-                "You can update and invite more users later",
-              ].map((item) => (
-                <li key={item} className="flex gap-2">
-                  <span className="mt-0.5 text-emerald-600">✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </AsideCard>
-          <AsideCard title="Need help setting this up?">
-            <p className="text-xs text-gray-600">Our onboarding expert can help you configure this step quickly.</p>
-            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
-          </AsideCard>
-        </>
-      }
     >
       <section className="rounded-xl border border-gray-100 p-4">
         <div className="mb-4 flex items-center justify-between gap-2">

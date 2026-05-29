@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { profileDocTypeFromLabel, uploadProfileVerificationDoc } from "@/lib/files-api";
+import { formatProfileUploadError } from "@/lib/upload-errors";
 import type { ComponentType } from "react";
 import {
   Building2,
@@ -13,10 +14,8 @@ import {
   Heart,
   Baby,
   Plus,
-  ShieldCheck,
-  CircleHelp,
 } from "lucide-react";
-import { Field, InfoBox } from "@/components/ui/FormBits";
+import { Field } from "@/components/ui/FormBits";
 import type { StepProps } from "./types";
 
 type ServiceItem = {
@@ -106,30 +105,34 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
       });
       setUploadState((s) => ({ ...s, [label]: { status: "done" } }));
     } catch (e) {
-      const message = e instanceof Error ? e.message : "Upload failed";
-      setUploadState((s) => ({ ...s, [label]: { status: "error", message } }));
+      setUploadState((s) => ({
+        ...s,
+        [label]: { status: "error", message: formatProfileUploadError(e) },
+      }));
     }
   }
 
   return (
     <div>
-      <div className="grid gap-6 xl:grid-cols-[1fr_300px]">
-        <div className="onboarding-panel !overflow-hidden !p-0">
-          <div className="flex items-start gap-4 border-b border-gray-100 px-6 py-6 sm:px-8 sm:py-7">
+      <div className="onboarding-panel !overflow-hidden !p-0">
+        <div className="flex items-start gap-4 border-b border-gray-100 px-6 py-6 sm:px-8 sm:py-7">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-soft">
             <Building2 className="h-5 w-5 text-violet-accent" />
           </span>
           <div className="min-w-0">
             <h1 className="page-title !text-xl sm:!text-2xl">Bureau Profile & Verification</h1>
-            <p className="page-subtitle !mt-1.5">Provide basic information about your bureau. These details will be used across your CRM.</p>
+            <p className="page-subtitle !mt-1.5">
+              Provide basic information about your bureau. These details will be used across your CRM.
+            </p>
           </div>
         </div>
 
         <div className="space-y-8 p-6 sm:p-8">
-          <div className="grid gap-6 lg:grid-cols-2">
-          <section className="rounded-xl border border-gray-100 p-4">
-            <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">A.</span> Basic Bureau Identity</h3>
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <section>
+            <h3 className="text-sm font-bold text-gray-900">
+              <span className="text-violet-accent">A.</span> Basic Bureau Identity
+            </h3>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <Field label="Bureau Legal Name" required>
                 <input className="crm-input" value={(data.legalName as string) ?? ""} onChange={(e) => onChange({ legalName: e.target.value })} />
               </Field>
@@ -152,18 +155,18 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
               <Field label="PAN Number" required>
                 <input className="crm-input" value={(data.panNumber as string) ?? ""} onChange={(e) => onChange({ panNumber: e.target.value })} />
               </Field>
-              <div className="lg:col-span-2">
-                <Field label="CIN (Optional)">
-                  <input className="crm-input" value={(data.cinNumber as string) ?? ""} onChange={(e) => onChange({ cinNumber: e.target.value })} />
-                </Field>
-              </div>
+              <Field label="CIN (Optional)" className="sm:col-span-2 lg:col-span-3">
+                <input className="crm-input" value={(data.cinNumber as string) ?? ""} onChange={(e) => onChange({ cinNumber: e.target.value })} />
+              </Field>
             </div>
           </section>
 
-          <section className="rounded-xl border border-gray-100 p-4">
-            <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">B.</span> Services Offered</h3>
+          <section>
+            <h3 className="text-sm font-bold text-gray-900">
+              <span className="text-violet-accent">B.</span> Services Offered
+            </h3>
             <p className="mt-1 text-xs text-gray-500">Select all services your bureau provides</p>
-            <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
               {SERVICE_ITEMS.map(({ id, label, Icon }) => {
                 const selected = serviceIds.includes(id);
                 return (
@@ -171,30 +174,35 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
                     key={id}
                     type="button"
                     onClick={() => toggleService(id)}
-                    className={`relative rounded-xl border-2 px-2 py-3 text-center transition ${
+                    className={`relative flex min-h-[108px] flex-col items-center justify-center rounded-xl border-2 px-3 py-4 text-center transition ${
                       selected ? "border-violet-accent bg-violet-soft/50" : "border-gray-200 bg-white hover:border-gray-300"
                     }`}
                   >
                     {selected && (
-                      <span className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded bg-violet-accent text-white">
+                      <span className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded bg-violet-accent text-white">
                         <Check className="h-2.5 w-2.5" strokeWidth={3} />
                       </span>
                     )}
-                    <span className={`mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-lg ${selected ? "bg-violet-accent text-white" : "bg-gray-100 text-gray-500"}`}>
+                    <span
+                      className={`mb-2.5 flex h-10 w-10 items-center justify-center rounded-lg ${
+                        selected ? "bg-violet-accent text-white" : "bg-gray-100 text-gray-500"
+                      }`}
+                    >
                       <Icon className="h-4 w-4" />
                     </span>
-                    <span className="text-[11px] font-semibold leading-tight text-gray-800">{label}</span>
+                    <span className="text-xs font-semibold leading-snug text-gray-800">{label}</span>
                   </button>
                 );
               })}
             </div>
           </section>
-          </div>
 
-          <section className="rounded-xl border border-gray-100 p-4">
-            <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">C.</span> Operational Snapshot</h3>
-            <div className="mt-4 grid gap-4 lg:grid-cols-3">
-              <div className="lg:col-span-2">
+          <section>
+            <h3 className="text-sm font-bold text-gray-900">
+              <span className="text-violet-accent">C.</span> Operational Snapshot
+            </h3>
+            <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="md:col-span-2 lg:col-span-1">
                 <Field label="Cities / Areas Covered" required>
                   <div className="flex min-h-[48px] flex-wrap items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5">
                     {cities.map((city) => (
@@ -224,7 +232,7 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
               </Field>
             </div>
 
-            <div className="mt-3">
+            <div className="mt-4">
               <p className="mb-2 text-xs font-semibold text-gray-700">Primary Lead Sources (Select all that apply)</p>
               <div className="flex flex-wrap gap-2">
                 {LEAD_SOURCES.map((src) => {
@@ -234,7 +242,7 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
                       key={src}
                       type="button"
                       onClick={() => toggleSource(src)}
-                      className={`rounded-lg border px-2.5 py-1.5 text-xs font-medium transition ${
+                      className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition ${
                         on ? "border-violet-accent bg-violet-soft text-violet-deep" : "border-gray-200 bg-white text-gray-500"
                       }`}
                     >
@@ -246,95 +254,76 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
             </div>
           </section>
 
-          <div className="grid gap-6 lg:grid-cols-2">
-            <section className="rounded-xl border border-gray-100 p-4">
-              <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">D.</span> Verification Documents <span className="ml-1 rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700">Required</span></h3>
-              <p className="mt-1 text-xs text-gray-500">Upload clear, valid documents for verification.</p>
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                {[
-                  "GST Certificate",
-                  "PAN Card",
-                  "Aadhaar Card",
-                  "Cancelled Cheque",
-                ].map((doc) => {
-                  const docType = profileDocTypeFromLabel(doc);
-                  const saved = docType ? uploads[docType] : undefined;
-                  const state = uploadState[doc] ?? { status: "idle" as const };
-                  return (
-                    <div key={doc} className="rounded-xl border border-gray-200 bg-white p-3">
-                      <p className="text-[11px] font-semibold text-gray-700">{doc}</p>
-                      <p className="mt-1 text-[10px] text-gray-400">
-                        {saved?.fileName ? `Saved: ${saved.fileName}` : "Upload .pdf / .jpg"}
-                      </p>
-                      <label className="mt-2 inline-block cursor-pointer text-[11px] font-semibold text-violet-accent">
-                        {state.status === "uploading" ? "Uploading…" : saved ? "Replace" : "Upload"}
-                        <input
-                          type="file"
-                          accept=".pdf,.jpg,.jpeg,.png,.webp"
-                          className="sr-only"
-                          disabled={state.status === "uploading"}
-                          onChange={(e) => {
-                            const f = e.target.files?.[0];
-                            void handleDocUpload(doc, f);
-                            e.target.value = "";
-                          }}
-                        />
-                      </label>
-                      {state.status === "error" && (
-                        <p className="mt-1 text-[10px] text-red-600">{state.message}</p>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <p className="mt-3 text-[11px] text-gray-500">Your documents are secure and encrypted. They will only be used for verification purposes.</p>
-            </section>
+          <section>
+            <h3 className="text-sm font-bold text-gray-900">
+              <span className="text-violet-accent">D.</span> Verification Documents{" "}
+              <span className="ml-1 rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-700">
+                Required
+              </span>
+            </h3>
+            <p className="mt-1 text-xs text-gray-500">Upload clear, valid documents for verification.</p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {["GST Certificate", "PAN Card", "Aadhaar Card", "Cancelled Cheque"].map((doc) => {
+                const docType = profileDocTypeFromLabel(doc);
+                const saved = docType ? uploads[docType] : undefined;
+                const state = uploadState[doc] ?? { status: "idle" as const };
+                return (
+                  <div key={doc} className="rounded-xl border border-gray-200 bg-gray-50/40 p-4">
+                    <p className="text-xs font-semibold text-gray-800">{doc}</p>
+                    <p className="mt-1 text-[11px] text-gray-500">
+                      {saved?.fileName ? `Saved: ${saved.fileName}` : "PDF, JPG, or PNG"}
+                    </p>
+                    <label className="mt-3 inline-block cursor-pointer text-xs font-semibold text-violet-accent hover:underline">
+                      {state.status === "uploading" ? "Uploading…" : saved ? "Replace file" : "Upload file"}
+                      <input
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png,.webp"
+                        className="sr-only"
+                        disabled={state.status === "uploading"}
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          void handleDocUpload(doc, f);
+                          e.target.value = "";
+                        }}
+                      />
+                    </label>
+                    {state.status === "error" && (
+                      <p className="mt-2 text-[11px] leading-relaxed text-red-600">{state.message}</p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <p className="mt-3 text-[11px] text-gray-500">
+              Documents are stored securely in Supabase. If uploads fail, configure SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY on Render.
+            </p>
+          </section>
 
-            <section className="rounded-xl border border-gray-100 p-4">
-              <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">E.</span> Contact Details</h3>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <Field label="Owner / Contact Person Name" required>
-                  <input className="crm-input" value={(data.ownerName as string) ?? ""} onChange={(e) => onChange({ ownerName: e.target.value })} />
-                </Field>
-                <Field label="Mobile Number" required>
-                  <input className="crm-input" value={(data.ownerMobile as string) ?? ""} onChange={(e) => onChange({ ownerMobile: e.target.value })} />
-                </Field>
-                <Field label="Email Address" required>
-                  <input className="crm-input" type="email" value={(data.ownerEmail as string) ?? ""} onChange={(e) => onChange({ ownerEmail: e.target.value })} />
-                </Field>
-                <Field label="WhatsApp Number">
-                  <input className="crm-input" value={(data.whatsappNumber as string) ?? ""} onChange={(e) => onChange({ whatsappNumber: e.target.value })} />
-                </Field>
-                <div className="sm:col-span-2">
-                  <Field label="Website (Optional)">
-                    <input className="crm-input" value={(data.website as string) ?? ""} onChange={(e) => onChange({ website: e.target.value })} />
-                  </Field>
-                </div>
-              </div>
-            </section>
-          </div>
-          </div>
+          <section>
+            <h3 className="text-sm font-bold text-gray-900">
+              <span className="text-violet-accent">E.</span> Contact Details
+            </h3>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <Field label="Owner / Contact Person Name" required>
+                <input className="crm-input" value={(data.ownerName as string) ?? ""} onChange={(e) => onChange({ ownerName: e.target.value })} />
+              </Field>
+              <Field label="Mobile Number" required>
+                <input className="crm-input" value={(data.ownerMobile as string) ?? ""} onChange={(e) => onChange({ ownerMobile: e.target.value })} />
+              </Field>
+              <Field label="Email Address" required>
+                <input className="crm-input" type="email" value={(data.ownerEmail as string) ?? ""} onChange={(e) => onChange({ ownerEmail: e.target.value })} />
+              </Field>
+              <Field label="WhatsApp Number">
+                <input className="crm-input" value={(data.whatsappNumber as string) ?? ""} onChange={(e) => onChange({ whatsappNumber: e.target.value })} />
+              </Field>
+              <Field label="Website (Optional)" className="sm:col-span-2">
+                <input className="crm-input" value={(data.website as string) ?? ""} onChange={(e) => onChange({ website: e.target.value })} />
+              </Field>
+            </div>
+          </section>
         </div>
-
-        <aside className="space-y-4">
-          <div className="rounded-xl border border-gray-200 bg-white p-4">
-          <h3 className="text-sm font-bold text-gray-900">Why is this important?</h3>
-          <ul className="mt-3 space-y-3 text-xs text-gray-600">
-            <li className="flex gap-2"><ShieldCheck className="mt-0.5 h-4 w-4 text-gray-400" /> Helps us verify your bureau and staff.</li>
-            <li className="flex gap-2"><CircleHelp className="mt-0.5 h-4 w-4 text-gray-400" /> Personalizes your CRM per your setup preferences.</li>
-            <li className="flex gap-2"><ShieldCheck className="mt-0.5 h-4 w-4 text-gray-400" /> Required for billing and compliance.</li>
-          </ul>
-          </div>
-
-          <InfoBox variant="green" title="Tips for you">
-            <ul className="space-y-2 text-xs">
-              <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 text-emerald-600" /> Please enter correct GST & PAN details.</li>
-              <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 text-emerald-600" /> Upload clear documents for quick verification.</li>
-              <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 text-emerald-600" /> You can update these details anytime from settings.</li>
-            </ul>
-          </InfoBox>
-        </aside>
       </div>
+
       {footer && (
         <div className="mt-8 border-t border-gray-100 pt-6">
           <div className="px-0 sm:px-1">{footer}</div>

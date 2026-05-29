@@ -2,7 +2,7 @@
 
 import { Share2, Plus, Eye, Pencil, MoreVertical } from "lucide-react";
 import { Field, Toggle } from "@/components/ui/FormBits";
-import { AsideCard, SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
+import { SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 const CATEGORIES = [
@@ -30,35 +30,6 @@ export function StepPartnerNetwork({ data, onChange, footer }: StepProps) {
       title="Partner Network Integration"
       subtitle="Connect and manage third-party partners, agencies and service providers."
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Integration Health">
-            <div className="text-center">
-              <p className="text-3xl font-black text-emerald-600">85%</p>
-              <p className="text-xs text-gray-500">Healthy</p>
-            </div>
-            <ul className="mt-4 space-y-1 text-xs">
-              <li className="flex justify-between"><span className="text-emerald-600">Connected</span><span>3</span></li>
-              <li className="flex justify-between"><span className="text-amber-600">Pending</span><span>1</span></li>
-              <li className="flex justify-between"><span className="text-gray-500">Disconnected</span><span>1</span></li>
-            </ul>
-          </AsideCard>
-          <AsideCard title="Recent Activity">
-            <ul className="space-y-3 text-xs text-gray-600">
-              <li><strong>IDVerify:</strong> Data synced successfully · 2m ago</li>
-              <li><strong>PayFast:</strong> Payment webhook received · 15m ago</li>
-              <li><strong>LogiTrack:</strong> Connection pending approval · 1h ago</li>
-            </ul>
-          </AsideCard>
-          <AsideCard title="Benefits" className="border-emerald-100 bg-emerald-50/50">
-            <ul className="space-y-1 text-xs text-emerald-900">
-              {["Seamless data exchange", "Reduced manual work", "Better partner visibility"].map((t) => (
-                <li key={t}>✓ {t}</li>
-              ))}
-            </ul>
-          </AsideCard>
-        </>
-      }
     >
       <SectionBlock letter="A" title="Partner Categories" subtitle="Select the partner categories you want to enable.">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

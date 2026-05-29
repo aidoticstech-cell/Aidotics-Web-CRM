@@ -2,7 +2,7 @@
 
 import { GitBranch } from "lucide-react";
 import { Field } from "@/components/ui/FormBits";
-import { AsideCard, SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
+import { SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 const WORKFLOW_STAGES = [
@@ -24,38 +24,6 @@ export function StepWorkflowBuilder({ data, onChange, footer }: StepProps) {
       tabs={["Workflow Builder", "Approvals & Rules", "Partner Network", "Notifications", "SLA & Escalation"]}
       activeTab={0}
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Workflow Summary">
-            <ul className="space-y-2 text-xs text-gray-700">
-              <li className="flex items-center justify-between"><span>Total Stages</span><span className="font-semibold text-gray-900">7</span></li>
-              <li className="flex items-center justify-between"><span>Approval Rules</span><span className="font-semibold text-gray-900">5</span></li>
-              <li className="flex items-center justify-between"><span>Partner Network</span><span className="font-semibold text-gray-900">Enabled</span></li>
-              <li className="flex items-center justify-between"><span>Notification Channels</span><span className="font-semibold text-gray-900">4</span></li>
-              <li className="flex items-center justify-between"><span>SLA Configured</span><span className="font-semibold text-gray-900">Yes</span></li>
-              <li className="flex items-center justify-between"><span>Escalation Level</span><span className="font-semibold text-gray-900">3</span></li>
-            </ul>
-          </AsideCard>
-
-          <AsideCard title="Why is this important?" className="border-violet-100 bg-violet-soft/40">
-            <ul className="space-y-2 text-xs text-violet-deep/90">
-              {[
-                "Structured workflow brings consistency in daily operations.",
-                "Automated approvals speed up decisions and reduce delays.",
-                "Timely notifications keep everyone informed at the right time.",
-                "SLA and escalation ensure no lead or duty is left unattended.",
-              ].map((w) => (
-                <li key={w}>• {w}</li>
-              ))}
-            </ul>
-          </AsideCard>
-
-          <AsideCard title="Need help setting this up?" className="border-sky-100 bg-sky-50/80">
-            <p className="text-xs text-sky-900/80">Our automation expert can help you configure the best workflow.</p>
-            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
-          </AsideCard>
-        </>
-      }
     >
       <SectionBlock
         letter="A"

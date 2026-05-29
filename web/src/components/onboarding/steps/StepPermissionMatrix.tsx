@@ -2,7 +2,7 @@
 
 import { Lock, Plus } from "lucide-react";
 import { Toggle } from "@/components/ui/FormBits";
-import { AsideCard, SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
+import { SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 const MODULES = [
@@ -34,44 +34,6 @@ export function StepPermissionMatrix({ data, onChange, footer }: StepProps) {
       title="Permission Matrix"
       subtitle="Define role-based access to modules and features."
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Role Permission Summary">
-            <div className="relative mx-auto flex h-28 w-28 items-center justify-center">
-              <svg viewBox="0 0 36 36" className="h-full w-full -rotate-90">
-                <circle cx="18" cy="18" r="15" fill="none" stroke="#ede9fe" strokeWidth="4" />
-                <circle cx="18" cy="18" r="15" fill="none" stroke="#10b981" strokeWidth="4" strokeDasharray="25 100" />
-                <circle cx="18" cy="18" r="15" fill="none" stroke="#0ea5e9" strokeWidth="4" strokeDasharray="20 100" strokeDashoffset="-25" />
-              </svg>
-              <span className="absolute text-center text-xs font-black">
-                <span className="block text-lg text-violet-accent">26</span>
-                Total Features
-              </span>
-            </div>
-            <ul className="mt-4 space-y-1 text-xs">
-              <li className="flex justify-between"><span className="text-emerald-600">Full Access</span><span>6</span></li>
-              <li className="flex justify-between"><span className="text-sky-600">Read / Write</span><span>5</span></li>
-              <li className="flex justify-between"><span className="text-amber-600">Read Only</span><span>4</span></li>
-              <li className="flex justify-between"><span className="text-red-500">No Access</span><span>11</span></li>
-            </ul>
-          </AsideCard>
-          <AsideCard title="Quick View by Module">
-            <ul className="space-y-2 text-xs">
-              {MODULES.slice(0, 6).map((m) => (
-                <li key={m.module} className="flex justify-between gap-2">
-                  <span className="truncate text-gray-700">{m.module}</span>
-                  <span className={`shrink-0 font-semibold ${ACCESS.find((a) => a.key === m.access)?.color}`}>
-                    {ACCESS.find((a) => a.key === m.access)?.label.split(" ")[0]}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </AsideCard>
-          <div className="rounded-xl border border-violet-100 bg-violet-soft/50 p-3 text-[11px]">
-            Update permissions anytime from <strong>Settings → Roles & Permissions</strong>.
-          </div>
-        </>
-      }
     >
       <SectionBlock
         letter="A"

@@ -5,25 +5,11 @@ import {
   PartyPopper,
   CheckCircle2,
   Download,
-  Users,
-  GitBranch,
-  UserPlus,
-  BarChart3,
   ArrowRight,
-  Printer,
 } from "lucide-react";
 import { ONBOARDING_STEPS } from "@/lib/onboarding-steps";
-import { AsideCard, StepHero } from "@/components/onboarding/StepLayout";
+import { StepHero } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
-
-const WHATS_NEXT = [
-  { label: "Invite Your Team", Icon: Users },
-  { label: "Set Up First Workflow", Icon: GitBranch },
-  { label: "Add Your First Client", Icon: UserPlus },
-  { label: "Explore Reports", Icon: BarChart3 },
-];
-
-const HEALTH = ["Configuration", "Security", "Compliance", "Integrations", "Workflows"];
 
 export function StepCrmReady({ data, onChange, footer, requestComplete }: StepProps) {
   const acknowledged = !!data.acknowledged;
@@ -48,7 +34,7 @@ export function StepCrmReady({ data, onChange, footer, requestComplete }: StepPr
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1fr_300px]">
+    <div>
       <div className="onboarding-panel !overflow-hidden !p-0">
         <StepHero
           icon={PartyPopper}
@@ -106,50 +92,6 @@ export function StepCrmReady({ data, onChange, footer, requestComplete }: StepPr
 
         {footer && <div className="border-t border-gray-100 px-6 pb-6 pt-2 lg:px-8">{footer}</div>}
       </div>
-
-      <aside className="space-y-4">
-        <AsideCard title="What's Next?">
-          <ul className="space-y-2">
-            {WHATS_NEXT.map(({ label, Icon }) => (
-              <li key={label}>
-                <button type="button" className="flex w-full items-center justify-between rounded-lg border border-gray-100 px-3 py-2.5 text-sm font-medium hover:bg-gray-50">
-                  <span className="flex items-center gap-2"><Icon className="h-4 w-4 text-violet-accent" />{label}</span>
-                  <ArrowRight className="h-4 w-4 text-gray-400" />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </AsideCard>
-
-        <AsideCard title="Bureau Health Check">
-          <div className="flex items-center gap-4">
-            <div className="relative h-16 w-16">
-              <svg viewBox="0 0 36 36" className="h-full w-full -rotate-90">
-                <circle cx="18" cy="18" r="15" fill="none" stroke="#d1fae5" strokeWidth="3" />
-                <circle cx="18" cy="18" r="15" fill="none" stroke="#10b981" strokeWidth="3" strokeDasharray="100 100" />
-              </svg>
-              <span className="absolute inset-0 flex flex-col items-center justify-center text-[10px] font-black text-emerald-600">
-                100%
-                <span className="font-semibold">Excellent</span>
-              </span>
-            </div>
-            <ul className="space-y-1 text-xs">
-              {HEALTH.map((h) => (
-                <li key={h} className="flex items-center gap-1 text-emerald-700">
-                  <CheckCircle2 className="h-3 w-3" /> {h}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </AsideCard>
-
-        <AsideCard>
-          <button type="button" className="btn-secondary w-full !gap-2 text-xs">
-            <Printer className="h-4 w-4" />
-            Print Summary
-          </button>
-        </AsideCard>
-      </aside>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 "use client";
 
-import { Landmark, Pencil, Trash2, Check, CircleHelp } from "lucide-react";
-import { Field, InfoBox } from "@/components/ui/FormBits";
-import { AsideCard, StepLayout } from "@/components/onboarding/StepLayout";
+import { Landmark, Pencil, Trash2 } from "lucide-react";
+import { Field } from "@/components/ui/FormBits";
+import { StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 type Branch = { id: string; name: string; type: string; address: string; city: string; pincode: string; status: string };
@@ -33,45 +33,6 @@ export function StepBranchBilling({ data, onChange, footer }: StepProps) {
       tabs={["Branches / Offices", "Billing & GST", "Payment Collection", "Branch Access"]}
       activeTab={0}
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Billing Summary">
-            <dl className="space-y-2 text-xs">
-              <div className="flex justify-between"><dt className="text-gray-500">GST Type</dt><dd>Regular</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Place of Supply</dt><dd>Haryana (06)</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Invoice Prefix</dt><dd>{prefix}</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Financial Year</dt><dd>1 Apr 2025 - 31 Mar 2026</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Next Invoice Number</dt><dd>{prefix}{start}</dd></div>
-              <div className="flex justify-between"><dt className="text-gray-500">Primary Bank</dt><dd>HDFC Bank</dd></div>
-            </dl>
-          </AsideCard>
-          <AsideCard title="Why is this important?">
-            <ul className="space-y-2 text-xs text-gray-600">
-              {[
-                "Branches help you manage operations across locations.",
-                "Billing settings ensure accurate invoicing and GST compliance.",
-                "Payment methods allow smooth collection of payments.",
-                "User assignment gives the right people access to the right branch.",
-              ].map((t) => (
-                <li key={t} className="flex gap-2">
-                  <CircleHelp className="mt-0.5 h-3.5 w-3.5 text-gray-400" />
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </AsideCard>
-          <InfoBox variant="blue" title="Need help setting this up?">
-            <p className="text-xs text-gray-700">Our onboarding expert can guide you to complete this step quickly.</p>
-            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
-          </InfoBox>
-          <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3 text-xs text-emerald-800">
-            <div className="flex items-start gap-2">
-              <Check className="mt-0.5 h-4 w-4 shrink-0" />
-              <span>Use branch-level access in CRM. You can update branch managers and controllers later.</span>
-            </div>
-          </div>
-        </>
-      }
     >
       <div className="mt-2">
           <section className="mb-10 rounded-xl border border-gray-100 p-4">

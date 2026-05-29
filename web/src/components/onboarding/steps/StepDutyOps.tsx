@@ -1,8 +1,8 @@
 "use client";
 
-import { CalendarClock, CircleHelp } from "lucide-react";
+import { CalendarClock } from "lucide-react";
 import { Field } from "@/components/ui/FormBits";
-import { AsideCard, StepLayout } from "@/components/onboarding/StepLayout";
+import { StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
 
 const DUTY_TYPES = [
@@ -36,35 +36,6 @@ export function StepDutyOps({ data, onChange, footer }: StepProps) {
       tabs={["Duty & Role Preferences", "Broadcast Engine", "Client Approval Flow", "Escalation Rules", "Communication Settings"]}
       activeTab={0}
       footer={footer}
-      aside={
-        <>
-          <AsideCard title="Duty Engine Summary">
-            <ul className="space-y-2 text-xs text-gray-600">
-              <li className="flex items-center justify-between"><span>Total Active Roles</span><span className="font-semibold text-gray-900">7</span></li>
-              <li className="flex items-center justify-between"><span>Duty Types Enabled</span><span className="font-semibold text-gray-900">{dutyTypes.length}/8</span></li>
-              <li className="flex items-center justify-between"><span>Default Margin</span><span className="font-semibold text-gray-900">{(data.defaultMargin as string) || "15"}%</span></li>
-              <li className="flex items-center justify-between"><span>Broadcast Mode</span><span className="font-semibold text-gray-900">Auto + Manual</span></li>
-              <li className="flex items-center justify-between"><span>Client Approval</span><span className="font-semibold text-gray-900">{((data.clientApproval as string) || "mandatory").replace(/^./, (s) => s.toUpperCase())}</span></li>
-              <li className="flex items-center justify-between"><span>Escalation</span><span className="font-semibold text-gray-900">{((data.escalation as string) || "enabled").replace(/^./, (s) => s.toUpperCase())}</span></li>
-            </ul>
-          </AsideCard>
-          <AsideCard title="Why is this important?" className="border-violet-100 bg-violet-soft/40">
-            <div className="flex items-start gap-2">
-              <CircleHelp className="mt-0.5 h-4 w-4 shrink-0 text-violet-accent" />
-              <ul className="space-y-1.5 text-xs text-violet-deep/90">
-                <li>Accurate role mapping ensures the right staff is matched.</li>
-                <li>Clear information helps staff make informed decisions quickly.</li>
-                <li>Better operations speed up assignment and reduce rejections.</li>
-                <li>Happy clients come from right details and right staff.</li>
-              </ul>
-            </div>
-          </AsideCard>
-          <AsideCard title="Need help setting this up?" className="border-sky-100 bg-sky-50/80">
-            <p className="text-xs leading-relaxed text-sky-900/80">Our operations expert can guide your duty settings for best results.</p>
-            <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
-          </AsideCard>
-        </>
-      }
     >
       <div className="mt-2">
         <div className="mt-8">
