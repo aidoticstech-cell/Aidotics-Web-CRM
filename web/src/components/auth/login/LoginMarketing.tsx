@@ -42,17 +42,17 @@ const FEATURES = [
 
 export function LoginMarketing() {
   return (
-    <div className="relative z-10 max-w-xl py-6 lg:py-10">
+    <div className="relative z-10 w-full max-w-[520px] py-4 text-left lg:py-6">
       <span className="inline-flex rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
         #1 CRM for Care &amp; Support Services
       </span>
-      <h1 className="mt-5 text-4xl font-extrabold leading-[1.15] tracking-tight text-gray-900 lg:text-[2.75rem]">
+      <h1 className="mt-5 text-left text-4xl font-extrabold leading-[1.15] tracking-tight text-gray-900 lg:text-[2.65rem]">
         Manage Clients.{" "}
         <span className="text-violet-accent">Care Better.</span>
         <br />
         Grow Your Bureau.
       </h1>
-      <p className="mt-4 max-w-lg text-sm leading-relaxed text-gray-600 lg:text-base">
+      <p className="mt-4 max-w-lg text-left text-sm leading-relaxed text-gray-600 lg:text-base">
         Aidotics CRM helps home care and nursing bureaus manage leads, clients, caregivers, duties, payments,
         and operations — all in one powerful platform.
       </p>

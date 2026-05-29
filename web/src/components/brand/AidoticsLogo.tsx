@@ -10,6 +10,8 @@ type AidoticsLogoProps = {
   priority?: boolean;
   /** Center the image in its container (e.g. login card). */
   centered?: boolean;
+  /** Remove black matte on light backgrounds (header / marketing). */
+  onLightBackground?: boolean;
 };
 
 export function AidoticsLogo({
@@ -17,6 +19,7 @@ export function AidoticsLogo({
   height = 44,
   priority = false,
   centered = false,
+  onLightBackground = false,
 }: AidoticsLogoProps) {
   const width = Math.round((LOGO_WIDTH / LOGO_HEIGHT) * height);
 
@@ -27,7 +30,9 @@ export function AidoticsLogo({
       width={width}
       height={height}
       priority={priority}
-      className={`h-auto max-w-full object-contain ${centered ? "object-center" : "object-left"} ${className}`}
+      className={`h-auto max-w-full object-contain ${centered ? "object-center" : "object-left"} ${
+        onLightBackground ? "mix-blend-screen" : ""
+      } ${className}`}
       style={{ height, width }}
     />
   );

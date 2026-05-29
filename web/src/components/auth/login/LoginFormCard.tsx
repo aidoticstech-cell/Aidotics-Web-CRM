@@ -88,7 +88,7 @@ export function LoginFormCard() {
     <div className="relative z-20 w-full max-w-[420px] shrink-0">
       <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-[0_24px_60px_-12px_rgba(92,47,192,0.18)] sm:p-9">
         <div className="flex justify-center">
-          <AidoticsLogo height={48} priority centered />
+          <AidoticsLogo height={52} priority centered />
         </div>
         <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">Welcome Back!</h2>
         <p className="mt-1 text-center text-sm text-gray-500">Sign in to your Aidotics CRM account</p>
