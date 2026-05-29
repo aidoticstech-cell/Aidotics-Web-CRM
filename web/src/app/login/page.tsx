@@ -1,82 +1,25 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { AidoticsLogo } from "@/components/brand/AidoticsLogo";
-import { ApiError } from "@/lib/api";
-import { login } from "@/lib/auth-api";
+import { LoginDashboardPreview } from "@/components/auth/login/LoginDashboardPreview";
+import { LoginFormCard } from "@/components/auth/login/LoginFormCard";
+import { LoginMarketing } from "@/components/auth/login/LoginMarketing";
+import { LoginSiteFooter } from "@/components/auth/login/LoginSiteFooter";
+import { LoginSiteHeader } from "@/components/auth/login/LoginSiteHeader";
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      await login(email.trim(), password);
-      router.push("/onboarding");
-    } catch (err) {
-      if (err instanceof ApiError && err.status === 401) {
-        setError("Invalid email or password.");
-      } else if (err instanceof ApiError && err.status === 0) {
-        setError(err.message);
-      } else if (err instanceof ApiError) {
-        setError(err.message || `Sign-in failed (${err.status})`);
-      } else {
-        setError(err instanceof Error ? err.message : "Login failed");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
-    <div className="flex min-h-screen">
-      <div className="hidden w-1/2 bg-gradient-to-br from-brand-600 to-brand-800 p-12 text-white lg:flex lg:flex-col lg:justify-between">
-        <div>
-          <AidoticsLogo height={52} priority />
-          <p className="mt-3 text-brand-100">Bureau CRM</p>
-        </div>
-        <div>
-          <h1 className="text-3xl font-bold leading-tight">Manage your care bureau in one place</h1>
-          <p className="mt-4 text-brand-100">Partners, duties, workforce, and billing — connected to Aidotics.</p>
-        </div>
-      </div>
-      <div className="flex w-full flex-col justify-center px-8 lg:w-1/2 lg:px-16">
-        <div className="mx-auto w-full max-w-md">
-          <div className="lg:hidden">
-            <AidoticsLogo height={44} priority />
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-[#faf9fc] via-[#f5f3fa] to-[#ede9f8]">
+      <LoginSiteHeader />
+      <main className="relative flex-1 overflow-hidden">
+        <LoginDashboardPreview />
+        <div className="relative z-10 mx-auto grid max-w-[1400px] gap-10 px-4 py-8 sm:px-6 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-8 lg:px-8 lg:py-12 xl:gap-12">
+          <LoginMarketing />
+          <div className="flex justify-center lg:justify-end lg:pt-4">
+            <LoginFormCard />
           </div>
-          <h2 className="mt-8 text-2xl font-bold">Sign in</h2>
-          <p className="mt-1 text-sm text-gray-500">Access your bureau CRM portal</p>
-          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-            <div>
-              <label className="crm-label">Email</label>
-              <input className="crm-input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            </div>
-            <div>
-              <label className="crm-label">Password</label>
-              <input className="crm-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            </div>
-            {error && <p className="text-sm text-red-600">{error}</p>}
-            <button type="submit" className="btn-primary w-full" disabled={loading}>
-              {loading ? "Signing in…" : "Sign in"}
-            </button>
-          </form>
-          <p className="mt-6 text-center text-sm text-gray-500">
-            New bureau?{" "}
-            <Link href="/register" className="font-semibold text-violet-accent hover:underline">
-              Create account
-            </Link>
-          </p>
         </div>
-      </div>
+      </main>
+      <LoginSiteFooter />
     </div>
   );
 }

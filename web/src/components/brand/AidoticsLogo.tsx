@@ -8,9 +8,16 @@ type AidoticsLogoProps = {
   /** Visual height of the lockup (width scales from asset aspect ratio). */
   height?: number;
   priority?: boolean;
+  /** Center the image in its container (e.g. login card). */
+  centered?: boolean;
 };
 
-export function AidoticsLogo({ className = "", height = 44, priority = false }: AidoticsLogoProps) {
+export function AidoticsLogo({
+  className = "",
+  height = 44,
+  priority = false,
+  centered = false,
+}: AidoticsLogoProps) {
   const width = Math.round((LOGO_WIDTH / LOGO_HEIGHT) * height);
 
   return (
@@ -20,7 +27,7 @@ export function AidoticsLogo({ className = "", height = 44, priority = false }: 
       width={width}
       height={height}
       priority={priority}
-      className={`h-auto max-w-full object-contain object-left ${className}`}
+      className={`h-auto max-w-full object-contain ${centered ? "object-center" : "object-left"} ${className}`}
       style={{ height, width }}
     />
   );
