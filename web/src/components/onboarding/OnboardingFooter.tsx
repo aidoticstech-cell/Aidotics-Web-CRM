@@ -58,10 +58,12 @@ export function OnboardingFooter({
   }
 
   return (
-    <div className="border-t border-gray-100 px-1 pt-6">
-      {error && <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-      <p className="mb-4 text-xs text-gray-400">Fields marked with <span className="text-red-500">*</span> are required.</p>
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <div className="border-t border-gray-100 pt-6">
+      {error && <p className="alert-error mb-5">{error}</p>}
+      <p className="mb-5 text-xs leading-relaxed text-gray-500">
+        Fields marked with <span className="font-semibold text-red-500">*</span> are required.
+      </p>
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <button
           type="button"
           className="btn-secondary order-2 lg:order-1"

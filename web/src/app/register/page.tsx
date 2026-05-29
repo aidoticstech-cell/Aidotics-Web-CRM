@@ -78,17 +78,26 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
-      <div className="crm-card w-full max-w-lg">
-        <AidoticsLogo height={48} priority />
-        <p className="mt-2 text-sm font-semibold text-gray-600">Bureau CRM</p>
-        <h2 className="mt-4 text-2xl font-bold">Create your bureau account</h2>
-        <p className="text-sm text-gray-500">You&apos;ll complete an 8-step setup wizard next</p>
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+    <div className="auth-shell flex min-h-screen items-center justify-center px-4 py-10 sm:px-6">
+      <div className="auth-card max-w-lg">
+        <div className="text-left">
+          <AidoticsLogo height={44} priority />
+          <p className="page-eyebrow mt-2 !text-[#1b4d2e]">Bureau Web CRM</p>
+        </div>
+        <h1 className="page-title mt-6">Create your bureau account</h1>
+        <p className="page-subtitle">You&apos;ll complete an 8-step setup wizard right after registration.</p>
+
+        <form onSubmit={handleSubmit} className="form-stack mt-8">
+          <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <label className="crm-label">Bureau code</label>
-              <input className="crm-input" value={form.bureauCode} onChange={(e) => set("bureauCode", e.target.value)} placeholder="DELHI-NCR-01" required />
+              <input
+                className="crm-input"
+                value={form.bureauCode}
+                onChange={(e) => set("bureauCode", e.target.value)}
+                placeholder="DELHI-NCR-01"
+                required
+              />
             </div>
             <div>
               <label className="crm-label">Bureau name</label>
@@ -109,16 +118,25 @@ export default function RegisterPage() {
           </div>
           <div>
             <label className="crm-label">Password</label>
-            <input className="crm-input" type="password" value={form.password} onChange={(e) => set("password", e.target.value)} minLength={8} required />
+            <input
+              className="crm-input"
+              type="password"
+              value={form.password}
+              onChange={(e) => set("password", e.target.value)}
+              minLength={8}
+              required
+            />
+            <p className="mt-1.5 text-xs text-gray-500">Minimum 8 characters</p>
           </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <button type="submit" className="btn-primary w-full" disabled={loading}>
+          {error && <p className="alert-error">{error}</p>}
+          <button type="submit" className="btn-primary w-full !py-3.5" disabled={loading}>
             {loading ? "Creating…" : "Create account & start setup"}
           </button>
         </form>
-        <p className="mt-4 text-center text-sm text-gray-500">
+
+        <p className="mt-8 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-violet-accent">
+          <Link href="/login" className="font-semibold text-violet-accent hover:underline">
             Sign in
           </Link>
         </p>

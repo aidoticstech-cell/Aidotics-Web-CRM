@@ -3,8 +3,8 @@ import Link from "next/link";
 
 export function LoginSiteFooter() {
   return (
-    <footer className="relative z-30 border-t border-gray-200/60 bg-white/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+    <footer className="relative z-30 border-t border-gray-200/60 bg-white/90 backdrop-blur-md">
+      <div className="page-container flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-4 text-xs text-gray-600">
           <span className="flex items-center gap-1.5">
             <Lock className="h-3.5 w-3.5 text-violet-accent" />

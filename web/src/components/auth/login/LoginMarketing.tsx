@@ -42,23 +42,23 @@ const FEATURES = [
 
 export function LoginMarketing() {
   return (
-    <div className="relative z-10 w-full max-w-[520px] py-4 text-left lg:py-6">
-      <span className="inline-flex rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
+    <div className="relative z-10 w-full max-w-[520px] py-4 text-left lg:py-8">
+      <span className="inline-flex rounded-full bg-violet-100 px-3.5 py-1.5 text-xs font-semibold text-violet-700">
         #1 CRM for Care &amp; Support Services
       </span>
-      <h1 className="mt-5 text-left text-4xl font-extrabold leading-[1.15] tracking-tight text-gray-900 lg:text-[2.65rem]">
+      <h1 className="page-title mt-6 !text-left lg:!text-[2.65rem]">
         Manage Clients.{" "}
         <span className="text-violet-accent">Care Better.</span>
         <br />
         Grow Your Bureau.
       </h1>
-      <p className="mt-4 max-w-lg text-left text-sm leading-relaxed text-gray-600 lg:text-base">
+      <p className="page-subtitle max-w-lg !text-left">
         Aidotics CRM helps home care and nursing bureaus manage leads, clients, caregivers, duties, payments,
         and operations — all in one powerful platform.
       </p>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      <div className="mt-10 grid gap-4 sm:grid-cols-2">
         {FEATURES.map(({ title, description, Icon }) => (
-          <div key={title} className="flex gap-3 rounded-xl border border-gray-100 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
+          <div key={title} className="flex gap-3 rounded-xl border border-gray-100 bg-white/90 p-4 shadow-sm backdrop-blur-sm">
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-violet-100 text-violet-accent">
               <Icon className="h-5 w-5" />
             </span>

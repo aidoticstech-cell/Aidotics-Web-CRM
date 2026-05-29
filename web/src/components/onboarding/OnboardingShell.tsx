@@ -47,11 +47,14 @@ export function OnboardingShell({
   const CurrentIcon = STEP_ICONS[current?.slug || ""] || Shield;
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="border-b border-gray-200/80 bg-white px-4 py-4 shadow-sm sm:px-6">
-        <div className="mx-auto flex max-w-[1440px] flex-col gap-3">
+    <div className="flex min-h-screen flex-col bg-[var(--bg)]">
+      <header className="border-b border-gray-200/80 bg-white shadow-sm">
+        <div className="page-container flex flex-col gap-4 py-4 sm:py-5">
           <div className="flex items-center justify-between gap-4">
-            <AidoticsLogo />
+            <div>
+              <AidoticsLogo height={38} />
+              <p className="page-eyebrow mt-1 !text-[10px] !tracking-[0.18em] text-[#1b4d2e]">Bureau Web CRM</p>
+            </div>
             <div className="flex shrink-0 items-center gap-2">
               <button type="button" className="btn-secondary !gap-1.5 !px-3 !py-2 text-xs sm:!px-4">
                 <Headphones className="h-4 w-4 text-gray-500" />
@@ -64,11 +67,11 @@ export function OnboardingShell({
             </div>
           </div>
           <div className="text-center">
-            <p className="text-sm font-semibold text-gray-800">
-              Bureau Onboarding
+            <p className="text-sm font-semibold text-gray-800">Bureau Onboarding</p>
+            <p className="mt-0.5 text-xs text-gray-500">
+              Step {current?.order} of {TOTAL_STEPS}
             </p>
-            <p className="text-xs text-gray-500">Step {current?.order} of {TOTAL_STEPS}</p>
-            <div className="mx-auto mt-3 flex max-w-5xl items-center justify-center gap-1 overflow-x-auto pb-1">
+            <div className="mx-auto mt-4 flex max-w-5xl items-center justify-center gap-1.5 overflow-x-auto pb-1">
               {state.steps.map((s, i) => (
                 <div key={s.slug} className="flex items-center">
                   <StepDot step={s} showLabel />
@@ -84,9 +87,9 @@ export function OnboardingShell({
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-[1440px] flex-1 gap-0 px-3 py-4 sm:px-4 lg:px-6">
-        <aside className="hidden w-[280px] shrink-0 pr-4 lg:block xl:w-[300px]">
-          <div className="sticky top-4 space-y-4">
+      <div className="page-container flex flex-1 gap-6 py-6 sm:py-8 lg:gap-8">
+        <aside className="hidden w-[280px] shrink-0 lg:block xl:w-[300px]">
+          <div className="sticky top-6 space-y-5">
             <div className="sidebar-step-active">
               <div className="flex items-start gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/20">
@@ -100,13 +103,13 @@ export function OnboardingShell({
               </div>
             </div>
 
-            <nav className="rounded-xl border border-gray-100 bg-white p-2 shadow-sm">
+            <nav className="rounded-2xl border border-gray-100 bg-white p-2.5 shadow-sm">
               {state.steps.map((s) => (
                 <SidebarItem key={s.slug} step={s} />
               ))}
             </nav>
 
-            <div className="rounded-xl border border-violet-100 bg-violet-soft/80 p-4">
+            <div className="rounded-2xl border border-violet-100 bg-violet-soft/80 p-5">
               <div className="flex items-center gap-2 text-violet-deep">
                 <Headphones className="h-5 w-5" />
                 <p className="text-sm font-bold">Need Assistance?</p>

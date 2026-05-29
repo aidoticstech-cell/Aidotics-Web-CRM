@@ -32,24 +32,24 @@ export default function OnboardingIndexPage() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-6 text-center">
-        <p className="max-w-md text-sm text-red-600">{error}</p>
-        <p className="max-w-md text-xs text-gray-500">
+      <div className="state-center min-h-screen">
+        <p className="alert-error max-w-md">{error}</p>
+        <p className="max-w-md text-sm leading-relaxed text-gray-500">
           If you just signed in, this is usually the API not running or the Next.js proxy (API_URL) pointing at the wrong host — not a bad password.
         </p>
-        <button type="button" className="btn-primary" onClick={() => router.refresh()}>
-          Retry
-        </button>
-        <button type="button" className="btn-secondary text-sm" onClick={() => router.replace("/login")}>
-          Back to sign in
-        </button>
+        <div className="flex flex-wrap justify-center gap-3">
+          <button type="button" className="btn-primary" onClick={() => router.refresh()}>
+            Retry
+          </button>
+          <button type="button" className="btn-secondary" onClick={() => router.replace("/login")}>
+            Back to sign in
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center text-gray-500">
-      Redirecting…
-    </div>
+    <div className="state-center min-h-screen text-sm text-gray-500">Redirecting to your setup…</div>
   );
 }

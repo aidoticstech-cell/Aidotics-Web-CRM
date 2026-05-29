@@ -86,14 +86,14 @@ export function LoginFormCard() {
 
   return (
     <div className="relative z-20 w-full max-w-[420px] shrink-0">
-      <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-[0_24px_60px_-12px_rgba(92,47,192,0.18)] sm:p-9">
+      <div className="auth-card !max-w-[420px] !p-8 sm:!p-9">
         <div className="flex justify-center">
-          <AidoticsLogo height={52} priority centered />
+          <AidoticsLogo height={48} priority centered />
         </div>
-        <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">Welcome Back!</h2>
-        <p className="mt-1 text-center text-sm text-gray-500">Sign in to your Aidotics CRM account</p>
+        <h2 className="mt-6 text-center text-2xl font-bold tracking-tight text-gray-900">Welcome Back!</h2>
+        <p className="mt-2 text-center text-sm leading-relaxed text-gray-500">Sign in to your Aidotics CRM account</p>
 
-        <div className="mt-6 flex border-b border-gray-200">
+        <div className="mt-8 flex border-b border-gray-200">
           <button
             type="button"
             onClick={() => setTab("signin")}
@@ -113,7 +113,7 @@ export function LoginFormCard() {
           </Link>
         </div>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <form onSubmit={handleSubmit} className="form-stack mt-8">
           <div>
             <label className="crm-label">Email Address</label>
             <div className="relative">
@@ -168,7 +168,7 @@ export function LoginFormCard() {
             </button>
           </div>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {error && <p className="alert-error">{error}</p>}
 
           <button type="submit" className="btn-primary w-full !py-3.5" disabled={loading}>
             {loading ? "Signing in…" : "Sign In"}

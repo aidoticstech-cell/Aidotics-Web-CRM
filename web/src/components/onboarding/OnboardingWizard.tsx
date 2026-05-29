@@ -121,16 +121,14 @@ export function OnboardingWizard({ stepSlug }: { stepSlug: string }) {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-gray-500">
-        Loading onboarding…
-      </div>
+      <div className="state-center min-h-screen text-sm text-gray-500">Loading your setup…</div>
     );
   }
 
   if (error || !state || !stepDef) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <p className="text-red-600">{error || "Step not found"}</p>
+      <div className="state-center min-h-screen">
+        <p className="alert-error max-w-md">{error || "Step not found"}</p>
         <button type="button" className="btn-primary" onClick={() => load()}>
           Retry
         </button>
@@ -147,7 +145,7 @@ export function OnboardingWizard({ stepSlug }: { stepSlug: string }) {
   return (
     <OnboardingShell state={state} stepTitle={stepDef.title} stepDescription={stepDef.description}>
       {isDemo && (
-        <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-800">
+        <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900">
           Preview mode — add <code className="font-mono">?demo=1</code> to browse all steps without signing in.
         </div>
       )}

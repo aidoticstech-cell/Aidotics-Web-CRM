@@ -8,10 +8,10 @@ import { LoginSiteHeader } from "@/components/auth/login/LoginSiteHeader";
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-[#faf9fc] via-[#f5f3fa] to-[#ede9f8]">
+    <div className="auth-shell flex min-h-screen flex-col">
       <LoginSiteHeader />
       <main className="relative flex-1 overflow-x-hidden">
-        <div className="relative z-10 mx-auto grid w-full max-w-[1440px] grid-cols-1 items-start gap-10 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,480px)_minmax(0,1fr)_auto] lg:gap-6 lg:px-8 lg:py-10 xl:grid-cols-[minmax(0,520px)_minmax(280px,1fr)_420px] xl:gap-8">
+        <div className="page-container relative z-10 grid grid-cols-1 items-start gap-10 py-8 sm:py-10 lg:grid-cols-[minmax(0,480px)_minmax(0,1fr)_auto] lg:gap-8 xl:grid-cols-[minmax(0,520px)_minmax(280px,1fr)_420px] xl:gap-10">
           {/* Left: marketing — stays left-aligned, never under the dashboard image */}
           <div className="relative z-20 min-w-0 text-left">
             <LoginMarketing />

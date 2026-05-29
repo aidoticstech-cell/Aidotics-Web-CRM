@@ -115,17 +115,17 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
     <div>
       <div className="grid gap-6 xl:grid-cols-[1fr_300px]">
         <div className="onboarding-panel !overflow-hidden !p-0">
-          <div className="flex items-start gap-3 border-b border-gray-100 px-6 py-5 lg:px-8">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-soft">
+          <div className="flex items-start gap-4 border-b border-gray-100 px-6 py-6 sm:px-8 sm:py-7">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-soft">
             <Building2 className="h-5 w-5 text-violet-accent" />
           </span>
-          <div>
-            <h1 className="text-xl font-bold text-gray-900 lg:text-2xl">Bureau Profile & Verification</h1>
-            <p className="mt-1 text-sm text-gray-500">Provide basic information about your bureau. These details will be used across your CRM.</p>
+          <div className="min-w-0">
+            <h1 className="page-title !text-xl sm:!text-2xl">Bureau Profile & Verification</h1>
+            <p className="page-subtitle !mt-1.5">Provide basic information about your bureau. These details will be used across your CRM.</p>
           </div>
         </div>
 
-        <div className="space-y-8 p-6 lg:p-8">
+        <div className="space-y-8 p-6 sm:p-8">
           <div className="grid gap-6 lg:grid-cols-2">
           <section className="rounded-xl border border-gray-100 p-4">
             <h3 className="text-sm font-bold text-gray-900"><span className="text-violet-accent">A.</span> Basic Bureau Identity</h3>
@@ -336,8 +336,8 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
         </aside>
       </div>
       {footer && (
-        <div className="mt-6 border-t border-gray-100 pt-2">
-          <div className="px-1">{footer}</div>
+        <div className="mt-8 border-t border-gray-100 pt-6">
+          <div className="px-0 sm:px-1">{footer}</div>
         </div>
       )}
     </div>

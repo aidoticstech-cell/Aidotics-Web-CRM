@@ -54,7 +54,7 @@ export default function DashboardPage() {
   }, [router]);
 
   if (!user) {
-    return <div className="flex min-h-screen items-center justify-center text-gray-500">Loading…</div>;
+    return <div className="state-center min-h-screen text-sm text-gray-500">Loading dashboard…</div>;
   }
 
   return (
@@ -90,12 +90,12 @@ export default function DashboardPage() {
           </div>
         </aside>
 
-        <main className="p-3 lg:p-4">
-          <header className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3">
-            <div>
-              <p className="text-xs font-semibold text-gray-500">Welcome back, {user.fullName.split(" ")[0]}</p>
-              <p className="text-[32px] font-black leading-tight text-gray-900">Owner Dashboard</p>
-              <p className="text-xs text-gray-500">Overview of your bureau operations and business performance</p>
+        <main className="space-y-5 p-4 lg:p-6">
+          <header className="dash-card flex flex-wrap items-center justify-between gap-4 !p-5">
+            <div className="min-w-0">
+              <p className="page-eyebrow">Welcome back, {user.fullName.split(" ")[0]}</p>
+              <h1 className="page-title mt-1 !text-3xl">Owner Dashboard</h1>
+              <p className="page-subtitle !mt-1">Overview of your bureau operations and business performance</p>
             </div>
             <div className="flex items-center gap-2">
               <button type="button" className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs">May 12, 2025</button>
@@ -119,14 +119,14 @@ export default function DashboardPage() {
             </div>
           </header>
 
-          <section className="grid gap-2.5 md:grid-cols-3 xl:grid-cols-6">
+          <section className="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
             {KPI_CARDS.map(({ title, value, hint, Icon, tone }) => (
-              <div key={title} className="rounded-lg border border-gray-200 bg-white p-3">
-                <div className="flex items-start justify-between gap-2">
+              <div key={title} className="dash-card">
+                <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500">{title}</p>
-                    <p className="mt-1 text-2xl font-black text-gray-900">{value}</p>
-                    <p className="text-[10px] text-gray-500">{hint}</p>
+                    <p className="page-eyebrow !text-[10px]">{title}</p>
+                    <p className="mt-2 text-2xl font-bold tracking-tight text-gray-900">{value}</p>
+                    <p className="mt-1 text-xs text-gray-500">{hint}</p>
                   </div>
                   <span className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${tone}`}>
                     <Icon className="h-4 w-4" />
@@ -136,13 +136,13 @@ export default function DashboardPage() {
             ))}
           </section>
 
-          <div className="mt-2.5 grid gap-2.5 xl:grid-cols-[1fr_250px]">
-            <div className="space-y-2.5">
-              <div className="grid gap-2.5 lg:grid-cols-3">
-                <section className="rounded-lg border border-gray-200 bg-white p-3 lg:col-span-1">
-                  <h3 className="text-sm font-bold text-gray-900">Lead Funnel</h3>
-                  <p className="text-[11px] text-gray-500">(This Month)</p>
-                  <div className="mt-3 space-y-2">
+          <div className="grid gap-4 xl:grid-cols-[1fr_280px]">
+            <div className="space-y-4">
+              <div className="grid gap-4 lg:grid-cols-3">
+                <section className="dash-card lg:col-span-1">
+                  <h3 className="dash-card-title">Lead Funnel</h3>
+                  <p className="dash-card-meta">(This Month)</p>
+                  <div className="mt-4 space-y-2.5">
                     {[
                       ["New Leads", "458"],
                       ["Qualified", "262"],
@@ -158,18 +158,18 @@ export default function DashboardPage() {
                   </div>
                 </section>
 
-                <section className="rounded-lg border border-gray-200 bg-white p-3">
-                  <h3 className="text-sm font-bold text-gray-900">Duty Status (Live)</h3>
-                  <div className="mt-3 flex items-center justify-center">
+                <section className="dash-card">
+                  <h3 className="dash-card-title">Duty Status (Live)</h3>
+                  <div className="mt-4 flex items-center justify-center">
                     <div className="flex h-28 w-28 items-center justify-center rounded-full border-[12px] border-emerald-500 border-r-blue-500 border-b-amber-400 border-l-rose-400 text-4xl font-black text-gray-900">
                       156
                     </div>
                   </div>
                 </section>
 
-                <section className="rounded-lg border border-gray-200 bg-white p-3">
-                  <h3 className="text-sm font-bold text-gray-900">Workforce Availability</h3>
-                  <div className="mt-3 flex items-center justify-center">
+                <section className="dash-card">
+                  <h3 className="dash-card-title">Workforce Availability</h3>
+                  <div className="mt-4 flex items-center justify-center">
                     <div className="flex h-28 w-28 items-center justify-center rounded-full border-[12px] border-blue-500 border-r-emerald-500 border-b-amber-400 border-l-rose-400 text-4xl font-black text-gray-900">
                       312
                     </div>
@@ -177,16 +177,16 @@ export default function DashboardPage() {
                 </section>
               </div>
 
-              <div className="grid gap-2.5 lg:grid-cols-2">
-                <section className="rounded-lg border border-gray-200 bg-white p-3">
-                  <h3 className="text-sm font-bold text-gray-900">Revenue Overview</h3>
-                  <div className="mt-3 h-36 rounded-lg bg-gradient-to-b from-violet-50 to-white p-2">
+              <div className="grid gap-4 lg:grid-cols-2">
+                <section className="dash-card">
+                  <h3 className="dash-card-title">Revenue Overview</h3>
+                  <div className="mt-4 h-36 rounded-xl bg-gradient-to-b from-violet-50 to-white p-2">
                     <div className="h-full w-full rounded border border-dashed border-violet-200" />
                   </div>
                 </section>
-                <section className="rounded-lg border border-gray-200 bg-white p-3">
-                  <h3 className="text-sm font-bold text-gray-900">Branch Performance</h3>
-                  <div className="mt-2 space-y-2">
+                <section className="dash-card">
+                  <h3 className="dash-card-title">Branch Performance</h3>
+                  <div className="mt-4 space-y-2.5">
                     {[
                       ["Noida (HQ)", "₹10,24,850", "94%"],
                       ["Gurgaon", "₹6,45,300", "92%"],
@@ -203,10 +203,10 @@ export default function DashboardPage() {
                 </section>
               </div>
 
-              <div className="grid gap-2.5 lg:grid-cols-3">
-                <section className="rounded-lg border border-gray-200 bg-white p-3">
-                  <h3 className="text-sm font-bold text-gray-900">Escalations & Alerts</h3>
-                  <ul className="mt-2 space-y-2 text-xs">
+              <div className="grid gap-4 lg:grid-cols-3">
+                <section className="dash-card">
+                  <h3 className="dash-card-title">Escalations & Alerts</h3>
+                  <ul className="mt-4 space-y-2.5 text-xs">
                     {[
                       "Replacement request for duty #DUT-2456",
                       "Client approval pending for duty #DUT-2453",
@@ -217,9 +217,9 @@ export default function DashboardPage() {
                     ))}
                   </ul>
                 </section>
-                <section className="rounded-lg border border-gray-200 bg-white p-3">
-                  <h3 className="text-sm font-bold text-gray-900">Today&apos;s Snapshot</h3>
-                  <div className="mt-2 grid grid-cols-2 gap-2">
+                <section className="dash-card">
+                  <h3 className="dash-card-title">Today&apos;s Snapshot</h3>
+                  <div className="mt-4 grid grid-cols-2 gap-3">
                     {[
                       ["Leads Added", "28"],
                       ["Duties Created", "24"],
@@ -233,9 +233,9 @@ export default function DashboardPage() {
                     ))}
                   </div>
                 </section>
-                <section className="rounded-lg border border-gray-200 bg-white p-3">
-                  <h3 className="text-sm font-bold text-gray-900">Top Services</h3>
-                  <div className="mt-2 space-y-2">
+                <section className="dash-card">
+                  <h3 className="dash-card-title">Top Services</h3>
+                  <div className="mt-4 space-y-3">
                     {[
                       ["Nursing (ICU / General)", 65],
                       ["Attendant / Caregiver", 48],
@@ -257,10 +257,10 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <aside className="space-y-2.5">
-              <section className="rounded-lg border border-gray-200 bg-white p-3">
-                <h3 className="text-sm font-bold text-gray-900">Quick Actions</h3>
-                <div className="mt-2 space-y-1">
+            <aside className="space-y-4">
+              <section className="dash-card">
+                <h3 className="dash-card-title">Quick Actions</h3>
+                <div className="mt-4 space-y-2">
                   {[
                     "Add New Lead",
                     "Create Duty",
@@ -279,9 +279,9 @@ export default function DashboardPage() {
                 </div>
               </section>
 
-              <section className="rounded-lg border border-gray-200 bg-white p-3">
-                <h3 className="text-sm font-bold text-gray-900">Recent Activity</h3>
-                <div className="mt-2 space-y-2 text-xs">
+              <section className="dash-card">
+                <h3 className="dash-card-title">Recent Activity</h3>
+                <div className="mt-4 space-y-2.5 text-xs">
                   {[
                     "Duty #DUT-2451 completed",
                     "Payment received ₹2,500",
@@ -296,10 +296,12 @@ export default function DashboardPage() {
                   ))}
                 </div>
               </section>
-              <section className="rounded-lg border border-gray-200 bg-white p-3">
-                <h3 className="text-sm font-bold text-gray-900">Need Help?</h3>
-                <p className="mt-1 text-xs text-gray-600">Our onboarding team is here to help you at every step.</p>
-                <button type="button" className="btn-outline-purple mt-3 w-full !py-2 text-xs">Schedule a Call</button>
+              <section className="dash-card">
+                <h3 className="dash-card-title">Need Help?</h3>
+                <p className="dash-card-meta">Our onboarding team is here to help you at every step.</p>
+                <button type="button" className="btn-outline-purple mt-4 w-full !py-2.5 text-xs">
+                  Schedule a Call
+                </button>
               </section>
             </aside>
           </div>
