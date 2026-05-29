@@ -1,5 +1,6 @@
 const prisma = require("../db");
 const { AppError } = require("../common/errors");
+const bureauProfileDoc = require("./bureauProfileDoc.service");
 const {
   ONBOARDING_STEPS,
   TOTAL_STEPS,
@@ -113,7 +114,19 @@ async function saveStepDraft(bureauId, slug, data, actorId) {
     },
   });
 
-  return { step: buildStepView(updated, step), draft: data };
+  let profileStorage = null;
+  if (slug === "profile_verification") {
+    profileStorage = await bureauProfileDoc.saveProfileDocument(bureauId, data, actorId, {
+      source: "onboarding_draft",
+    });
+  }
+
+  return {
+    step: buildStepView(updated, step),
+    draft: data,
+    storageSlug: profileStorage?.bureau?.storageSlug || null,
+    profileDocumentPath: profileStorage?.storage?.path || null,
+  };
 }
 
 async function getStepDraft(bureauId, slug) {
@@ -218,6 +231,13 @@ async function completeStep(bureauId, slug, actorId) {
 
   if (slug === "profile_verification") {
     await syncBureauProfileDraftToCore(bureauId, actorId);
+    const progressAfter = await prisma.setupProgress.findUnique({ where: { bureauId } });
+    const draft = progressAfter?.stepDrafts?.profile_verification;
+    if (draft && typeof draft === "object") {
+      await bureauProfileDoc.saveProfileDocument(bureauId, draft, actorId, {
+        source: "onboarding_complete",
+      });
+    }
   }
 
   return getOnboardingState(bureauId);

@@ -126,6 +126,8 @@ model Bureau {
   partnerBureauId String    @unique
   code            String    @unique
   name            String
+  /** Folder name in Supabase Storage: slugified register name + short id */
+  storageSlug     String?   @unique
   logoKey         String?
   phone           String?
   email           String?
@@ -480,17 +482,18 @@ model AuditLog {
 }
 
 model StoredFile {
-  id        String    @id @default(uuid())
-  bureauId  String
-  branchId  String?
-  purpose   String
-  fileKey   String
-  fileName  String?
-  mimeType  String?
-  sizeBytes Int?
-  createdBy String?
-  createdAt DateTime  @default(now())
-  deletedAt DateTime?
+  id            String    @id @default(uuid())
+  bureauId      String
+  branchId      String?
+  purpose       String
+  fileKey       String
+  storageBucket String?
+  fileName      String?
+  mimeType      String?
+  sizeBytes     Int?
+  createdBy     String?
+  createdAt     DateTime  @default(now())
+  deletedAt     DateTime?
 
   @@index([bureauId, purpose])
   @@schema("crm")

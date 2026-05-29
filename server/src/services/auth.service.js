@@ -5,6 +5,8 @@ const { AppError } = require("../common/errors");
 const { signAccessToken, signRefreshToken } = require("../middleware/auth");
 const { createPartnerBureau, hashRefreshToken } = require("../clients/partnerInternal");
 const { seedPermissionsAndRoles, seedPresetRolesForBureau } = require("./rbac.service");
+const { makeStorageSlug } = require("../lib/storageSlug");
+const bureauProfileDoc = require("./bureauProfileDoc.service");
 
 const OTP_TTL_MS = 10 * 60 * 1000;
 
@@ -82,11 +84,16 @@ async function registerBureauAndAdmin({ bureauCode, bureauName, email, password,
     }
   }
 
+  const bureauId = crypto.randomUUID();
+  const storageSlug = makeStorageSlug(bureauName, bureauId);
+
   const bureau = await prisma.bureau.create({
     data: {
+      id: bureauId,
       partnerBureauId,
       code: String(bureauCode).trim().toUpperCase(),
       name: bureauName,
+      storageSlug,
       email: normalizedEmail,
       phone: mobile || null,
       setupProgress: {
@@ -126,6 +133,23 @@ async function registerBureauAndAdmin({ bureauCode, bureauName, email, password,
     },
     include: { role: { include: { rolePermissions: { include: { permission: true } } } }, bureau: true },
   });
+
+  try {
+    await bureauProfileDoc.saveProfileDocument(
+      bureau.id,
+      {
+        legalName: bureauName,
+        displayName: bureauName,
+        ownerName: fullName,
+        ownerEmail: normalizedEmail,
+        ownerMobile: mobile || null,
+      },
+      user.id,
+      { source: "registration" }
+    );
+  } catch (err) {
+    console.warn("[register] profile document upload skipped or failed:", err.message);
+  }
 
   return issueTokensForUser(user);
 }

@@ -58,7 +58,10 @@ export async function apiFetch<T>(
 ): Promise<T> {
   const { auth = true, _retried, ...init } = options;
   const headers = new Headers(init.headers);
-  if (!headers.has("Content-Type") && init.body) headers.set("Content-Type", "application/json");
+  const isFormData = typeof FormData !== "undefined" && init.body instanceof FormData;
+  if (!headers.has("Content-Type") && init.body && !isFormData) {
+    headers.set("Content-Type", "application/json");
+  }
 
   if (auth) {
     const { access } = getTokens();

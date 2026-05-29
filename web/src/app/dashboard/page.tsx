@@ -17,6 +17,7 @@ import {
   ArrowRight,
   CircleDot,
 } from "lucide-react";
+import { AidoticsLogo } from "@/components/brand/AidoticsLogo";
 import { getMe, logout, type AuthUser } from "@/lib/auth-api";
 
 const KPI_CARDS = [
@@ -61,8 +62,8 @@ export default function DashboardPage() {
       <div className="grid min-h-screen grid-cols-1 xl:grid-cols-[240px_1fr_270px]">
         <aside className="bg-[#0c1231] text-white">
           <div className="border-b border-white/10 px-4 py-4">
-            <p className="text-[34px] font-black leading-none text-white">Aidotics</p>
-            <p className="mt-1 text-[11px] font-semibold tracking-wide text-white/70">BUREAU WEB CRM</p>
+            <AidoticsLogo height={40} />
+            <p className="mt-2 text-[11px] font-semibold tracking-wide text-white/70">BUREAU WEB CRM</p>
           </div>
           <div className="space-y-1 p-2.5">
             {SIDEBAR_ITEMS.map((item, idx) => (

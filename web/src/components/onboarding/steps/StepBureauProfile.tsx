@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { profileDocTypeFromLabel, uploadProfileVerificationDoc } from "@/lib/files-api";
 import type { ComponentType } from "react";
 import {
   Building2,
@@ -48,7 +49,11 @@ function idsFromLegacyServices(services: unknown): string[] | null {
   return ids.length ? ids : null;
 }
 
+type UploadState = { status: "idle" | "uploading" | "done" | "error"; message?: string };
+
 export function StepBureauProfile({ data, onChange, footer }: StepProps) {
+  const [uploadState, setUploadState] = useState<Record<string, UploadState>>({});
+
   const serviceIds = useMemo(() => {
     const cur = data.serviceIds as string[] | undefined;
     if (cur?.length) return cur;
@@ -75,6 +80,35 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
   function toggleSource(source: string) {
     const next = leadSources.includes(source) ? leadSources.filter((x) => x !== source) : [...leadSources, source];
     onChange({ leadSources: next });
+  }
+
+  const uploads = (data.uploads as Record<string, { fileName?: string; path?: string }>) ?? {};
+
+  async function handleDocUpload(label: string, file: File | undefined) {
+    const docType = profileDocTypeFromLabel(label);
+    if (!docType || !file) return;
+
+    setUploadState((s) => ({ ...s, [label]: { status: "uploading" } }));
+    try {
+      const res = await uploadProfileVerificationDoc(file, docType);
+      const prev = (data.uploads as Record<string, unknown>) ?? {};
+      onChange({
+        uploads: {
+          ...prev,
+          [docType]: {
+            fileId: res.file.id,
+            path: res.path,
+            fileName: res.file.fileName || file.name,
+            storageSlug: res.storageSlug,
+            uploadedAt: new Date().toISOString(),
+          },
+        },
+      });
+      setUploadState((s) => ({ ...s, [label]: { status: "done" } }));
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Upload failed";
+      setUploadState((s) => ({ ...s, [label]: { status: "error", message } }));
+    }
   }
 
   return (
@@ -222,13 +256,36 @@ export function StepBureauProfile({ data, onChange, footer }: StepProps) {
                   "PAN Card",
                   "Aadhaar Card",
                   "Cancelled Cheque",
-                ].map((doc) => (
-                  <div key={doc} className="rounded-xl border border-gray-200 bg-white p-3">
-                    <p className="text-[11px] font-semibold text-gray-700">{doc}</p>
-                    <p className="mt-1 text-[10px] text-gray-400">Upload .pdf / .jpg</p>
-                    <button type="button" className="mt-2 text-[11px] font-semibold text-violet-accent">Upload</button>
-                  </div>
-                ))}
+                ].map((doc) => {
+                  const docType = profileDocTypeFromLabel(doc);
+                  const saved = docType ? uploads[docType] : undefined;
+                  const state = uploadState[doc] ?? { status: "idle" as const };
+                  return (
+                    <div key={doc} className="rounded-xl border border-gray-200 bg-white p-3">
+                      <p className="text-[11px] font-semibold text-gray-700">{doc}</p>
+                      <p className="mt-1 text-[10px] text-gray-400">
+                        {saved?.fileName ? `Saved: ${saved.fileName}` : "Upload .pdf / .jpg"}
+                      </p>
+                      <label className="mt-2 inline-block cursor-pointer text-[11px] font-semibold text-violet-accent">
+                        {state.status === "uploading" ? "Uploading…" : saved ? "Replace" : "Upload"}
+                        <input
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png,.webp"
+                          className="sr-only"
+                          disabled={state.status === "uploading"}
+                          onChange={(e) => {
+                            const f = e.target.files?.[0];
+                            void handleDocUpload(doc, f);
+                            e.target.value = "";
+                          }}
+                        />
+                      </label>
+                      {state.status === "error" && (
+                        <p className="mt-1 text-[10px] text-red-600">{state.message}</p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
               <p className="mt-3 text-[11px] text-gray-500">Your documents are secure and encrypted. They will only be used for verification purposes.</p>
             </section>

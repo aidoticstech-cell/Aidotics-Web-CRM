@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AidoticsLogo } from "@/components/brand/AidoticsLogo";
 import { ApiError } from "@/lib/api";
 import { register } from "@/lib/auth-api";
 import { fetchOnboarding } from "@/lib/onboarding-api";
@@ -79,7 +80,8 @@ export default function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
       <div className="crm-card w-full max-w-lg">
-        <p className="text-xl font-bold text-brand-600">aidotics Bureau CRM</p>
+        <AidoticsLogo height={48} priority />
+        <p className="mt-2 text-sm font-semibold text-gray-600">Bureau CRM</p>
         <h2 className="mt-4 text-2xl font-bold">Create your bureau account</h2>
         <p className="text-sm text-gray-500">You&apos;ll complete an 8-step setup wizard next</p>
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">

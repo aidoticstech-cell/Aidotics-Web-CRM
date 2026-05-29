@@ -118,6 +118,7 @@ router.get(
         bureauId: user.bureauId,
         partnerBureauId: user.bureau.partnerBureauId,
         bureauName: user.bureau.name,
+        storageSlug: user.bureau.storageSlug,
         role: user.role.slug,
         permissions: user.role.rolePermissions.map((rp) => rp.permission.slug),
         branches: user.branches.map((ub) => ub.branch),

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AidoticsLogo } from "@/components/brand/AidoticsLogo";
 import { ApiError } from "@/lib/api";
 import { login } from "@/lib/auth-api";
 
@@ -39,8 +40,8 @@ export default function LoginPage() {
     <div className="flex min-h-screen">
       <div className="hidden w-1/2 bg-gradient-to-br from-brand-600 to-brand-800 p-12 text-white lg:flex lg:flex-col lg:justify-between">
         <div>
-          <p className="text-2xl font-bold">aidotics</p>
-          <p className="mt-2 text-brand-100">Bureau CRM</p>
+          <AidoticsLogo height={52} priority />
+          <p className="mt-3 text-brand-100">Bureau CRM</p>
         </div>
         <div>
           <h1 className="text-3xl font-bold leading-tight">Manage your care bureau in one place</h1>
@@ -49,7 +50,9 @@ export default function LoginPage() {
       </div>
       <div className="flex w-full flex-col justify-center px-8 lg:w-1/2 lg:px-16">
         <div className="mx-auto w-full max-w-md">
-          <p className="text-2xl font-bold text-brand-600 lg:hidden">aidotics</p>
+          <div className="lg:hidden">
+            <AidoticsLogo height={44} priority />
+          </div>
           <h2 className="mt-8 text-2xl font-bold">Sign in</h2>
           <p className="mt-1 text-sm text-gray-500">Access your bureau CRM portal</p>
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">

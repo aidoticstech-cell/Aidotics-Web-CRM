@@ -21,6 +21,10 @@ flowchart LR
 
 Duty approval and partner membership sync go through Partner internal routes so notifications and Supabase sync stay centralized.
 
+## Database (Supabase recommended for production)
+
+Production: host Postgres on **Supabase**, API on **Render**, web on **Vercel**. See **[docs/SUPABASE.md](docs/SUPABASE.md)** for the `crm` schema, Storage buckets, and connection strings.
+
 ## Prerequisites
 
 **Standalone CRM (typical local dev):** PostgreSQL + `DATABASE_URL` / `JWT_SECRET` for the CRM server only; partner app is optional unless you use duties/workforce sync or `PARTNER_SYNC_ON_REGISTER`.
