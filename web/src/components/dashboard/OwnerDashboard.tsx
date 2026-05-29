@@ -1,43 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
-  LayoutDashboard,
-  Users,
-  UserRound,
-  BriefcaseMedical,
-  ClipboardList,
-  CalendarDays,
-  IndianRupee,
-  Settings2,
-  Network,
-  BarChart3,
-  Shield,
-  ChevronRight,
-  Search,
-  Bell,
-  MessageSquare,
   Plus,
   ArrowRight,
-  Megaphone,
-  Calendar,
+  Users,
+  BriefcaseMedical,
+  ClipboardList,
+  IndianRupee,
 } from "lucide-react";
-import { AidoticsLogo } from "@/components/brand/AidoticsLogo";
 import type { AuthUser } from "@/lib/auth-api";
-
-const SIDEBAR_NAV = [
-  { label: "Dashboard", Icon: LayoutDashboard, active: true },
-  { label: "Leads", Icon: Users },
-  { label: "Clients & Patients", Icon: UserRound },
-  { label: "Workforce", Icon: BriefcaseMedical },
-  { label: "Duties", Icon: ClipboardList },
-  { label: "Attendance & Leave", Icon: CalendarDays },
-  { label: "Finance", Icon: IndianRupee },
-  { label: "Operations Center", Icon: Settings2 },
-  { label: "Partner Network", Icon: Network },
-  { label: "Reports & Analytics", Icon: BarChart3 },
-  { label: "Administration", Icon: Shield },
-];
 
 const KPI_CARDS = [
   { title: "Total Leads", value: "128", hint: "↑ 18% vs yesterday", Icon: Users, tone: "bg-violet-100 text-violet-600" },
@@ -215,119 +188,37 @@ function RevenueChart() {
   );
 }
 
-export function OwnerDashboard({
-  user,
-  onSignOut,
-}: {
-  user: AuthUser & { bureauName?: string };
-  onSignOut: () => void;
-}) {
+export function OwnerDashboard({ user }: { user: AuthUser & { bureauName?: string } }) {
+  const router = useRouter();
   const [toast, setToast] = useState<string | null>(null);
   const displayName = user.fullName?.split(" ")[0] || "Admin";
-  const roleLabel = user.role === "owner" ? "Super Admin" : user.role || "Admin";
 
   function actionClick(label: string) {
+    if (label === "Add New Lead") {
+      router.push("/dashboard/leads");
+      return;
+    }
     setToast(`${label} — opens when this module is live.`);
     setTimeout(() => setToast(null), 2800);
   }
 
   return (
-    <div className="min-h-screen bg-[#eef1f8]">
+    <div className="p-4 lg:p-6">
       {toast && (
         <div className="fixed bottom-6 right-6 z-50 max-w-xs rounded-xl bg-gray-900 px-4 py-3 text-sm text-white shadow-lg">
           {toast}
         </div>
       )}
 
-      <div className="flex min-h-screen">
-        <aside className="hidden w-[248px] shrink-0 flex-col bg-[#0b1230] text-white lg:flex">
-          <div className="border-b border-white/10 px-5 py-5">
-            <AidoticsLogo height={34} onDarkSurface />
-            <p className="mt-2 text-[10px] font-bold tracking-[0.2em] text-white/60">BUREAU WEB CRM</p>
-          </div>
-          <nav className="flex-1 space-y-0.5 overflow-y-auto p-2.5">
-            {SIDEBAR_NAV.map(({ label, Icon, active }) => (
-              <button
-                key={label}
-                type="button"
-                onClick={() => !active && actionClick(label)}
-                className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-[13px] font-medium transition ${
-                  active ? "bg-violet-600 text-white shadow-md" : "text-white/75 hover:bg-white/10"
-                }`}
-              >
-                <span className="flex items-center gap-2.5">
-                  <Icon className="h-4 w-4 shrink-0 opacity-90" />
-                  {label}
-                </span>
-                {!active && <ChevronRight className="h-3.5 w-3.5 opacity-50" />}
-              </button>
-            ))}
-          </nav>
-          <div className="p-3">
-            <div className="rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 p-4 shadow-lg">
-              <div className="flex items-center gap-2">
-                <Megaphone className="h-4 w-4" />
-                <p className="text-sm font-bold">Need Staff Urgently?</p>
-              </div>
-              <p className="mt-1 text-[11px] leading-relaxed text-white/85">Broadcast your requirement to available staff quickly.</p>
-              <button
-                type="button"
-                onClick={() => actionClick("Create Duty")}
-                className="mt-3 flex w-full items-center justify-center gap-1 rounded-lg bg-white py-2 text-xs font-bold text-violet-700"
-              >
-                <Plus className="h-3.5 w-3.5" />
-                Create Duty
-              </button>
-            </div>
-          </div>
-        </aside>
+      <div className="mb-5">
+        <p className="text-sm text-gray-600">
+          Welcome back, <span className="font-semibold text-gray-900">{displayName}</span> 👋
+        </p>
+        <h1 className="mt-0.5 text-2xl font-bold tracking-tight text-gray-900">Owner Dashboard</h1>
+        <p className="text-sm text-gray-500">Overview of your bureau operations and business performance</p>
+      </div>
 
-        <div className="flex min-w-0 flex-1 flex-col">
-          <header className="border-b border-gray-200/80 bg-white px-4 py-4 shadow-sm lg:px-6">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <p className="text-sm text-gray-600">
-                  Welcome back, <span className="font-semibold text-gray-900">{displayName}</span> 👋
-                </p>
-                <h1 className="mt-0.5 text-2xl font-bold tracking-tight text-gray-900">Owner Dashboard</h1>
-                <p className="text-sm text-gray-500">Overview of your bureau operations and business performance</p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-700">
-                  <Calendar className="h-3.5 w-3.5 text-gray-400" />
-                  May 12, 2025
-                </button>
-                <button type="button" className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-700">
-                  All Branches ▾
-                </button>
-                <button type="button" className="relative rounded-lg border border-gray-200 bg-white p-2 text-gray-500">
-                  <Search className="h-4 w-4" />
-                </button>
-                <button type="button" className="relative rounded-lg border border-gray-200 bg-white p-2 text-gray-500">
-                  <Bell className="h-4 w-4" />
-                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">3</span>
-                </button>
-                <button type="button" className="relative rounded-lg border border-gray-200 bg-white p-2 text-gray-500">
-                  <MessageSquare className="h-4 w-4" />
-                  <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-violet-600 text-[9px] font-bold text-white">2</span>
-                </button>
-                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white py-1.5 pl-1.5 pr-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-100 text-xs font-bold text-violet-700">
-                    {displayName.slice(0, 2).toUpperCase()}
-                  </span>
-                  <div className="text-left">
-                    <p className="text-xs font-bold text-gray-900">{displayName}</p>
-                    <p className="text-[10px] text-gray-500">{roleLabel}</p>
-                  </div>
-                </div>
-                <button type="button" className="btn-secondary !py-2 text-xs" onClick={onSignOut}>
-                  Sign out
-                </button>
-              </div>
-            </div>
-          </header>
-
-          <main className="flex-1 space-y-5 p-4 lg:p-6">
+      <div className="space-y-5">
             <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
               {KPI_CARDS.map(({ title, value, hint, Icon, tone }) => (
                 <div key={title} className="dash-card !p-4">
@@ -554,8 +445,6 @@ export function OwnerDashboard({
                 </section>
               </aside>
             </div>
-          </main>
-        </div>
       </div>
     </div>
   );

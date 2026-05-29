@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { OwnerDashboard } from "@/components/dashboard/OwnerDashboard";
-import { getMe, logout, type AuthUser } from "@/lib/auth-api";
+import { getMe, type AuthUser } from "@/lib/auth-api";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -19,13 +19,5 @@ export default function DashboardPage() {
     return <div className="state-center min-h-screen text-sm text-gray-500">Loading dashboard…</div>;
   }
 
-  return (
-    <OwnerDashboard
-      user={user}
-      onSignOut={() => {
-        logout();
-        router.push("/login");
-      }}
-    />
-  );
+  return <OwnerDashboard user={user} />;
 }
