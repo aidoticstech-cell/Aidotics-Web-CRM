@@ -11,7 +11,7 @@ export function LoginSiteHeader() {
     <header className="relative z-40 border-b border-gray-200/60 bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <Link href="/login" className="block min-w-0 text-left">
-          <AidoticsLogo height={40} priority onLightBackground />
+          <AidoticsLogo height={40} priority />
           <p className="mt-1 text-left text-[10px] font-bold uppercase tracking-[0.18em] text-[#1b4d2e]">
             Bureau Web CRM
           </p>

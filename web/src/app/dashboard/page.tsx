@@ -62,7 +62,7 @@ export default function DashboardPage() {
       <div className="grid min-h-screen grid-cols-1 xl:grid-cols-[240px_1fr_270px]">
         <aside className="bg-[#0c1231] text-white">
           <div className="border-b border-white/10 px-4 py-4">
-            <AidoticsLogo height={40} />
+            <AidoticsLogo height={36} onDarkSurface />
             <p className="mt-2 text-[11px] font-semibold tracking-wide text-white/70">BUREAU WEB CRM</p>
           </div>
           <div className="space-y-1 p-2.5">

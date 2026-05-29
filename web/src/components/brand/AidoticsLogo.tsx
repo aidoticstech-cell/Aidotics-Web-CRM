@@ -1,7 +1,8 @@
 import Image from "next/image";
 
-const LOGO_WIDTH = 893;
-const LOGO_HEIGHT = 488;
+/** Current brand lockup (white background, green wordmark). */
+const LOGO_WIDTH = 217;
+const LOGO_HEIGHT = 102;
 
 type AidoticsLogoProps = {
   className?: string;
@@ -10,8 +11,8 @@ type AidoticsLogoProps = {
   priority?: boolean;
   /** Center the image in its container (e.g. login card). */
   centered?: boolean;
-  /** Remove black matte on light backgrounds (header / marketing). */
-  onLightBackground?: boolean;
+  /** White pill behind logo on dark UI (dashboard sidebar). */
+  onDarkSurface?: boolean;
 };
 
 export function AidoticsLogo({
@@ -19,21 +20,29 @@ export function AidoticsLogo({
   height = 44,
   priority = false,
   centered = false,
-  onLightBackground = false,
+  onDarkSurface = false,
 }: AidoticsLogoProps) {
   const width = Math.round((LOGO_WIDTH / LOGO_HEIGHT) * height);
 
-  return (
+  const img = (
     <Image
       src="/aidotics-logo.png"
       alt="aidotics"
       width={width}
       height={height}
       priority={priority}
-      className={`h-auto max-w-full object-contain ${centered ? "object-center" : "object-left"} ${
-        onLightBackground ? "mix-blend-screen" : ""
-      } ${className}`}
+      className={`h-auto max-w-full object-contain ${centered ? "object-center" : "object-left"} ${className}`}
       style={{ height, width }}
     />
   );
+
+  if (onDarkSurface) {
+    return (
+      <div className="inline-block rounded-lg bg-white px-2.5 py-1.5 shadow-sm">
+        {img}
+      </div>
+    );
+  }
+
+  return img;
 }
