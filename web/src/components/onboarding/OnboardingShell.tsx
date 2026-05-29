@@ -56,10 +56,10 @@ export function OnboardingShell({
               <p className="page-eyebrow mt-1 !text-[10px] !tracking-[0.18em] text-[#1b4d2e]">Bureau Web CRM</p>
             </div>
             <div className="flex shrink-0 items-center gap-2">
-              <button type="button" className="btn-secondary !gap-1.5 !px-3 !py-2 text-xs sm:!px-4">
+              <a href="mailto:support@aidotics.com?subject=Bureau%20Onboarding%20Help" className="btn-secondary !gap-1.5 !px-3 !py-2 text-xs sm:!px-4">
                 <Headphones className="h-4 w-4 text-gray-500" />
                 <span>Need Help?</span>
-              </button>
+              </a>
               <button type="button" onClick={() => router.push("/login")} className="btn-secondary !gap-1.5 !px-3 !py-2 text-xs sm:!px-4">
                 <X className="h-4 w-4 text-gray-500" />
                 <span className="hidden sm:inline">Exit Onboarding</span>
@@ -115,9 +115,9 @@ export function OnboardingShell({
                 <p className="text-sm font-bold">Need Assistance?</p>
               </div>
               <p className="mt-1 text-xs text-gray-600">Our team can help you complete setup.</p>
-              <button type="button" className="btn-primary mt-3 w-full !py-2.5 text-xs">
+              <a href="mailto:support@aidotics.com?subject=Bureau%20Onboarding%20Support" className="btn-primary mt-3 flex w-full justify-center !py-2.5 text-xs">
                 Contact Support
-              </button>
+              </a>
             </div>
           </div>
         </aside>

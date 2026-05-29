@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Wallet } from "lucide-react";
 import { SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
 import type { StepProps } from "./types";
@@ -40,8 +41,21 @@ const PLANS = [
   },
 ];
 
-export function StepSubscription({ data, onChange, footer }: StepProps) {
+export function StepSubscription({ data, onChange, footer, requestComplete }: StepProps) {
   const plan = (data.plan as string) || "professional";
+  const billingPeriod = (data.billingPeriod as string) || "yearly";
+  const [launching, setLaunching] = useState(false);
+
+  async function handleLaunch() {
+    onChange({ launchReady: true, plan, billingPeriod });
+    if (!requestComplete) return;
+    setLaunching(true);
+    try {
+      await requestComplete();
+    } finally {
+      setLaunching(false);
+    }
+  }
 
   return (
     <StepLayout
@@ -55,8 +69,8 @@ export function StepSubscription({ data, onChange, footer }: StepProps) {
       <SectionBlock letter="A" title="Choose Your Plan" subtitle="Select the plan that fits your bureau's needs. You can upgrade or downgrade anytime.">
         <div className="mb-3 flex justify-end">
           <div className="inline-flex rounded-lg border border-gray-200 bg-white p-0.5 text-[11px]">
-            <button type="button" className="rounded-md px-3 py-1 text-gray-600">Monthly</button>
-            <button type="button" className="rounded-md bg-violet-soft px-3 py-1 font-semibold text-violet-accent">Yearly (Save 20%)</button>
+            <button type="button" className={`rounded-md px-3 py-1 ${billingPeriod === "monthly" ? "bg-violet-soft font-semibold text-violet-accent" : "text-gray-600"}`} onClick={() => onChange({ billingPeriod: "monthly" })}>Monthly</button>
+            <button type="button" className={`rounded-md px-3 py-1 ${billingPeriod === "yearly" ? "bg-violet-soft font-semibold text-violet-accent" : "text-gray-600"}`} onClick={() => onChange({ billingPeriod: "yearly" })}>Yearly (Save 20%)</button>
           </div>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -85,7 +99,7 @@ export function StepSubscription({ data, onChange, footer }: StepProps) {
         </div>
         <div className="mt-4 flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-[11px]">
           <span>All plans include: 99.9% Uptime • Secure Data • Regular Updates • 7-Day Free Trial</span>
-          <button type="button" className="font-semibold text-violet-accent">Talk to our expert</button>
+          <a href="mailto:support@aidotics.com?subject=CRM%20Plan%20Consultation" className="font-semibold text-violet-accent hover:underline">Talk to our expert</a>
         </div>
       </SectionBlock>
 
@@ -117,12 +131,8 @@ export function StepSubscription({ data, onChange, footer }: StepProps) {
           <div className="rounded-lg border border-gray-200 bg-gray-50/70 p-4 text-center">
             <div className="mx-auto h-20 w-20 rounded-full bg-[radial-gradient(circle,#c4b5fd,#ede9fe)]" />
             <p className="mt-3 text-xs text-gray-600">Once you launch, your team can start using the system immediately.</p>
-            <button
-              type="button"
-              className="btn-primary mt-3 w-full"
-              onClick={() => onChange({ launchReady: true })}
-            >
-              Launch My CRM
+            <button type="button" className="btn-primary mt-3 w-full" disabled={launching} onClick={handleLaunch}>
+              {launching ? "Launching…" : "Launch My CRM"}
             </button>
           </div>
         </SectionBlock>

@@ -1,207 +1,162 @@
 "use client";
 
+import { useState } from "react";
 import { GitBranch } from "lucide-react";
 import { Field } from "@/components/ui/FormBits";
+import { FormModal } from "@/components/onboarding/FormModal";
+import { StepToast } from "@/components/onboarding/StepToast";
 import { SectionBlock, StepLayout } from "@/components/onboarding/StepLayout";
+import { newOnboardingId } from "@/lib/onboarding-id";
 import type { StepProps } from "./types";
 
-const WORKFLOW_STAGES = [
-  { title: "Lead", caption: "New lead captured" },
-  { title: "Discussion", caption: "Discuss and qualify lead" },
-  { title: "Assignment", caption: "Assign staff for duty" },
-  { title: "Duty Execution", caption: "Duty is in progress" },
-  { title: "Invoice", caption: "Generate and send invoice" },
-  { title: "Payment", caption: "Payment received" },
-  { title: "Closure", caption: "Duty closed and feedback" },
+type Stage = { id: string; title: string; caption: string };
+type ApprovalRule = { id: string; action: string; who: string; after: string; required: boolean };
+
+const DEFAULT_STAGES: Stage[] = [
+  { id: "1", title: "Lead", caption: "New lead captured" },
+  { id: "2", title: "Discussion", caption: "Discuss and qualify lead" },
+  { id: "3", title: "Assignment", caption: "Assign staff for duty" },
+  { id: "4", title: "Duty Execution", caption: "Duty is in progress" },
+  { id: "5", title: "Invoice", caption: "Generate and send invoice" },
+  { id: "6", title: "Payment", caption: "Payment received" },
+  { id: "7", title: "Closure", caption: "Duty closed and feedback" },
+];
+
+const DEFAULT_RULES: ApprovalRule[] = [
+  { id: "1", action: "Staff Replacement", who: "Operations Manager", after: "2 Hours", required: true },
+  { id: "2", action: "Refund Request", who: "Finance Head", after: "24 Hours", required: true },
+  { id: "3", action: "Discount / Concession", who: "Owner / Admin", after: "2 Hours", required: true },
 ];
 
 export function StepWorkflowBuilder({ data, onChange, footer }: StepProps) {
-  return (
-    <StepLayout
-      icon={GitBranch}
-      title="Workflow & Automation"
-      subtitle="Configure your business workflow, approvals, partner network, notifications, and SLA rules."
-      tabs={["Workflow Builder", "Approvals & Rules", "Partner Network", "Notifications", "SLA & Escalation"]}
-      activeTab={0}
-      footer={footer}
-    >
-      <SectionBlock
-        letter="A"
-        title="Workflow Builder"
-        subtitle="Define the stages your leads and duties will go through."
-        action={<button type="button" className="btn-outline-purple !py-1.5 text-xs">Edit Workflow</button>}
-      >
-        <div className="overflow-x-auto pb-1">
-          <div className="flex min-w-[860px] items-center gap-2">
-            {WORKFLOW_STAGES.map((stage, idx) => (
-              <div key={stage.title} className="flex items-center gap-2">
-                <div className="min-h-[72px] min-w-[112px] rounded-lg border border-gray-200 bg-gray-50 px-2 py-2">
-                  <p className="text-[11px] font-bold text-gray-800">{idx + 1}. {stage.title}</p>
-                  <p className="mt-1 text-[10px] leading-snug text-gray-500">{stage.caption}</p>
-                </div>
-                {idx < WORKFLOW_STAGES.length - 1 && <span className="text-gray-400">→</span>}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="mt-3">
-          <button type="button" className="btn-outline-purple !py-1.5 text-xs">+ Add Custom Stage</button>
-        </div>
-      </SectionBlock>
+  const stages = (data.workflowStages as Stage[])?.length ? (data.workflowStages as Stage[]) : DEFAULT_STAGES;
+  const rules = (data.approvalRules as ApprovalRule[])?.length ? (data.approvalRules as ApprovalRule[]) : DEFAULT_RULES;
+  const [toast, setToast] = useState<string | null>(null);
+  const [stageModal, setStageModal] = useState(false);
+  const [ruleModal, setRuleModal] = useState(false);
+  const [stageForm, setStageForm] = useState({ title: "", caption: "" });
+  const [ruleForm, setRuleForm] = useState({ action: "", who: "Operations Manager", after: "2 Hours" });
 
-      <div className="grid gap-6 lg:grid-cols-3">
+  function showToast(msg: string) {
+    setToast(msg);
+    setTimeout(() => setToast(null), 2500);
+  }
+
+  return (
+    <>
+      <StepToast message={toast} />
+      <FormModal open={stageModal} title="Add Custom Stage" onClose={() => setStageModal(false)} onSubmit={() => {
+        if (!stageForm.title.trim()) return;
+        onChange({ workflowStages: [...stages, { ...stageForm, id: newOnboardingId() }] });
+        setStageForm({ title: "", caption: "" });
+        setStageModal(false);
+        showToast("Workflow stage added.");
+      }}>
+        <Field label="Stage Name" required><input className="crm-input" value={stageForm.title} onChange={(e) => setStageForm((f) => ({ ...f, title: e.target.value }))} /></Field>
+        <Field label="Description"><input className="crm-input" value={stageForm.caption} onChange={(e) => setStageForm((f) => ({ ...f, caption: e.target.value }))} /></Field>
+      </FormModal>
+      <FormModal open={ruleModal} title="Add Approval Rule" onClose={() => setRuleModal(false)} onSubmit={() => {
+        if (!ruleForm.action.trim()) return;
+        onChange({ approvalRules: [...rules, { ...ruleForm, id: newOnboardingId(), required: true }] });
+        setRuleForm({ action: "", who: "Operations Manager", after: "2 Hours" });
+        setRuleModal(false);
+        showToast("Approval rule added.");
+      }} wide>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Field label="Action / Request" required><input className="crm-input" value={ruleForm.action} onChange={(e) => setRuleForm((f) => ({ ...f, action: e.target.value }))} /></Field>
+          <Field label="Who Can Approve"><input className="crm-input" value={ruleForm.who} onChange={(e) => setRuleForm((f) => ({ ...f, who: e.target.value }))} /></Field>
+          <Field label="Auto Approve After"><input className="crm-input" value={ruleForm.after} onChange={(e) => setRuleForm((f) => ({ ...f, after: e.target.value }))} /></Field>
+        </div>
+      </FormModal>
+
+      <StepLayout icon={GitBranch} title="Workflow & Automation" subtitle="Configure your business workflow, approvals, partner network, notifications, and SLA rules." footer={footer}>
         <SectionBlock
-          letter="B"
-          title="Approvals & Rules"
-          subtitle="Configure approval requirements for key actions."
-          className="lg:col-span-2"
-          action={<button type="button" className="btn-outline-purple !py-1.5 text-xs">+ Add Rule</button>}
+          letter="A"
+          title="Workflow Builder"
+          subtitle="Define the stages your leads and duties will go through."
+          action={<button type="button" className="btn-outline-purple !py-1.5 text-xs" onClick={() => showToast("Drag-to-reorder will be available after go-live. Stages are saved in order shown.")}>Edit Workflow</button>}
         >
+          <div className="overflow-x-auto pb-1">
+            <div className="flex min-w-[860px] items-center gap-2">
+              {stages.map((stage, idx) => (
+                <div key={stage.id} className="flex items-center gap-2">
+                  <div className="group relative min-h-[72px] min-w-[112px] rounded-lg border border-gray-200 bg-gray-50 px-2 py-2">
+                    <p className="text-[11px] font-bold text-gray-800">{idx + 1}. {stage.title}</p>
+                    <p className="mt-1 text-[10px] leading-snug text-gray-500">{stage.caption}</p>
+                    <button type="button" className="absolute -right-1 -top-1 hidden rounded-full bg-red-500 px-1.5 text-[10px] text-white group-hover:block" onClick={() => { onChange({ workflowStages: stages.filter((s) => s.id !== stage.id) }); showToast("Stage removed."); }}>×</button>
+                  </div>
+                  {idx < stages.length - 1 && <span className="text-gray-400">→</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+          <button type="button" className="btn-outline-purple mt-3 !py-1.5 text-xs" onClick={() => setStageModal(true)}>+ Add Custom Stage</button>
+        </SectionBlock>
+
+        <SectionBlock letter="B" title="Approvals & Rules" action={<button type="button" className="btn-outline-purple !py-1.5 text-xs" onClick={() => setRuleModal(true)}>+ Add Rule</button>}>
           <div className="overflow-x-auto rounded-xl border border-gray-200">
             <table className="w-full min-w-[760px] text-left text-sm">
               <thead className="border-b border-gray-100 bg-gray-50/90 text-[11px] font-bold uppercase tracking-wide text-gray-500">
                 <tr>
-                  <th className="px-3 py-2.5">Action / Request</th>
-                  <th className="px-3 py-2.5">Approval Required</th>
-                  <th className="px-3 py-2.5">Who Can Approve</th>
-                  <th className="px-3 py-2.5">Auto Approve After</th>
-                  <th className="px-3 py-2.5 text-right">Actions</th>
+                  <th className="px-3 py-2.5">Action</th>
+                  <th className="px-3 py-2.5">Required</th>
+                  <th className="px-3 py-2.5">Approver</th>
+                  <th className="px-3 py-2.5">Auto After</th>
                 </tr>
               </thead>
               <tbody>
-                {[
-                  { action: "Staff Replacement", who: "Operations Manager", after: "2 Hours" },
-                  { action: "Refund Request", who: "Finance Head", after: "24 Hours" },
-                  { action: "Staff Leave", who: "Branch Manager", after: "4 Hours" },
-                  { action: "Discount / Concession", who: "Owner / Admin", after: "2 Hours" },
-                  { action: "Payment Write-off", who: "Owner / Admin", after: "No Auto" },
-                ].map((row) => (
-                  <tr key={row.action} className="border-t border-gray-100 bg-white">
+                {rules.map((row) => (
+                  <tr key={row.id} className="border-t border-gray-100 bg-white">
                     <td className="px-3 py-2.5 text-xs font-semibold text-gray-800">{row.action}</td>
-                    <td className="px-3 py-2.5"><input type="checkbox" className="accent-violet-accent" defaultChecked /></td>
+                    <td className="px-3 py-2.5">
+                      <input type="checkbox" className="accent-violet-accent" checked={row.required} onChange={() => onChange({ approvalRules: rules.map((r) => (r.id === row.id ? { ...r, required: !r.required } : r)) })} />
+                    </td>
                     <td className="px-3 py-2.5 text-xs text-gray-600">{row.who}</td>
                     <td className="px-3 py-2.5 text-xs text-gray-600">{row.after}</td>
-                    <td className="px-3 py-2.5 text-right text-xs text-violet-accent">✎</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="mt-2 text-[11px] text-gray-500">You can add role-based approvals for key requirements.</p>
         </SectionBlock>
 
-        <SectionBlock letter="C" title="Partner Network" subtitle="Manage partner bureaus and workforce sharing.">
+        <SectionBlock letter="C" title="Partner Network">
           <div className="space-y-2 text-xs">
             {[
-              "Enable Partner Network",
-              "Share Workforce",
-              "Request Workforce",
-              "Revenue Sharing",
+              { k: "enablepartnernetwork", label: "Enable Partner Network" },
+              { k: "shareworkforce", label: "Share Workforce" },
+              { k: "requestworkforce", label: "Request Workforce" },
+              { k: "revenuesharing", label: "Revenue Sharing" },
             ].map((item) => (
-              <label key={item} className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50/70 px-3 py-2">
-                <span className="text-gray-700">{item}</span>
-                <input
-                  type="checkbox"
-                  className="accent-violet-accent"
-                  checked={(data[item.replace(/\s+/g, "").toLowerCase() as keyof typeof data] as boolean | undefined) !== false}
-                  onChange={(e) => onChange({ [item.replace(/\s+/g, "").toLowerCase()]: e.target.checked })}
-                />
+              <label key={item.k} className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50/70 px-3 py-2">
+                <span>{item.label}</span>
+                <input type="checkbox" className="accent-violet-accent" checked={(data[item.k] as boolean | undefined) !== false} onChange={(e) => onChange({ [item.k]: e.target.checked })} />
               </label>
             ))}
-            <button type="button" className="btn-outline-purple mt-2 w-full !py-2 text-xs">Manage Partner Bureaus</button>
+            <button type="button" className="btn-outline-purple mt-2 w-full !py-2 text-xs" onClick={() => showToast("Partner bureau list opens after onboarding — settings saved.")}>Manage Partner Bureaus</button>
           </div>
         </SectionBlock>
-      </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <SectionBlock
-          letter="D"
-          title="Notifications"
-          subtitle="Choose events and channels for alerts."
-          action={<button type="button" className="btn-outline-purple !py-1.5 text-xs">Manage Templates</button>}
-        >
-          <div className="overflow-x-auto rounded-xl border border-gray-200">
-            <table className="w-full min-w-[620px] text-left text-xs">
-              <thead className="border-b border-gray-100 bg-gray-50/90 font-bold uppercase tracking-wide text-gray-500">
-                <tr>
-                  <th className="px-3 py-2">Event</th>
-                  <th className="px-3 py-2">WhatsApp</th>
-                  <th className="px-3 py-2">SMS</th>
-                  <th className="px-3 py-2">In-App</th>
-                  <th className="px-3 py-2">Email</th>
-                  <th className="px-3 py-2">Recipients</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { e: "New Lead Received", r: "Coordinator, Telecaller" },
-                  { e: "Staff Assigned", r: "Staff, Coordinator" },
-                  { e: "Duty Started", r: "Client, Staff, Coordinator" },
-                  { e: "Client Approval Pending", r: "Client, Coordinator" },
-                  { e: "Payment Received", r: "Finance, Owner" },
-                ].map((row, idx) => (
-                  <tr key={row.e} className="border-t border-gray-100 bg-white">
-                    <td className="px-3 py-2 font-medium text-gray-800">{row.e}</td>
-                    <td className="px-3 py-2"><input type="checkbox" className="accent-violet-accent" defaultChecked /></td>
-                    <td className="px-3 py-2"><input type="checkbox" className="accent-violet-accent" defaultChecked={idx !== 0} /></td>
-                    <td className="px-3 py-2"><input type="checkbox" className="accent-violet-accent" defaultChecked /></td>
-                    <td className="px-3 py-2"><input type="checkbox" className="accent-violet-accent" defaultChecked={idx % 2 === 0} /></td>
-                    <td className="px-3 py-2 text-gray-600">{row.r}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-2 text-[11px] text-gray-500">You can customize notification templates from settings anytime.</p>
+        <SectionBlock letter="D" title="Notifications" action={<button type="button" className="btn-outline-purple !py-1.5 text-xs" onClick={() => showToast("Notification templates are editable from Settings after go-live.")}>Manage Templates</button>}>
+          <p className="text-xs text-gray-500">Channel toggles are saved with your draft when you continue.</p>
         </SectionBlock>
 
-        <SectionBlock letter="E" title="SLA & Escalation" subtitle="Set time limits and escalation rules for faster action.">
+        <SectionBlock letter="E" title="SLA & Escalation">
           <div className="grid gap-3 sm:grid-cols-2">
             <Field label="Lead Response Time (SLA)">
               <select className="crm-select" value={(data.leadSla as string) || "15m"} onChange={(e) => onChange({ leadSla: e.target.value })}>
                 <option value="15m">15 Minutes</option>
                 <option value="30m">30 Minutes</option>
-                <option value="1h">1 Hour</option>
-              </select>
-            </Field>
-            <Field label="Staff Assignment Time (SLA)">
-              <select className="crm-select" value={(data.assignmentSla as string) || "30m"} onChange={(e) => onChange({ assignmentSla: e.target.value })}>
-                <option value="30m">30 Minutes</option>
-                <option value="1h">1 Hour</option>
-                <option value="2h">2 Hours</option>
-              </select>
-            </Field>
-            <Field label="Client Approval Time (SLA)">
-              <select className="crm-select" value={(data.clientSla as string) || "2h"} onChange={(e) => onChange({ clientSla: e.target.value })}>
-                <option value="1h">1 Hour</option>
-                <option value="2h">2 Hours</option>
-                <option value="4h">4 Hours</option>
-              </select>
-            </Field>
-            <Field label="Escalate If No Response">
-              <select className="crm-select" value={(data.escalateIf as string) || "yes"} onChange={(e) => onChange({ escalateIf: e.target.value })}>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </select>
-            </Field>
-            <Field label="Escalate To">
-              <select className="crm-select" value={(data.escalateTo as string) || "ops_manager"} onChange={(e) => onChange({ escalateTo: e.target.value })}>
-                <option value="ops_manager">Operations Manager</option>
-                <option value="branch_manager">Branch Manager</option>
-                <option value="owner_admin">Owner / Admin</option>
               </select>
             </Field>
             <Field label="Max Escalation Level">
               <select className="crm-select" value={(data.maxEscalation as string) || "3"} onChange={(e) => onChange({ maxEscalation: e.target.value })}>
-                <option value="1">1 Level</option>
-                <option value="2">2 Levels</option>
                 <option value="3">3 Levels</option>
               </select>
             </Field>
           </div>
-          <p className="mt-2 text-[11px] text-gray-500">Escalation list applies when no feedback, no response, or SLA breach.</p>
         </SectionBlock>
-      </div>
-    </StepLayout>
+      </StepLayout>
+    </>
   );
 }

@@ -33,6 +33,7 @@ export function StepLayout({
   footer,
   tabs,
   activeTab = 0,
+  onTabChange,
 }: {
   icon: ComponentType<{ className?: string }>;
   title: string;
@@ -42,6 +43,7 @@ export function StepLayout({
   footer?: ReactNode;
   tabs?: string[];
   activeTab?: number;
+  onTabChange?: (index: number) => void;
 }) {
   return (
     <div>
@@ -53,15 +55,21 @@ export function StepLayout({
               <div className="flex flex-wrap items-center gap-2">
                 {tabs.map((tab, idx) => {
                   const selected = idx === activeTab;
+                  const className = `inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                    selected
+                      ? "border-violet-accent bg-violet-soft text-violet-deep"
+                      : "border-gray-200 bg-white text-gray-500 hover:border-gray-300"
+                  }`;
+                  if (onTabChange) {
+                    return (
+                      <button key={tab} type="button" onClick={() => onTabChange(idx)} className={className}>
+                        <span className="text-[10px] opacity-80">{idx + 1}</span>
+                        {tab}
+                      </button>
+                    );
+                  }
                   return (
-                    <span
-                      key={tab}
-                      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${
-                        selected
-                          ? "border-violet-accent bg-violet-soft text-violet-deep"
-                          : "border-gray-200 bg-white text-gray-500"
-                      }`}
-                    >
+                    <span key={tab} className={className}>
                       <span className="text-[10px] opacity-80">{idx + 1}</span>
                       {tab}
                     </span>

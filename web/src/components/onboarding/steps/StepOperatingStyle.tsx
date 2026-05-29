@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Check, SlidersHorizontal } from "lucide-react";
 import { Field } from "@/components/ui/FormBits";
 import { StepLayout } from "@/components/onboarding/StepLayout";
@@ -24,6 +25,7 @@ export function StepOperatingStyle({ data, onChange, footer }: StepProps) {
   const workingDays = (data.workingDays as string[]) || [...DAYS];
   const model = (data.operatingModel as string) || "OWNER";
   const structure = (data.structure as string) || "CENTRALIZED";
+  const [tab, setTab] = useState(0);
 
   return (
     <StepLayout
@@ -31,7 +33,8 @@ export function StepOperatingStyle({ data, onChange, footer }: StepProps) {
       title="Operations Setup"
       subtitle="Configure how your bureau operates. These preferences will drive daily processes in the CRM."
       tabs={["Operating Model", "Organization Structure", "Lead Allocation", "Approvals", "Payment Handling"]}
-      activeTab={0}
+      activeTab={tab}
+      onTabChange={setTab}
       footer={footer}
     >
       <div className="mt-2">
